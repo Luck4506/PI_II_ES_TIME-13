@@ -1,0 +1,54 @@
+{
+  "name": "pi_ii_es_time-13",
+  "version": "1.0.0",
+  "description": "Projeto da Matéria Projeto Integrador da PUC Campinas - 2025",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luck4506/PI_II_ES_TIME-13.git"
+  },
+  "keywords": [
+    "PII-2",
+    "node.js",
+    "JavaScript",
+    "HTML5",
+    "CSS3"
+  ],
+  "contributors": [
+    {
+      "name": "Henrique Young De Azevedo",
+      "GitHub": ""
+    },
+    {
+      "name": "Isabela Aparecida Paslauski Pinto",
+      "GitHub": ""
+    },
+    {
+      "name": "João Pedro Bergamin Diniz ",
+      "GitHub": "m"
+    },
+    {
+      "name": "Lucas Soares Gonçalves",
+      "GitHub": ""
+    },
+    {
+      "name": "Pedro Vinicius Romanato",
+      "GitHub": ""
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Luck4506/PI_II_ES_TIME-13/issues"
+  },
+  "homepage": "https://github.com/Luck4506/PI_II_ES_TIME-13#readme",
+  "dependencies": {
+    "bootstrap": "^5.3.8",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "mysql2": "^3.15.0",
+    "nodemon": "^3.1.10"
+  }
+}

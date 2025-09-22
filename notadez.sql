@@ -1,0 +1,23 @@
+CREATE DATABASE IF NOT EXISTS notadez;
+
+use notadez;
+
+CREATE TABLE IF NOT EXISTS professor (
+    professor_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    email VARCHAR(150) NOT NULL UNIQUE,
+    telefone VARCHAR(20),
+    senha_hash VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS instituicao (
+    instituicao_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS curso (
+    curso_id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(150) NOT NULL
+);
+
+TRUNCATE TABLE professor;
