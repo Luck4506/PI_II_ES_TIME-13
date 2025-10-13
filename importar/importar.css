@@ -1,0 +1,139 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #0cf4f8 0%, #1205cd 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+
+.importar-container {
+  background: white;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 420px;
+  text-align: center;
+}
+
+.importar-title {
+  color: #333;
+  margin-bottom: 20px;
+  font-size: 28px;
+  font-weight: 300;
+}
+
+#texto-importar {
+  color: #555;
+  font-size: 14px;
+  margin-bottom: 25px;
+}
+
+.formulario {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.entrada-arquivo {
+  width: 100%;
+  padding: 10px;
+  border: 2px solid #e1e5e9;
+  border-radius: 8px;
+  font-size: 14px;
+  transition: border-color 0.3s ease;
+  outline: none;
+  background-color: #f9f9f9;
+}
+
+.entrada-arquivo:focus {
+  border-color: #667eea;
+}
+
+.importar-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #1dc7ff 0%, #190aec 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin-top: 10px;
+}
+
+.importar-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+}
+
+.importar-button:active {
+  transform: translateY(0);
+}
+
+#resultado {
+  margin-top: 25px;
+  text-align: left;
+}
+
+#resultado h3 {
+  font-size: 16px;
+  color: #333;
+  margin-bottom: 5px;
+}
+
+#resumo {
+  font-size: 13px;
+  color: #555;
+  margin-bottom: 10px;
+}
+
+#lista-alunos {
+  list-style: none;
+  padding-left: 0;
+  font-size: 14px;
+  color: #444;
+  line-height: 1.6;
+  max-height: 250px;
+  overflow-y: auto;
+}
+
+.links-container {
+  text-align: center;
+  margin-top: 25px;
+}
+
+.link {
+  color: #667eea;
+  text-decoration: none;
+  font-size: 14px;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+@media (max-width: 480px) {
+  .importar-container {
+    padding: 30px 20px;
+  }
+}
