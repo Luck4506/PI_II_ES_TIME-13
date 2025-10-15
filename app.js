@@ -70,9 +70,27 @@ app.get('/cadastro', (req, res) => {
 });
 
 //rota cadastro instituicao.
-app.get('/cadastro/instituicao',(req,res)=>{
-  
-})
+app.get('/verificar',(req,res)=>{
+  const { campo, valor } = req.body;
+  let tabela, coluna;
+
+  // Define em qual tabela/coluna será feita a verificação
+    if (campo === 'instituicao') {
+        tabela = 'instituicao';
+        coluna = 'nome';
+    } else if (campo === 'curso') {
+        tabela = 'curso';
+        coluna = 'nome';
+    }
+    const sql = `SELECT * FROM ${tabela} WHERE ${coluna} = ?`;
+    conexao.execute(sql, [valor], (resultados) => {
+        if (resultados.length > 0) {
+            return res.json({ existe: true });
+        } else {
+            return res.json({ existe: false });
+        }
+    });
+});
 // Servidor
 const PORT = 8080;
 app.listen(PORT, () => {
