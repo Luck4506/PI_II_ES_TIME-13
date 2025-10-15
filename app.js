@@ -69,27 +69,64 @@ app.get('/cadastro', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'cadastro', 'index.html'));
 });
 
-//rota cadastro instituicao.
-app.get('/verificar',(req,res)=>{
+//rota verificar instituicao. !!feita para entender como funciona!!
+app.post('/verificar', async (req, res) => {
   const { campo, valor } = req.body;
   let tabela, coluna;
 
-  // Define em qual tabela/coluna será feita a verificação
-    if (campo === 'instituicao') {
-        tabela = 'instituicao';
-        coluna = 'nome';
-    } else if (campo === 'curso') {
-        tabela = 'curso';
-        coluna = 'nome';
+  // Define qual tabela e coluna usar
+  if (campo === 'instituicao') {
+    tabela = 'instituicao';
+    coluna = 'nome';
+  } else if (campo === 'curso') {
+    tabela = 'curso';
+    coluna = 'nome';
+  }
+
+  try {
+    // Cria a query com bind variable (Oracle usa :valor)
+    const sql = `SELECT * FROM ${tabela} WHERE ${coluna} = :valor`;
+
+    // Executa e retorna resultados como objetos (não arrays)
+    const result = await conexao.execute(sql, [valor], { outFormat: oracledb.OUT_FORMAT_OBJECT });
+
+    // Verifica se encontrou linhas
+    if (result.rows.length > 0) {
+      res.json({ existe: true });
+    } else {
+      res.json({ existe: false });
     }
-    const sql = `SELECT * FROM ${tabela} WHERE ${coluna} = ?`;
-    conexao.execute(sql, [valor], (resultados) => {
-        if (resultados.length > 0) {
-            return res.json({ existe: true });
-        } else {
-            return res.json({ existe: false });
-        }
-    });
+
+  }catch (erro) {
+    console.error('Erro ao verificar:', erro);
+    res.status(500).json({ erro: 'Erro ao acessar o banco de dados' });
+  }
+});
+//rota para cadastrar !!feita para aprender como funciona!!
+app.post("/adicionar", async (req, res) => {
+  const { instituicao, curso } = req.body;
+
+  try {
+    // Inserir instituição
+    await conexao.execute(
+      `INSERT INTO instituicao (nome) VALUES (:nome)`,
+      [instituicao],
+      { autoCommit: true }
+    );
+
+    // Inserir curso
+    await conexao.execute(
+      `INSERT INTO curso (nome) VALUES (:nome)`,
+      [curso],
+      { autoCommit: true }
+    );
+
+    // Retorna sucesso para o front-end
+    res.json({ sucesso: true });
+  } catch (erro) {
+    console.error("Erro ao adicionar:", erro);
+    res.status(500).json({ sucesso: false, erro: "Erro ao inserir no banco" });
+  }
 });
 // Servidor
 const PORT = 8080;
