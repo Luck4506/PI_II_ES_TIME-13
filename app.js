@@ -69,7 +69,10 @@ app.get('/cadastro', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'cadastro', 'index.html'));
 });
 
-
+//rota cadastro instituicao.
+app.get('/cadastro/instituicao',(req,res)=>{
+  
+})
 // Servidor
 const PORT = 8080;
 app.listen(PORT, () => {
