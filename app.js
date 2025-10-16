@@ -1,6 +1,6 @@
 const express = require('express');
 const path = require('path');
-const mysql = require('mysql2');
+const oracledb = require('oracledb');
 const app = express();
 require('dotenv').config();
 
@@ -13,27 +13,20 @@ app.use('/css', express.static(path.join(__dirname, 'css')));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-// Conexão com MySQL (NÃO ESQUECER DE COLOCAR AS CREDENCIAIS NO ARQUIVO .ENV)
-const conexao = mysql.createConnection({
-  host: process.env.DB_HOST || '127.0.0.1',
-  user: process.env.DB_USER || 'root',
-  password: process.env.DB_PASS || '',
-  database: process.env.DB_NAME || 'notadez',
-  port: process.env.DB_PORT ? parseInt(process.env.DB_PORT, 10) : 3306,
-});
-
-//Teste de conexão
-conexao.connect(function (erro) {
-  if (erro) {
-    throw erro;
+// Conexão com ORACLE (NÃO ESQUECER DE COLOCAR AS CREDENCIAIS NO ARQUIVO .ENV
+async function conectarOracle() {
+  try {
+    conexao = await oracledb.getConnection({
+      user: process.env.DB_USER,
+      password: process.env.DB_PASS,
+      connectString: process.env.DB_CONNECT_STRING
+    });
+    console.log('Conectado ao Oracle');
+  } catch (err) {
+    console.error('Erro ao conectar', err);
   }
-  
-  else {
-    console.log('Conexão efetuada com sucesso!');
-  }
-});
-
-
+}
+conectarOracle();
 // Rota principal: abre a página de login
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'public', 'login', 'index.html'));
