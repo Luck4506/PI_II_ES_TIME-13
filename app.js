@@ -104,29 +104,35 @@ app.post('/verificar', async (req, res) => {
 });
 //rota para cadastrar !!feita para aprender como funciona!!
 app.post("/adicionar", async (req, res) => {
-  const { instituicao, curso } = req.body;
+    const { nome, sigla, codigo, periodo } = req.body;
 
-  try {
-    // Inserir instituição
-    await conexao.execute(
-      `INSERT INTO instituicao (nome) VALUES (:nome)`,
-      [instituicao],
-      { autoCommit: true }
-    );
+    try {
+        await conexao.execute(
+            `INSERT INTO DISCIPLINA (NOME, SIGLA, CODIGO, PERIODO)
+             VALUES (:nome, :sigla, :codigo, :periodo)`,
+            { nome, sigla, codigo, periodo },
+            { autoCommit: true }
+        );
 
-    // Inserir curso
-    await conexao.execute(
-      `INSERT INTO curso (nome) VALUES (:nome)`,
-      [curso],
-      { autoCommit: true }
-    );
+        res.json({ sucesso: true });
+    } catch (erro) {
+        console.error("Erro ao inserir disciplina:", erro);
+        res.json({ sucesso: false });
+    }
+});
+app.post("/verificarDisciplina", async (req, res) => {
+    const { campo, valor } = req.body;
 
-    // Retorna sucesso para o front-end
-    res.json({ sucesso: true });
-  } catch (erro) {
-    console.error("Erro ao adicionar:", erro);
-    res.status(500).json({ sucesso: false, erro: "Erro ao inserir no banco" });
-  }
+    try {
+        const sql = `SELECT COUNT(*) AS QTD FROM DISCIPLINA WHERE ${campo} = :valor`;
+        const resultado = await conexao.execute(sql, { valor });
+
+        const existe = resultado.rows[0][0] > 0;
+        res.json({ existe });
+    } catch (erro) {
+        console.error("Erro ao verificar disciplina:", erro);
+        res.json({ existe: false });
+    }
 });
 // Servidor
 const PORT = 8080;
