@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/recuperar_senha/recuperar_senha.css">
+    <script src="/recuperar_senha/recuperar_senha.js" defer></script>
+    <title>NotaDez - Recuperação de senha</title>
+
+</head>
+
+<body>
+    <div class="recuperacao-container">
+    <h1 class="recuperacao-title">Recuperar senha</h1>
+
+    <span id="texto-recuperacao"><p>Para recuperar sua senha, informe o email cadastrado a sua conta NotaDez</p></span>
+
+    <form>
+    <div class="formulario">
+    <label for="email">Email:</label>
+    <input type="email" id="email" class="email-recuperacao" name="email" required placeholder="email@dominio.com">
+    </div>
+
+    <button type="submit" class="recuperar-button" id="btn-recuperar-senha">Recuperar senha</button>
+    </form>
+
+    <div id="resposta">
+    <p id="mensagem-recuperacao"><span id="texto-recuperacao"></span></p>
+    </div>
+</body>
+</html>

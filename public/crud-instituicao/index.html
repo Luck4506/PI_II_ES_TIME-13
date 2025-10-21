@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="inst.css">
+  <title>NotaDez - Cadastro Instituição</title>
+  <script src="crud_inst.js"></script>
+</head>
+<body>
+  <div class="instituicao-container">
+    <h1 class="instituicao-title">Adicione sua instituição aqui!</h1>
+
+    <div class="instituicao-form">
+      <label for="instituicao-nome" class="instituicao-label">Nome:</label>
+      <input type="text" id="instituicao-nome" class="instituicao-input" name="nome" required placeholder="Nome da instituição">
+    </div>
+
+    <div class="instituicao-form">
+      <label for="instituicao-curso" class="instituicao-label">Curso:</label>
+      <input type="text" id="instituicao-curso" class="instituicao-input" name="curso" required placeholder="Nome do curso">
+    </div>
+
+    <button type="button" class="instituicao-button" id="btn-cadastrar" onclick="adicionar()">Adicionar</button>
+  </div>
+</body>
+</html>
