@@ -58,4 +58,3 @@ async function autenticarUsuario() {
   }
 }
 
-console.log('Script de login.js carregado com sucesso!');

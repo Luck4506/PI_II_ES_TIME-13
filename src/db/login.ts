@@ -13,7 +13,7 @@ export async function getDocenteByEmail(email: string): Promise<Docente | null> 
   try {
     const result = await conn.execute<Docente>(
       `SELECT DOCENTE_ID as "id", EMAIL as "email", SENHA as "senha"
-       FROM DOCENTE_TESTE
+       FROM DOCENTE
        WHERE EMAIL = :email`,
       { email },
       { outFormat: OracleDB.OUT_FORMAT_OBJECT }

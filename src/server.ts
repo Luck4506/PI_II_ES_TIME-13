@@ -17,11 +17,11 @@ app.use(bodyParser.json());
 // liberar o cors para aceitar todas as origens.
 app.use(cors())
 
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, '../public')));
 
 // Rota principal: abre a página de login
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'login', 'index.html'));
+  res.sendFile(path.join(__dirname, '../public', 'login', 'index.html'));
 });
 
 //Rota para inserir um docente
@@ -96,6 +96,9 @@ app.post("/cadastrarInstituicao", async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Erro ao inserir Instituição." });
   }
 });
+
+//rota para recuperar senha
+
 
 
 

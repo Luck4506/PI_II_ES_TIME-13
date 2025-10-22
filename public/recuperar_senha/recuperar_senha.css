@@ -34,7 +34,13 @@ font-weight: 300;
 #texto-recuperacao{
     text-align: justify;
     margin: 20px;
-    font-size: 12px;
+    font-size: 14px;
+}
+
+#mensagem-recuperacao{
+    text-align: justify;
+    margin: 20px;
+    font-size: 14px;
 }
 
 #resposta{
