@@ -3,6 +3,7 @@ import OracleDB from "oracledb";
 
 export interface Docente {
   id: number,
+  nome: string,
   email: string,
   senha: string
 };
@@ -12,7 +13,7 @@ export async function getDocenteByEmail(email: string): Promise<Docente | null> 
   const conn = await open();
   try {
     const result = await conn.execute<Docente>(
-      `SELECT DOCENTE_ID as "id", EMAIL as "email", SENHA as "senha"
+      `SELECT DOCENTE_ID as "id", NOME as "nome", EMAIL as "email", SENHA as "senha"
        FROM DOCENTE
        WHERE EMAIL = :email`,
       { email },

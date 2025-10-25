@@ -16,29 +16,32 @@
     "PII-2",
     "node.js",
     "JavaScript",
+    "TypeScript",
+    "Express",
+    "OracleDB",
     "HTML5",
     "CSS3"
   ],
   "contributors": [
     {
       "name": "Henrique Young De Azevedo",
-      "GitHub": ""
+      "GitHub": "https://github.com/henri-young"
     },
     {
       "name": "Isabela Aparecida Paslauski Pinto",
-      "GitHub": ""
+      "GitHub": "https://github.com/paslauski"
     },
     {
       "name": "João Pedro Bergamin Diniz ",
-      "GitHub": "m"
+      "GitHub": "https://github.com/Jpbdiniz01"
     },
     {
       "name": "Lucas Soares Gonçalves",
-      "GitHub": ""
+      "GitHub": "https://github.com/Luck4506"
     },
     {
       "name": "Pedro Vinicius Romanato",
-      "GitHub": ""
+      "GitHub": "https://github.com/Summer761"
     }
   ],
   "license": "MIT",
@@ -46,7 +49,6 @@
     "url": "https://github.com/Luck4506/PI_II_ES_TIME-13/issues"
   },
   "homepage": "https://github.com/Luck4506/PI_II_ES_TIME-13#readme",
-  
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
@@ -60,6 +62,7 @@
     "@types/body-parser": "^1.19.6",
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.3",
+    "@types/express-session": "^1.18.2",
     "@types/node": "^24.8.1",
     "@types/oracledb": "^6.9.1",
     "ts-node": "^10.9.2",
