@@ -1,22 +1,59 @@
 {
-  "name": "ndz-test-ts",
+  "name": "pi_ii_es_time-13",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Projeto da Matéria Projeto Integrador da PUC Campinas - 2025",
+  "main": "server.ts",
   "scripts": {
     "teste": "ts-node src/teste.ts",
     "build": "tsc",
     "start": "npm run build && node dist/server.js"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "type": "commonjs",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Luck4506/PI_II_ES_TIME-13.git"
+  },
+  "keywords": [
+    "PII-2",
+    "node.js",
+    "JavaScript",
+    "HTML5",
+    "CSS3"
+  ],
+  "contributors": [
+    {
+      "name": "Henrique Young De Azevedo",
+      "GitHub": ""
+    },
+    {
+      "name": "Isabela Aparecida Paslauski Pinto",
+      "GitHub": ""
+    },
+    {
+      "name": "João Pedro Bergamin Diniz ",
+      "GitHub": "m"
+    },
+    {
+      "name": "Lucas Soares Gonçalves",
+      "GitHub": ""
+    },
+    {
+      "name": "Pedro Vinicius Romanato",
+      "GitHub": ""
+    }
+  ],
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Luck4506/PI_II_ES_TIME-13/issues"
+  },
+  "homepage": "https://github.com/Luck4506/PI_II_ES_TIME-13#readme",
+  
   "dependencies": {
     "body-parser": "^2.2.0",
     "cors": "^2.8.5",
     "dotenv": "^17.2.3",
     "express": "^5.1.0",
+    "express-session": "^1.18.2",
+    "nodemailer": "^7.0.10",
     "oracledb": "^6.10.0"
   },
   "devDependencies": {

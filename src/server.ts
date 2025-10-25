@@ -1,4 +1,6 @@
 import express, { Request, Response } from "express";
+import { getDocenteByEmail } from "./db/login";
+import { addInstituicao } from "./db/instituicao";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -41,10 +43,7 @@ app.post("/cadastrar", async (req: Request, res: Response) => {
   }
 });
 
-//Rota para verificar login
-import { getDocenteByEmail } from "./db/login";
-
-// Rota de login: recebe email e senha e compara com o banco
+//Rota para verificar login (recebe email e senha e compara com o banco)
 app.post('/login', async (req: Request, res: Response) => {
   try {
     const { email, senha } = req.body;
@@ -79,7 +78,6 @@ app.post('/login', async (req: Request, res: Response) => {
 });
 
 //Rota para inserir uma instituição
-import { addInstituicao } from "./db/instituicao";
 
 app.post("/cadastrarInstituicao", async (req: Request, res: Response) => {
   try {
@@ -102,8 +100,7 @@ app.post("/cadastrarInstituicao", async (req: Request, res: Response) => {
 
 
 
-
-
+// Inicia o servidor
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
 });
