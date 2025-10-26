@@ -45,7 +45,6 @@ async function autenticarUsuario() {
     const data = await resposta.json();
 
     if (data && data.autenticado) {
-      alert('Login realizado com sucesso!');
       console.log('Autenticação OK:', data);
       window.location.href = '/dashboard';
     } else {

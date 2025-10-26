@@ -1,7 +1,7 @@
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 
-export interface In {
+export interface Instituicao {
   id: number,
   nome: string,
   sigla: string,

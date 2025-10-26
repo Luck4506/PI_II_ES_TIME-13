@@ -9,6 +9,7 @@ import cors from "cors";
 import session from "express-session";
 import 'express-session';
 import { addDocente } from "./db/docentes";
+import { enviarEmail } from "./services/servico_email";
 
 
 declare module 'express-session' {
@@ -16,7 +17,6 @@ declare module 'express-session' {
     user?: { id: number; nome: string; };
   }
 }
-
 
 
 const app = express();
@@ -130,6 +130,30 @@ app.post("/cadastrarInstituicao", async (req: Request, res: Response) => {
 });
 
 //rota para recuperar senha
+app.post('/recuperar-senha', async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+
+    if (!email) {
+      return res.status(400).json({ sucesso: false, erro: "Email é obrigatório." });
+    }
+
+    const enviado = await enviarEmail(
+      email,
+      "Teste de Envio de Email",
+      "<p>Este é um teste de envio de e-mail via Nodemailer</p>"
+    );
+
+    if (enviado) {
+      return res.json({ message: "Email de teste enviado com sucesso!" });
+    } else {
+      return res.status(500).json({ error: "Falha ao enviar email de teste." });
+    }
+  } catch (error) {
+    console.error("Erro no envio de email de teste:", error);
+    return res.status(500).json({ error: "Erro interno no servidor." });
+  }
+});
 
 
 //Rota para sair (logout)
