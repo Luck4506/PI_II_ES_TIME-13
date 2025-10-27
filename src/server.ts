@@ -10,6 +10,7 @@ import session from "express-session";
 import 'express-session';
 import { addDocente } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
+import { criarTokenRecuperacao } from "./db/recuperar_senha";
 
 
 declare module 'express-session' {
@@ -138,15 +139,19 @@ app.post('/recuperar-senha', async (req: Request, res: Response) => {
       return res.status(400).json({ sucesso: false, erro: "Email é obrigatório." });
     }
 
+    const tokenRecuperacao = await criarTokenRecuperacao();
+    const linkRecuperacao = `http://localhost:3000/mudar_senha?token=${tokenRecuperacao}`;
+
     const enviado = await enviarEmail(
       email,
       "Teste de Envio de Email",
-      "<p>Este é um teste de envio de e-mail via Nodemailer</p>"
+      `<p>O link de recuperação da sua senha é ${linkRecuperacao}</p>`
     );
 
     if (enviado) {
       return res.json({ message: "Email de teste enviado com sucesso!" });
-    } else {
+    }
+    else {
       return res.status(500).json({ error: "Falha ao enviar email de teste." });
     }
   } catch (error) {
@@ -155,6 +160,10 @@ app.post('/recuperar-senha', async (req: Request, res: Response) => {
   }
 });
 
+//rota para página de mudar senha
+app.get('/mudar_senha', (req: Request, res: Response) => {
+  res.sendFile(path.join(__dirname, '../public', 'mudar_senha', 'index.html'));
+});
 
 //Rota para sair (logout)
 app.get('/logout', (req: Request, res: Response) => {

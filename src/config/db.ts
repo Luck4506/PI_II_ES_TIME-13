@@ -7,7 +7,7 @@ const instantClient = "/Users/lucasgoncalves/Lucas/Pessoal/Oracle/instantclient_
 // inicializar o cliente oracle, usando a wallet.
 OracleDB.initOracleClient({configDir: walletPath, libDir: instantClient});
 
-// formato de saída dos dados, vai ser objetos JavaScript estruturados.
+// formato de saída dos dados, vai ser objetos JSON.
 OracleDB.outFormat = OracleDB.OUT_FORMAT_OBJECT;
 
 const dbConfig = {
