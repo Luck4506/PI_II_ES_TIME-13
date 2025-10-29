@@ -5,8 +5,8 @@ async function adicionar(){
     //desabilita o botao para nao fazer varias req ao mesmo tempo
     botao_cadastrar.disabled = true;
     //pegando os dados do form.
-    const nome_int=document.getElementById("instituicao-nome").value.trim();
-    const sigla_int=document.getElementById("instituicao-sigla").value.trim();
+    const nome_int=document.getElementById("instituicao-nome").value.toLowerCase().trim();
+    const sigla_int=document.getElementById("instituicao-sigla").value.toLowerCase().trim();
     //informar o usuario que algo esta acontecendo visualmente.
     botao_cadastrar.innerText = "Processando...";
     //validando os dados enviados.

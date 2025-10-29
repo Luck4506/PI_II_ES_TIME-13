@@ -6,6 +6,10 @@ export interface Instituicao {
   nome: string,
   sigla: string,
 };
+export interface Instituicao_verifyByName{
+  id: number,
+  nome: string,
+};
 //Saber se o nome ou sigla existem.
 export async function verifyByNameESigla(nome:string,sigla:string) {
   const conn=await open();
@@ -20,6 +24,22 @@ export async function verifyByNameESigla(nome:string,sigla:string) {
       {outFormat: OracleDB.OUT_FORMAT_OBJECT}
     );
     return (result.rows && result.rows[0]) as Instituicao |null;
+  }finally{
+    await close(conn);
+  }
+}
+export async function verifyByName(nome:string) {
+  const conn=await open();
+  try{
+    const result= await conn.execute<Instituicao_verifyByName>(
+      `
+      SELECT INSTITUICAO_ID as "id", NOME as "nome"
+      FROM INSTITUICAO
+      WHERE NOME = :nome`,
+      {nome},
+      {outFormat: OracleDB.OUT_FORMAT_OBJECT}
+    );
+    return (result.rows && result.rows[0]) as Instituicao_verifyByName |null;
   }finally{
     await close(conn);
   }
@@ -56,5 +76,18 @@ export async function listarInstituicao() {
     }));
   } finally {
     await conn.close();
+  }
+}
+export async function atualizarInstituicao(nome: string, sigla: string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `UPDATE INSTITUICAO SET SIGLA = :sigla WHERE NOME = :nome`,
+      { nome, sigla },
+      { autoCommit: true }
+    );
+    return result.rowsAffected && result.rowsAffected > 0;
+  } finally {
+    await close(conn);
   }
 }
