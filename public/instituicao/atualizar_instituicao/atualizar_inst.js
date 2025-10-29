@@ -8,7 +8,7 @@ async function atualizar(){
     const nome_int=document.getElementById("instituicao-nome").value.toLowerCase().trim();
     const sigla_int_nova=document.getElementById("instituicao-sigla").value.toLowerCase().trim();
     //informar o usuario que algo esta acontecendo visualmente.
-    botao_cadastrar.innerText = "Processando...";
+    
     //validando os dados enviados.
     const valido= await verificar_inputs(nome_int,sigla_int_nova,botao_cadastrar);
     document.getElementById("instituicao-nome").value = "";
@@ -27,11 +27,14 @@ async function atualizar(){
             return;
         }
         const data=await resposta.json();
-        if (data && data.id){
-            console.log("Todos dados sao validos! (Finalizado verificacao de inputs)");
+        if (data === true){
+            console.log("Sigla Atualizada com sucesso!");
+            alert('Sigla atualizada com sucesso !');
+            botao_cadastrar.disabled = false;
             return true;
         }else{
-            botao.innerText="Nome de instituição nao existe !"
+            alert('Nome de instituição nao existe !');
+            botao_cadastrar.disabled = false;
             return false;
             
         }
@@ -39,13 +42,6 @@ async function atualizar(){
         console.error('Erro no servidor:',erro);
         return false;
     }
-        if(atualizado){
-            console.log("Instituicao Atualizada!");
-            alert("Instituicao Atualizada!");
-            botao_cadastrar.disabled = false;
-            botao_cadastrar.innerText="Atualizar";
-            return;
-        }
     }else{
         console.log("Erro ao atualizar!");
         botao_cadastrar.disabled = false;
@@ -54,11 +50,13 @@ async function atualizar(){
 }
 async function verificar_inputs(nome,sigla_nova,botao){
     if(nome === ""||sigla_nova===""){
-        botao.innerText="Preencha todos os campos!";
+        alert('Preencha todos os campos!');
+        botao.disabled = false;
         return false;
     }
     if(!isNaN(nome)||!isNaN(sigla_nova)){
-        botao.innerText="Dados Invalidos!";
+        alert('Dados Invalidos!');
+        botao.disabled = false;
         return false;
     }
     
