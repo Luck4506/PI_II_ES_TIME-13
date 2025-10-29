@@ -6,29 +6,55 @@ export interface Instituicao {
   nome: string,
   sigla: string,
 };
-
-export async function addInstituicao(nome: string, sigla: string): Promise<number> {
+//Saber se o nome ou sigla existem.
+export async function verifyByNameESigla(nome:string,sigla:string) {
+  const conn=await open();
+  try{
+    const result= await conn.execute<Instituicao>(
+      `
+      SELECT INSTITUICAO_ID as "id", NOME as "nome", SIGLA as "sigla"
+      FROM INSTITUICAO
+      WHERE NOME = :nome
+      OR SIGLA = :sigla`,
+      {nome,sigla},
+      {outFormat: OracleDB.OUT_FORMAT_OBJECT}
+    );
+    return (result.rows && result.rows[0]) as Instituicao |null;
+  }finally{
+    await close(conn);
+  }
+}
+export async function registrarInstituicao(nome: string, sigla: string, docente_id: number) {
   const conn = await open();
   try {
-    const result = await conn.execute<{ outBinds: { id: number } }>(
-      `
-      INSERT INTO INSTITUICAO (NOME, SIGLA)
-      VALUES (:nome, :sigla)
-      RETURNING INSTITUICAO_ID INTO :id
-      `,
-      { nome, sigla, id: { dir: OracleDB.BIND_OUT, type: OracleDB.NUMBER } },
+    const result = await conn.execute(
+      `INSERT INTO INSTITUICAO (NOME, SIGLA, DOCENTE_ID)
+       VALUES (:nome, :sigla, :docente_id)`,
+      { nome, sigla, docente_id },
       { autoCommit: true }
     );
-
-    const outBinds = result.outBinds as { id?: number[] } | undefined;
-
-    if (!outBinds || !outBinds.id || outBinds.id.length === 0) {
-      throw new Error("Erro ao obter um ID retornado na inserção de Instituicao.");
-    }
-
-    return outBinds.id[0];
-
+    return result.rowsAffected && result.rowsAffected > 0;
   } finally {
     await close(conn);
+  }
+}
+export async function listarInstituicao() {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `SELECT INSTITUICAO_ID, NOME, SIGLA FROM INSTITUICAO`,
+      [], // sem binds
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT } // <- garante objetos
+    );
+
+    const rows = result.rows as any[] || [];
+
+    return rows.map((row: any) => ({
+      INSTITUICAO_ID: row.INSTITUICAO_ID,
+      NOME: row.NOME,
+      SIGLA: row.SIGLA
+    }));
+  } finally {
+    await conn.close();
   }
 }

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="inst.css">
   <title>NotaDez - Cadastro Instituição</title>
-  <script src="crud_inst.js"></script>
+  <script src="./crud_inst.js"></script>
 </head>
 <body>
   <div class="instituicao-container">
@@ -17,11 +17,12 @@
     </div>
 
     <div class="instituicao-form">
-      <label for="instituicao-curso" class="instituicao-label">Curso:</label>
-      <input type="text" id="instituicao-curso" class="instituicao-input" name="curso" required placeholder="Nome do curso">
+      <label for="instituicao-sigla" class="instituicao-label">Sigla:</label>
+      <input type="text" id="instituicao-sigla" class="instituicao-input" name="sigla" required placeholder="Sigla da instituição">
     </div>
 
     <button type="button" class="instituicao-button" id="btn-cadastrar" onclick="adicionar()">Adicionar</button>
+    <button class="instituicao-button" id="logout" style="margin-top:15px; background: linear-gradient(135deg, #d61bff 0%, #5a0ad8 100%);" onclick="window.location.href='/instituicao/'">Sair</button>
   </div>
 </body>
 </html>

@@ -2,7 +2,7 @@
 
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
-import { addInstituicao } from "./db/instituicao";
+import { verifyByNameESigla, registrarInstituicao, listarInstituicao } from "./db/instituicao";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -113,23 +113,6 @@ app.get('/dashboard', verificarSessao, (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../public', 'dashboard', 'index.html'));
 });
 
-//Rota para inserir uma instituição
-app.post("/cadastrarInstituicao", async (req: Request, res: Response) => {
-  try {
-    const { nome, sigla } = req.body;
-
-    if (!nome || !sigla) {
-      return res.status(400).json({ error: "Campos 'nome' e 'sigla' são obrigatórios." });
-    }
-
-    const id = await addInstituicao(nome, sigla);
-    return res.status(201).json({ message: "Instituição adicionada com sucesso", id });
-  } catch (error) {
-    console.error("Erro ao inserir Instituição:", error);
-    return res.status(500).json({ error: "Erro ao inserir Instituição." });
-  }
-});
-
 //rota para recuperar senha
 app.post('/recuperar-senha', async (req: Request, res: Response) => {
   try {
@@ -185,6 +168,54 @@ app.get('/api/session', (req: Request, res: Response) => {
 });
 
 
+//rota para verificar se a instituicao existe
+app.post('/instituicao/verificar', async (req, res) => {
+    const { nome, sigla } = req.body;
+
+    try {
+        const instituicao = await verifyByNameESigla(nome, sigla);
+        if (instituicao) {
+            // existe no DB
+            return res.json(instituicao); // pode retornar o objeto
+        } else {
+            // não existe
+            return res.json(null);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+app.post('/instituicao/cadastrar', async (req, res) => {
+  const { nome, sigla, docente_id } = req.body;
+  console.log('Dados recebidos:', req.body);
+
+  // Verifica se todos os campos obrigatórios vieram
+  if (!nome || !sigla || !docente_id) {
+    return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' });
+  }
+
+  try {
+    const sucesso = await registrarInstituicao(nome, sigla, docente_id);
+    if (sucesso) {
+      return res.json({ message: 'Instituição cadastrada com sucesso' });
+    } else {
+      return res.status(500).json({ error: 'Não foi possível cadastrar a instituição' });
+    }
+  } catch (erro) {
+    console.error('Erro ao cadastrar no DB:', erro);
+    return res.status(501).json({ error: 'Erro no cadastro' });
+  }
+});
+app.get("/instituicao/listar", async (req, res) => {
+  try {
+    const dados = await listarInstituicao();
+    res.json(dados);
+  } catch (err) {
+    console.error("Erro ao buscar instituições:", err);
+    res.status(500).send("Erro ao buscar instituições");
+  }
+});
 
 // Inicia o servidor
 app.listen(port, () => {
