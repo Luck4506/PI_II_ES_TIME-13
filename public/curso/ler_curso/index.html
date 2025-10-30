@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="cadastrar_curso.css">
+  <title>NotaDez - Cadastro Instituição</title>
+  <script src="cadastrar_curso.js"></script>
+</head>
+<body>
+  <div class="instituicao-container">
+    <h1 class="instituicao-title">Listar cursos!</h1>
+
+    <div class="instituicao-form">
+      <label for="instituicao-nome" class="instituicao-label">Id:</label>
+      <input type="text" id="id_instituicao" class="instituicao-input" name="nome" required placeholder="Id da instituicao">
+    </div>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Nome</th>
+        </tr>
+      </thead>
+      <tbody id="tabela_curso"></tbody>
+    </table>
+    <button type="button" class="instituicao-button" id="btn-cadastrar" onclick="listarCurso()">Listar</button>
+    <button class="instituicao-button" id="logout" style="margin-top:15px; background: linear-gradient(135deg, #d61bff 0%, #5a0ad8 100%);" onclick="window.location.href='/curso/'">Sair</button>
+  </div>
+</body>
+</html>

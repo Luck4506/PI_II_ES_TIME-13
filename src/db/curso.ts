@@ -53,3 +53,25 @@ export async function cadastrarCurso(instituicao_id: number, nome: string) {
     await close(conn);
   }
 }
+export async function listarCurso(instituicao_id: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT NOME
+      FROM CURSO
+      WHERE INSTITUICAO_ID = :id
+      `,
+      { id: instituicao_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    const rows = result.rows as any[] || [];
+
+    return rows.map((row: any) => ({
+      NOME: row.NOME
+    }));
+  } finally {
+    await close(conn);
+  }
+}
