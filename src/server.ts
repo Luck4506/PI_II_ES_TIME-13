@@ -3,6 +3,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
 import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao} from "./db/instituicao";
+import { verificarCursoInstituica,cadastrarCurso } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -267,6 +268,44 @@ app.post('/instituicao/apagar', async (req, res) => {
         console.error('Erro ao verificar no DB:', erro);
         return res.status(500).json({ error: 'Erro no servidor' });
     }
+});
+app.post('/curso/verifyInstituicao', async (req, res) => {
+    const { instituicao_id} = req.body;
+
+    try {
+        const existeInst = await verificarCursoInstituica(instituicao_id);
+        if (existeInst) {
+              return res.json(existeInst);
+             // pode retornar o objeto
+        } else {
+            // não existe
+            return res.json(null);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+app.post('/curso/cadastrar', async (req, res) => {
+  const { instituicao_id,nome } = req.body;
+  console.log('Dados recebidos:', req.body);
+
+  // Verifica se todos os campos obrigatórios vieram
+  if (!instituicao_id || !nome) {
+    return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' });
+  }
+
+  try {
+    const sucesso = await cadastrarCurso(instituicao_id,nome);
+    if (sucesso) {
+      return res.json({ message: 'Curso cadastrado com sucesso' });
+    } else {
+      return res.status(500).json({ error: 'Não foi possível cadastrar o curso' });
+    }
+  } catch (erro) {
+    console.error('Erro ao cadastrar no DB:', erro);
+    return res.status(501).json({ error: 'Curso duplicado!' });
+  }
 });
 // Inicia o servidor
 app.listen(port, () => {
