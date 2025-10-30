@@ -75,3 +75,16 @@ export async function listarCurso(instituicao_id: number) {
     await close(conn);
   }
 }
+export async function atualizarCurso(nome_antigo:string, nome_novo:string, instituicao_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `UPDATE CURSO SET NOME = :nome_novo WHERE NOME = :nome_antigo AND INSTITUICAO_ID=:instituicao_id `,
+      { nome_novo, nome_antigo,instituicao_id },
+      { autoCommit: true }
+    );
+    return result.rowsAffected && result.rowsAffected > 0;
+  } finally {
+    await close(conn);
+  }
+}

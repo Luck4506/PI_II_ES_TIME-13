@@ -12,38 +12,13 @@ async function atualizarCurso(){
     //validando os dados enviados.
     const valido= await verificar_inputs(id_instituicao,nome_antigo,nome_novo);
     if (valido){
-        const dados={ nome: nome_int, sigla: sigla_int_nova };
-        try{
-        const resposta = await fetch('/instituicao/atualizar', {
-            method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body:JSON.stringify(dados)
-        });
-        if (!resposta.ok){
-            alert('Erro ao tentar autenticar.');
-            console.warn('HTTP error:', resposta.status, resposta.statusText);
+        const atualizado=await enviarNovosDados(nome_antigo,nome_novo,id_instituicao);
+        if(atualizado){
+            alert("Nome do curso atualizado!");
+            console.log("Nome do curso atualizado com sucesso!");
+            botao_cadastrar.disabled = false;
             return;
         }
-        const data=await resposta.json();
-        if (data === true){
-            console.log("Sigla Atualizada com sucesso!");
-            alert('Sigla atualizada com sucesso !');
-            botao_cadastrar.disabled = false;
-            return true;
-        }else{
-            alert('Nome de instituição nao existe !');
-            botao_cadastrar.disabled = false;
-            return false;
-            
-        }
-    }catch (erro){
-        console.error('Erro no servidor:',erro);
-        return false;
-    }
-    }else{
-        console.log("Erro ao atualizar!");
-        botao_cadastrar.disabled = false;
-        return;
     }
 }
 async function verificar_inputs(id_instituicao,nome_antigo,nome_novo){
@@ -51,12 +26,12 @@ async function verificar_inputs(id_instituicao,nome_antigo,nome_novo){
         alert('Preencha todos os campos!');
         return false;
     }
-    if(isNaN(id_instituicao)||!isNaN(nome_antigo)||!isNaN(nome_novo)){
+    if(isNaN(id_instituicao)||!isNaN(nome_antigo)||!isNaN(nome_novo)||nome_antigo===nome_novo){
         alert('Dados Invalidos!');
         return false;
     }
     
-    const dados={id_instituicao,nome_antigo};
+    const dados={instituicao_id: id_instituicao};
     try{
         const resposta = await fetch('/curso/verificar', {
             method: 'POST',
@@ -69,7 +44,7 @@ async function verificar_inputs(id_instituicao,nome_antigo,nome_novo){
             return;
         }
         const data=await resposta.json();
-        if (data && data.id){
+        if (data){
             console.log("Curso existe! (Finalizado verificacao de inputs)");
             return true;
         }else{
@@ -81,6 +56,29 @@ async function verificar_inputs(id_instituicao,nome_antigo,nome_novo){
         console.error('Erro no servidor:',erro);
         return false;
     }
-    //se tudo der certo.
-    return true;
+}
+async function enviarNovosDados(nome_antigo,nome_novo,instituicao_id){
+    const dados={nome_antigo,nome_novo,instituicao_id};
+    try{
+        const resposta = await fetch('/curso/atualizar', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify(dados)
+        });
+        if (!resposta.ok){
+            alert('Erro ao tentar autenticar.');
+            console.warn('HTTP error:', resposta.status, resposta.statusText);
+            return;
+        }
+        const data=await resposta.json();
+        if (data){
+            return true;
+        }else{
+            return false;
+            
+        }
+    }catch (erro){
+        console.error('Erro no servidor:',erro);
+        return false;
+    }
 }

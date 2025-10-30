@@ -3,8 +3,8 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // caminho da wallet de conexao com o oracle.
-const walletPath = "C:/Users/pedro/Documents/oracle/db/Wallet_NOTADEZDB";
-const instantClient = "C:/Users/pedro/Documents/oracle/instantclient_23_9";
+const walletPath = process.env.ORACLE_WALLET_PATH;
+const instantClient = process.env.ORACLE_INSTANT_CLIENT_PATH;
 
 // inicializar o cliente oracle, usando a wallet.
 OracleDB.initOracleClient({configDir: walletPath, libDir: instantClient});

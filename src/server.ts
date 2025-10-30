@@ -3,7 +3,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
 import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao} from "./db/instituicao";
-import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso } from "./db/curso";
+import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -396,8 +396,20 @@ app.post('/curso/verificar', async (req, res) => {
 
     try {
         const existeInst = await verificarCurso(instituicao_id,nome_antigo);
-        if (existeInst) {
-              return res.json(existeInst);
+        return res.json({ existeInst });
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/curso/atualizar', async (req, res) => {
+    const { nome_antigo,nome_novo,instituicao_id } = req.body;
+
+    try {
+        const atualizado = await atualizarCurso(nome_antigo,nome_novo,instituicao_id);
+        if (atualizado) {
+              return res.json(atualizado);
              // pode retornar o objeto
         } else {
             // não existe
@@ -408,7 +420,6 @@ app.post('/curso/verificar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
 //Rota para sair (logout)
 app.get('/logout', (req: Request, res: Response) => {
   req.session.destroy((err) => {
