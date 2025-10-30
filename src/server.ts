@@ -2,7 +2,7 @@
 
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
-import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao} from "./db/instituicao";
+import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao} from "./db/instituicao";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -240,6 +240,24 @@ app.post('/instituicao/atualizar', async (req, res) => {
         const atualizado = await atualizarInstituicao(nome,sigla);
         if (atualizado) {
               return res.json(atualizado);
+             // pode retornar o objeto
+        } else {
+            // não existe
+            return res.json(null);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/instituicao/apagar', async (req, res) => {
+    const { nome,sigla } = req.body;
+
+    try {
+        const apagado = await apagarInstituicao(nome,sigla);
+        if (apagado) {
+              return res.json(apagado);
              // pode retornar o objeto
         } else {
             // não existe
