@@ -11,16 +11,23 @@ async function criarCurso(){
     const valido= await verificar_inputs(id_inst, nome_curso, botao_cadastrar);
     //se for valido manda os dados para o db
     if (valido){
-        const realizarCreate=await createCurso(id_inst,nome_curso);
-        if(realizarCreate){
-            console.log("Curso cadastrado!");
-            alert("Curso Cadastrado!");
+        const valido_aux=await verificar_inputs_aux(id_inst,nome_curso);
+        if(valido_aux){
+            const realizarCreate=await createCurso(id_inst,nome_curso);
+            if(realizarCreate){
+                console.log("Curso cadastrado!");
+                alert("Curso Cadastrado!");
+                botao_cadastrar.disabled = false;
+                limparCampos(id_inst,nome_curso);
+                return;
+            }
+        }else{
+            alert("Curso ja existe!")
             botao_cadastrar.disabled = false;
             limparCampos(id_inst,nome_curso);
-            return;
         }
     }else{
-        console.log("Erro ao cadastrar!");
+        console.log("Erro ao criar curso!");
         botao_cadastrar.disabled = false;
         limparCampos(id_inst,nome_curso);
         //funcaozinha de limpar os campos depois de envialos
@@ -66,6 +73,38 @@ async function verificar_inputs(id, nome, botao) {
             alert("Instituição não encontrada!");
             botao.disabled = false;
             return false;
+        }
+
+    } catch (erro) {
+        console.error('Erro no servidor:', erro);
+        return false;
+    }
+}
+async function verificar_inputs_aux(id, nome) {
+
+    // Dados para verificação da instituição
+    const dados = { instituicao_id: Number(id), nome };
+
+    try {
+        const resposta = await fetch('/curso/verifyCurso', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        if (!resposta.ok) {
+            alert('Erro ao tentar autenticar.');
+            console.warn('HTTP error:', resposta.status, resposta.statusText);
+            return false;
+        }
+
+        const existeCurso = await resposta.json(); // espera receber true ou false
+
+        if (existeCurso) {
+            console.log("Curso existe! Nao pode prosseguir para cadastrar.");
+            return false;
+        } else {
+            return true;
         }
 
     } catch (erro) {

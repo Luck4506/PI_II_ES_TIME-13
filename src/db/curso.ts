@@ -21,6 +21,24 @@ export async function verificarCursoInstituica(id:number) {
     await close(conn);
   }
 }
+export async function verificarCurso(id:number,nome:string) {
+  const conn=await open();
+  try{
+    const result= await conn.execute(
+      `
+      SELECT 1
+      FROM CURSO
+      WHERE INSTITUICAO_ID = :INSTITUICAO_ID
+      AND NOME=:NOME
+      `,
+      { INSTITUICAO_ID: id,NOME: nome },
+      {outFormat: OracleDB.OUT_FORMAT_OBJECT}
+    );
+    return !!(result.rows && result.rows.length > 0);
+  }finally{
+    await close(conn);
+  }
+}
 export async function cadastrarCurso(instituicao_id: number, nome: string) {
   const conn = await open();
   try {
