@@ -12,7 +12,7 @@ import 'express-session';
 import { addDocente } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
-
+import { addDisciplina, getAllDisciplinas } from "./db/disciplina";
 
 declare module 'express-session' {
   interface SessionData {
@@ -158,6 +158,39 @@ app.get('/logout', (req: Request, res: Response) => {
     res.redirect('/login');
   });
 });
+
+// Rota para inserir uma disciplina
+
+app.post('/disciplina', async (req: Request, res: Response) => {
+  try{
+    const {nome, sigla, codigo, periodo_curso} = req.body;
+    if(!nome || !sigla || !codigo || !periodo_curso){
+      return res.status(400).json({error: "Campos 'nome', 'sigla', 'codigo' e 'periodo_curso' são obrigatórios."});
+    }
+
+    const id = await addDisciplina(nome, sigla, codigo, periodo_curso);
+    res.status(201).json({message: "Disciplina adicionada com sucesso", id});
+  }catch(error){
+    console.error(error);
+    return res.status(500).json({error: "Erro ao inserir Disciplina."});
+  }
+});
+
+// Rota para exibir todas as disciplinas
+
+app.get('/ver_disciplina', async (req: Request, res: Response) => {
+  try{
+    const disciplinas = await getAllDisciplinas();
+    res.json(disciplinas);
+  }catch(err){
+    console.log(err);
+    res.status(500).json({
+      "error": "Erro ao buscar disciplinas"
+    });
+  }
+});
+
+// Rota para exluir disciplina
 
 
 // New route to expose session data

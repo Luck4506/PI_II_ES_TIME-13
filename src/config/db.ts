@@ -1,8 +1,8 @@
 import OracleDB from "oracledb";
 
 // caminho da wallet de conexao com o oracle.
-const walletPath = "C:/Oracle/db";
-const instantClient = "C:/Oracle/instantclient_23_9";
+const walletPath = "C:\\Users\\henri\\PUC\\Wallet_NOTADEZDB";
+const instantClient = "C:\\oracle\\instantclient_23_9";
 
 // inicializar o cliente oracle, usando a wallet.
 OracleDB.initOracleClient({configDir: walletPath, libDir: instantClient});
