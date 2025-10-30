@@ -376,6 +376,38 @@ app.post('/curso/cadastrar', async (req, res) => {
     return res.status(501).json({ error: 'Curso duplicado!' });
   }
 });
+app.post("/curso/listar", async (req, res) => {
+  try {
+    const { instituicao_id } = req.body;
+
+    if (!instituicao_id) {
+      return res.status(400).json({ error: "ID da instituição é obrigatório" });
+    }
+
+    const dados = await listarCurso(instituicao_id);
+    res.json(dados);
+  } catch (err) {
+    console.error("Erro ao buscar cursos:", err);
+    res.status(500).send("Erro ao buscar cursos");
+  }
+});
+app.post('/curso/verificar', async (req, res) => {
+    const { instituicao_id,nome_antigo} = req.body;
+
+    try {
+        const existeInst = await verificarCurso(instituicao_id,nome_antigo);
+        if (existeInst) {
+              return res.json(existeInst);
+             // pode retornar o objeto
+        } else {
+            // não existe
+            return res.json(null);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
 //Rota para sair (logout)
 app.get('/logout', (req: Request, res: Response) => {
