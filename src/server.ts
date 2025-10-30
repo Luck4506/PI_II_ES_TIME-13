@@ -25,6 +25,7 @@ const app = express();
 app.use(express.json());
 const port = 3000;
 
+// Configuração da sessão
 app.use(session({
   secret: "bT8pG6k@3L#9vQz!sW4eH2xN1rJ0dYfC7tB", 
   resave: false, 
@@ -36,13 +37,13 @@ app.use(session({
 
 app.use(bodyParser.json());
 
-
-
 // liberar o cors para aceitar todas as origens.
 app.use(cors())
 
+// Servir arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Middleware para verificar sessão
 function verificarSessao(req: Request, res: Response, next: NextFunction) {
   if (req.session.user) {
     next(); 
@@ -72,6 +73,7 @@ app.post("/cadastrar", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Erro ao inserir Docente." });
   }
 });
+
 
 //Rota para verificar login (recebe email e senha e compara com o banco)
 app.post('/login', async (req: Request, res: Response) => {
@@ -109,10 +111,12 @@ app.post('/login', async (req: Request, res: Response) => {
   }
 });
 
+
 //Rota para página de dashboard (após login)
 app.get('/dashboard', verificarSessao, (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../public', 'dashboard', 'index.html'));
 });
+
 
 //rota para recuperar senha
 app.post('/recuperar-senha', async (req: Request, res: Response) => {
@@ -144,23 +148,14 @@ app.post('/recuperar-senha', async (req: Request, res: Response) => {
   }
 });
 
+
 //rota para página de mudar senha
 app.get('/mudar_senha', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../public', 'mudar_senha', 'index.html'));
 });
 
-//Rota para sair (logout)
-app.get('/logout', (req: Request, res: Response) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error(err);
-    }
-    res.redirect('/login');
-  });
-});
 
 // Rota para inserir uma disciplina
-
 app.post('/disciplina', async (req: Request, res: Response) => {
   try{
     const {nome, sigla, codigo, periodo_curso} = req.body;
@@ -176,8 +171,8 @@ app.post('/disciplina', async (req: Request, res: Response) => {
   }
 });
 
-// Rota para exibir todas as disciplinas
 
+// Rota para exibir todas as disciplinas
 app.get('/ver_disciplina', async (req: Request, res: Response) => {
   try{
     const disciplinas = await getAllDisciplinas();
@@ -190,10 +185,11 @@ app.get('/ver_disciplina', async (req: Request, res: Response) => {
   }
 });
 
+
 // Rota para exluir disciplina
 
 
-// New route to expose session data
+//Rota para verificar se existe sessão ativa
 app.get('/api/session', (req: Request, res: Response) => {
   if (req.session.user) {
     return res.json({ user: req.session.user });
@@ -220,6 +216,9 @@ app.post('/instituicao/verificar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para cadastrar instituicao
 app.post('/instituicao/cadastrar', async (req, res) => {
   const { nome, sigla, docente_id } = req.body;
   console.log('Dados recebidos:', req.body);
@@ -241,6 +240,9 @@ app.post('/instituicao/cadastrar', async (req, res) => {
     return res.status(501).json({ error: 'Erro no cadastro' });
   }
 });
+
+
+//rota para listar instituicoes
 app.get("/instituicao/listar", async (req, res) => {
   try {
     const dados = await listarInstituicao();
@@ -250,6 +252,9 @@ app.get("/instituicao/listar", async (req, res) => {
     res.status(500).send("Erro ao buscar instituições");
   }
 });
+
+
+//rota para verificar instituicao antes de atualizar
 app.post('/instituicao/atualizar/verificar', async (req, res) => {
     const { nome,sigla } = req.body;
 
@@ -267,6 +272,9 @@ app.post('/instituicao/atualizar/verificar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para atualizar instituicao
 app.post('/instituicao/atualizar', async (req, res) => {
     const { nome,sigla } = req.body;
 
@@ -285,6 +293,8 @@ app.post('/instituicao/atualizar', async (req, res) => {
     }
 });
 
+
+//rota para apagar instituicao
 app.post('/instituicao/apagar', async (req, res) => {
     const { nome,sigla } = req.body;
 
@@ -302,6 +312,9 @@ app.post('/instituicao/apagar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para verificar curso antes de cadastrar
 app.post('/curso/verifyInstituicao', async (req, res) => {
     const { instituicao_id} = req.body;
 
@@ -319,6 +332,9 @@ app.post('/curso/verifyInstituicao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para verificar curso antes de cadastrar
 app.post('/curso/verifyCurso', async (req, res) => {
     const { instituicao_id,nome} = req.body;
 
@@ -336,6 +352,9 @@ app.post('/curso/verifyCurso', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para cadastrar curso
 app.post('/curso/cadastrar', async (req, res) => {
   const { instituicao_id,nome } = req.body;
   console.log('Dados recebidos:', req.body);
@@ -357,6 +376,22 @@ app.post('/curso/cadastrar', async (req, res) => {
     return res.status(501).json({ error: 'Curso duplicado!' });
   }
 });
+
+
+
+
+
+//Rota para sair (logout)
+app.get('/logout', (req: Request, res: Response) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
+    }
+    res.redirect('/login');
+  });
+});
+
+
 // Inicia o servidor
 app.listen(port, () => {
   console.log(`Servidor rodando em http://localhost:${port}`);
