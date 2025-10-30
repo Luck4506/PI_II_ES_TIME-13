@@ -12,7 +12,7 @@ import 'express-session';
 import { addDocente } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
-
+import { addDisciplina, getAllDisciplinas } from "./db/disciplina";
 
 declare module 'express-session' {
   interface SessionData {
@@ -25,6 +25,7 @@ const app = express();
 app.use(express.json());
 const port = 3000;
 
+// Configuração da sessão
 app.use(session({
   secret: "bT8pG6k@3L#9vQz!sW4eH2xN1rJ0dYfC7tB", 
   resave: false, 
@@ -36,13 +37,13 @@ app.use(session({
 
 app.use(bodyParser.json());
 
-
-
 // liberar o cors para aceitar todas as origens.
 app.use(cors())
 
+// Servir arquivos estáticos da pasta 'public'
 app.use(express.static(path.join(__dirname, '../public')));
 
+// Middleware para verificar sessão
 function verificarSessao(req: Request, res: Response, next: NextFunction) {
   if (req.session.user) {
     next(); 
@@ -72,6 +73,7 @@ app.post("/cadastrar", async (req: Request, res: Response) => {
     res.status(500).json({ error: "Erro ao inserir Docente." });
   }
 });
+
 
 //Rota para verificar login (recebe email e senha e compara com o banco)
 app.post('/login', async (req: Request, res: Response) => {
@@ -109,10 +111,12 @@ app.post('/login', async (req: Request, res: Response) => {
   }
 });
 
+
 //Rota para página de dashboard (após login)
 app.get('/dashboard', verificarSessao, (req: Request, res: Response) => {
     res.sendFile(path.join(__dirname, '../public', 'dashboard', 'index.html'));
 });
+
 
 //rota para recuperar senha
 app.post('/recuperar-senha', async (req: Request, res: Response) => {
@@ -144,23 +148,48 @@ app.post('/recuperar-senha', async (req: Request, res: Response) => {
   }
 });
 
+
 //rota para página de mudar senha
 app.get('/mudar_senha', (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, '../public', 'mudar_senha', 'index.html'));
 });
 
-//Rota para sair (logout)
-app.get('/logout', (req: Request, res: Response) => {
-  req.session.destroy((err) => {
-    if (err) {
-      console.error(err);
+
+// Rota para inserir uma disciplina
+app.post('/disciplina', async (req: Request, res: Response) => {
+  try{
+    const {nome, sigla, codigo, periodo_curso} = req.body;
+    if(!nome || !sigla || !codigo || !periodo_curso){
+      return res.status(400).json({error: "Campos 'nome', 'sigla', 'codigo' e 'periodo_curso' são obrigatórios."});
     }
-    res.redirect('/login');
-  });
+
+    const id = await addDisciplina(nome, sigla, codigo, periodo_curso);
+    res.status(201).json({message: "Disciplina adicionada com sucesso", id});
+  }catch(error){
+    console.error(error);
+    return res.status(500).json({error: "Erro ao inserir Disciplina."});
+  }
 });
 
 
-// New route to expose session data
+// Rota para exibir todas as disciplinas
+app.get('/ver_disciplina', async (req: Request, res: Response) => {
+  try{
+    const disciplinas = await getAllDisciplinas();
+    res.json(disciplinas);
+  }catch(err){
+    console.log(err);
+    res.status(500).json({
+      "error": "Erro ao buscar disciplinas"
+    });
+  }
+});
+
+
+// Rota para exluir disciplina
+
+
+//Rota para verificar se existe sessão ativa
 app.get('/api/session', (req: Request, res: Response) => {
   if (req.session.user) {
     return res.json({ user: req.session.user });
@@ -187,6 +216,9 @@ app.post('/instituicao/verificar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para cadastrar instituicao
 app.post('/instituicao/cadastrar', async (req, res) => {
   const { nome, sigla, docente_id } = req.body;
   console.log('Dados recebidos:', req.body);
@@ -208,6 +240,9 @@ app.post('/instituicao/cadastrar', async (req, res) => {
     return res.status(501).json({ error: 'Erro no cadastro' });
   }
 });
+
+
+//rota para listar instituicoes
 app.get("/instituicao/listar", async (req, res) => {
   try {
     const dados = await listarInstituicao();
@@ -217,6 +252,9 @@ app.get("/instituicao/listar", async (req, res) => {
     res.status(500).send("Erro ao buscar instituições");
   }
 });
+
+
+//rota para verificar instituicao antes de atualizar
 app.post('/instituicao/atualizar/verificar', async (req, res) => {
     const { nome,sigla } = req.body;
 
@@ -234,6 +272,9 @@ app.post('/instituicao/atualizar/verificar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para atualizar instituicao
 app.post('/instituicao/atualizar', async (req, res) => {
     const { nome,sigla } = req.body;
 
@@ -252,6 +293,8 @@ app.post('/instituicao/atualizar', async (req, res) => {
     }
 });
 
+
+//rota para apagar instituicao
 app.post('/instituicao/apagar', async (req, res) => {
     const { nome,sigla } = req.body;
 
@@ -269,6 +312,9 @@ app.post('/instituicao/apagar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para verificar curso antes de cadastrar
 app.post('/curso/verifyInstituicao', async (req, res) => {
     const { instituicao_id} = req.body;
 
@@ -286,6 +332,9 @@ app.post('/curso/verifyInstituicao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para verificar curso antes de cadastrar
 app.post('/curso/verifyCurso', async (req, res) => {
     const { instituicao_id,nome} = req.body;
 
@@ -303,6 +352,9 @@ app.post('/curso/verifyCurso', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para cadastrar curso
 app.post('/curso/cadastrar', async (req, res) => {
   const { instituicao_id,nome } = req.body;
   console.log('Dados recebidos:', req.body);
@@ -324,38 +376,17 @@ app.post('/curso/cadastrar', async (req, res) => {
     return res.status(501).json({ error: 'Curso duplicado!' });
   }
 });
-app.post("/curso/listar", async (req, res) => {
-  try {
-    const { instituicao_id } = req.body;
 
-    if (!instituicao_id) {
-      return res.status(400).json({ error: "ID da instituição é obrigatório" });
+//Rota para sair (logout)
+app.get('/logout', (req: Request, res: Response) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error(err);
     }
-
-    const dados = await listarCurso(instituicao_id);
-    res.json(dados);
-  } catch (err) {
-    console.error("Erro ao buscar cursos:", err);
-    res.status(500).send("Erro ao buscar cursos");
-  }
+    res.redirect('/login');
+  });
 });
-app.post('/curso/verificar', async (req, res) => {
-    const { instituicao_id,nome_antigo} = req.body;
 
-    try {
-        const existeInst = await verificarCurso(instituicao_id,nome_antigo);
-        if (existeInst) {
-              return res.json(existeInst);
-             // pode retornar o objeto
-        } else {
-            // não existe
-            return res.json(null);
-        }
-    } catch (erro) {
-        console.error('Erro ao verificar no DB:', erro);
-        return res.status(500).json({ error: 'Erro no servidor' });
-    }
-});
 
 // Inicia o servidor
 app.listen(port, () => {

@@ -1,4 +1,6 @@
 import OracleDB from "oracledb";
+import dotenv from "dotenv";
+dotenv.config();
 
 // caminho da wallet de conexao com o oracle.
 const walletPath = "C:/Users/pedro/Documents/oracle/db/Wallet_NOTADEZDB";
