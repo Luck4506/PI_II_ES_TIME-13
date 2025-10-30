@@ -392,10 +392,10 @@ app.post("/curso/listar", async (req, res) => {
   }
 });
 app.post('/curso/verificar', async (req, res) => {
-    const { instituicao_id,nome_antigo} = req.body;
+    const { instituicao_id,nome} = req.body;
 
     try {
-        const existeInst = await verificarCurso(instituicao_id,nome_antigo);
+        const existeInst = await verificarCurso(instituicao_id,nome);
         return res.json({ existeInst });
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);

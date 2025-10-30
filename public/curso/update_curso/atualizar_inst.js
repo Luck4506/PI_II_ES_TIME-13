@@ -17,8 +17,13 @@ async function atualizarCurso(){
             alert("Nome do curso atualizado!");
             console.log("Nome do curso atualizado com sucesso!");
             botao_cadastrar.disabled = false;
+            limparCampos();
             return;
         }
+    }else{
+        botao_cadastrar.disabled = false;
+        limparCampos();
+        return;
     }
 }
 async function verificar_inputs(id_instituicao,nome_antigo,nome_novo){
@@ -31,7 +36,7 @@ async function verificar_inputs(id_instituicao,nome_antigo,nome_novo){
         return false;
     }
     
-    const dados={instituicao_id: id_instituicao};
+    const dados={instituicao_id: id_instituicao, nome: nome_antigo};
     try{
         const resposta = await fetch('/curso/verificar', {
             method: 'POST',
@@ -44,13 +49,12 @@ async function verificar_inputs(id_instituicao,nome_antigo,nome_novo){
             return;
         }
         const data=await resposta.json();
-        if (data){
-            console.log("Curso existe! (Finalizado verificacao de inputs)");
+        if (data.existeInst) {
+            console.log("Curso e id instituicao existem!");
             return true;
-        }else{
-            console.log("Id ou curso nao existe !");
-            return false;
-            
+        } else {
+        console.log("Curso ou id instituicao não existe!");
+        return false;
         }
     }catch (erro){
         console.error('Erro no servidor:',erro);
@@ -81,4 +85,9 @@ async function enviarNovosDados(nome_antigo,nome_novo,instituicao_id){
         console.error('Erro no servidor:',erro);
         return false;
     }
+}
+function limparCampos(){
+    document.getElementById("id_instituicao").value = "";
+    document.getElementById("nome_antigo").value = "";
+    document.getElementById("nome_novo").value = "";
 }

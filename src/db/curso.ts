@@ -21,7 +21,7 @@ export async function verificarCursoInstituica(id:number) {
     await close(conn);
   }
 }
-export async function verificarCurso(id:number,nome:string) {
+export async function verificarCurso(INSTITUICAO_ID:number,NOME:string) {
   const conn=await open();
   try{
     const result= await conn.execute(
@@ -31,7 +31,7 @@ export async function verificarCurso(id:number,nome:string) {
       WHERE INSTITUICAO_ID = :INSTITUICAO_ID
       AND NOME=:NOME
       `,
-      { INSTITUICAO_ID: id,NOME: nome },
+      { INSTITUICAO_ID,NOME},
       {outFormat: OracleDB.OUT_FORMAT_OBJECT}
     );
     return !!(result.rows && result.rows.length > 0);
@@ -75,12 +75,12 @@ export async function listarCurso(instituicao_id: number) {
     await close(conn);
   }
 }
-export async function atualizarCurso(nome_antigo:string, nome_novo:string, instituicao_id:number) {
+export async function atualizarCurso(NOME_ANTIGO:string, NOME_NOVO:string, INSTITUICAO_ID:number) {
   const conn = await open();
   try {
     const result = await conn.execute(
-      `UPDATE CURSO SET NOME = :nome_novo WHERE NOME = :nome_antigo AND INSTITUICAO_ID=:instituicao_id `,
-      { nome_novo, nome_antigo,instituicao_id },
+      `UPDATE CURSO SET NOME = :NOME_NOVO WHERE NOME = :NOME_ANTIGO AND INSTITUICAO_ID=:INSTITUICAO_ID `,
+      { NOME_ANTIGO, NOME_NOVO,INSTITUICAO_ID},
       { autoCommit: true }
     );
     return result.rowsAffected && result.rowsAffected > 0;

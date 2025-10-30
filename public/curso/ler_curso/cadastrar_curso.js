@@ -65,15 +65,17 @@ async function verificar_inputs(id, botao) {
             return false;
         }
 
-        const existeInstituicao = await resposta.json(); // espera receber true ou false
+        const existeInstituicao = await resposta.json();
 
         if (existeInstituicao) {
-            console.log("Instituição existe! Pode prosseguir para cadastrar o curso.");
-            //precisa adicionar impedir enviar o create se o nome de curso ja existir adicionar essa verificacao aq e concatenar o console.log pra dentro desse if ou dividir ele em partes.
+            console.log("Instituição existe!.");
+            document.getElementById("id_instituicao").value = "";
             return true;
+            
         } else {
             alert("Instituição não encontrada!");
             botao.disabled = false;
+            document.getElementById("id_instituicao").value = "";
             return false;
         }
 
