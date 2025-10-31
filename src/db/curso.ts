@@ -88,3 +88,17 @@ export async function atualizarCurso(NOME_ANTIGO:string, NOME_NOVO:string, INSTI
     await close(conn);
   }
 }
+export async function apagarCursoComando(instituicao_id:number,nome:string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `DELETE FROM CURSO WHERE NOME = :nome AND INSTITUICAO_ID = :instituicao_id`,
+      { nome, instituicao_id },
+      { autoCommit: true }
+    );
+    return result.rowsAffected && result.rowsAffected > 0;
+  } finally {
+    await close(conn);
+  }
+}
+

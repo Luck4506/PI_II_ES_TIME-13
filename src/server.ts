@@ -3,7 +3,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
 import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao} from "./db/instituicao";
-import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso } from "./db/curso";
+import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -420,6 +420,25 @@ app.post('/curso/atualizar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+app.post('/curso/apagar', async (req, res) => {
+    const { instituicao_id,nome } = req.body;
+
+    try {
+        const apagado = await apagarCursoComando(instituicao_id,nome);
+        if (apagado) {
+              return res.json(apagado);
+             // pode retornar o objeto
+        } else {
+            // não existe
+            return res.json(null);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
 //Rota para sair (logout)
 app.get('/logout', (req: Request, res: Response) => {
   req.session.destroy((err) => {
