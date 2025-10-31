@@ -3,6 +3,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #0cf4f8 0%, #1205cd 100%);
@@ -12,6 +13,7 @@ body {
   justify-content: center;
   padding: 20px;
 }
+
 .instituicao-container {
   background: white;
   padding: 40px;
@@ -21,16 +23,19 @@ body {
   max-width: 700px;
   text-align: center;
 }
+
 .instituicao-title {
   color: #333;
   margin-bottom: 30px;
   font-size: 28px;
   font-weight: 300;
 }
+
 .instituicao-form {
   margin-bottom: 20px;
   text-align: left;
 }
+
 .instituicao-label {
   display: block;
   margin-bottom: 8px;
@@ -38,6 +43,7 @@ body {
   font-weight: 500;
   font-size: 18px;
 }
+
 .instituicao-input {
   width: 100%;
   padding: 12px 16px;
@@ -47,6 +53,7 @@ body {
   transition: border-color 0.3s ease;
   outline: none;
 }
+
 .instituicao-button {
   width: 50%;
   padding: 14px;
@@ -60,6 +67,7 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease;
   margin-top: 10px;
 }
+
 .instituicao-button:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
