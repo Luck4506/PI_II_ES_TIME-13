@@ -12,7 +12,7 @@ import 'express-session';
 import { addDocente } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
-import { addDisciplina, getAllDisciplinas } from "./db/disciplina";
+import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
 
 declare module 'express-session' {
   interface SessionData {
@@ -188,6 +188,27 @@ app.get('/ver_disciplina', async (req: Request, res: Response) => {
 
 // Rota para exluir disciplina
 
+app.delete('/disciplina/:id', async (req: Request, res: Response) => {
+  
+  const id = Number(req.params.id);
+  if (isNaN(id) || id <= 0) {
+    return res.status(400).json({ error: "ID inválido" });
+  }
+
+  try{
+
+    const rows = await deleteDisciplinaById(id);
+
+    if(rows === 0){
+      return res.status(404).json({ message: "Disciplina não encontrada" });
+    }
+
+    res.status(200).json({ message: "Disciplina excluída com sucesso", rowsAffected: rows });
+  } catch(err){
+    console.error(err);
+    res.status(500).json({ error: "Erro interno do servidor" });  
+  }
+});
 
 //Rota para verificar se existe sessão ativa
 app.get('/api/session', (req: Request, res: Response) => {

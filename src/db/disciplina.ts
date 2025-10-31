@@ -48,33 +48,18 @@ export async function getAllDisciplinas(): Promise<Disciplina[]> {
   }
 }
 
-// CUIDADO!!!
-/*
-export async function deleteDisciplinaById(id: number): Promise<number> {
+export async function deleteDisciplinaById(idValue: number): Promise<number> {
+  
+  if (!Number.isInteger(idValue) || idValue <= 0){
+    throw new Error('ID inválido');
+  }
+  
   const conn = await open();
   try{
-    const result = await conn.execute(
-      `DELETE FROM DISCIPLINA
-      WHERE CODIGO_DISCIPLINA = :id
-      RETURNING CODIGO_DISCIPLINA INTO :retornoId`,
-
-      {
-        id,
-        retornoId: { dir: OracleDB.BIND_OUT, type: OracleDB.NUMBER }
-      },
-      { autoCommit: true }
-    );
-
-    const retornoIdArray = (result.outBinds as { retornoId?: number[] })?.retornoId;
-
-    if(!retornoIdArray || retornoIdArray.length === 0) {
-      throw new Error("Erro ao obter ID retornado na exclusão de Disciplina.");
-    }
-
-    return retornoIdArray[0];
-
-  }finally{
+    const sql = `DELETE FROM DISCIPLINA WHERE CODIGO_DISCIPLINA = :id`;
+    const result = await conn.execute(sql, { id: idValue }, { autoCommit: true });
+    return result.rowsAffected ?? 0;
+  } finally{
     await close(conn);
   }
 }
-*/
