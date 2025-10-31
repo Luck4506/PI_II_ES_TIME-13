@@ -12,10 +12,7 @@ async function adicionar(){
     //validando os dados enviados.
     const valido= await verificar_inputs(nome_int,sigla_int,botao_cadastrar);
     //se for valido manda os dados para o db
-    document.getElementById("instituicao-nome").value = "";
-    document.getElementById("instituicao-sigla").value = "";
     if (valido){
-        
         const realizarCadastro=await cadastrarInstituicao(nome_int,sigla_int);
         if(realizarCadastro){
             console.log("Instituicao cadastrada!");

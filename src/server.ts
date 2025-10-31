@@ -2,7 +2,7 @@
 
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
-import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao} from "./db/instituicao";
+import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso} from "./db/instituicao";
 import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
@@ -332,6 +332,41 @@ app.post('/curso/verifyInstituicao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+app.post('/instituicao/verificar/pegarid', async (req, res) => {
+    const { nome} = req.body;
+
+    try {
+        const existeInst = await pegarIdPorNome(nome);
+        if (existeInst) {
+              return res.json(existeInst);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+app.post('/instituicao/verificar/existeDocente', async (req, res) => {
+    const { instituicao_id } = req.body;
+    try {
+        const existeInst = await existeDocente(instituicao_id);
+        return res.json({ existe: existeInst });
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+app.post('/instituicao/verificar/existeCurso', async (req, res) => {
+    const { instituicao_id } = req.body;
+    try {
+        const existeInst = await existeCurso(instituicao_id);
+        return res.json({ existe: existeInst });
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
 
 
 //rota para verificar curso antes de cadastrar

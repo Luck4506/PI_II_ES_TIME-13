@@ -104,3 +104,62 @@ export async function apagarInstituicao(nome: string, sigla: string) {
     await close(conn);
   }
 }
+export async function pegarIdPorNome(nome: string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT INSTITUICAO_ID
+      FROM INSTITUICAO
+      WHERE NOME = :nome
+      `,
+      { nome },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    if (result.rows && result.rows.length > 0) {
+      return (result.rows[0] as any).INSTITUICAO_ID;
+    } else {
+      return null;
+    }
+  } finally {
+    await close(conn);
+  }
+}
+
+
+export async function existeDocente(instituicao_id: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT DOCENTE_ID
+      FROM INSTITUICAO
+      WHERE INSTITUICAO_ID = :instituicao_id
+      AND ROWNUM = 1
+      `,
+      { instituicao_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    return result.rows!.length > 0;
+  } finally {
+    await close(conn);
+  }
+}
+export async function existeCurso(instituicao_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1
+      FROM CURSO
+      WHERE INSTITUICAO_ID = :instituicao_id
+      AND ROWNUM = 1
+      `,
+      { instituicao_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    return result.rows!.length > 0;
+  } finally {
+    await close(conn);
+  }
+}
