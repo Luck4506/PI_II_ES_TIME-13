@@ -1,4 +1,4 @@
-document.querySelector('#btn-cadastrar').addEventListener('click', cadastrarUsuario)
+document.querySelector('#btn-cadastrar').addEventListener('click', cadastrarUsuario) // Quando o botão for clicado, a função chamada 'cadastrarUsuario' será executada.
 
 let nome = ''
 let email = ''
