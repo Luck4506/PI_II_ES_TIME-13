@@ -12,14 +12,21 @@ async function atualizarCurso(){
     //validando os dados enviados.
     const valido= await verificar_inputs(id_instituicao,nome_antigo,nome_novo);
     if (valido){
-        const atualizado=await enviarNovosDados(nome_antigo,nome_novo,id_instituicao);
-        if(atualizado){
-            alert("Nome do curso atualizado!");
-            console.log("Nome do curso atualizado com sucesso!");
+        const novoNomeJaExiste=await verificar_existe(id_instituicao,nome_novo);
+        if(novoNomeJaExiste){
             botao_cadastrar.disabled = false;
-            limparCampos();
             return;
+        }else{
+            const atualizado=await enviarNovosDados(nome_antigo,nome_novo,id_instituicao);
+            if(atualizado){
+                alert("Nome do curso atualizado!");
+                console.log("Nome do curso atualizado com sucesso!");
+                botao_cadastrar.disabled = false;
+                limparCampos();
+                return;
+            }
         }
+        
     }else{
         botao_cadastrar.disabled = false;
         limparCampos();
@@ -80,6 +87,33 @@ async function enviarNovosDados(nome_antigo,nome_novo,instituicao_id){
         }else{
             return false;
             
+        }
+    }catch (erro){
+        console.error('Erro no servidor:',erro);
+        return false;
+    }
+}
+async function verificar_existe(id_instituicao,nome_novo){
+    const dados={instituicao_id: id_instituicao, nome: nome_novo};
+    try{
+        const resposta = await fetch('/curso/verificar', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify(dados)
+        });
+        if (!resposta.ok){
+            alert('Erro ao tentar autenticar.');
+            console.warn('HTTP error:', resposta.status, resposta.statusText);
+            return;
+        }
+        const data=await resposta.json();
+        if (data.existeInst) {
+            alert("Nome novo do curso ja existe no db!");
+            console.log("Novo nome existe no db!")
+            limparCampos();
+            return true;
+        } else {
+        return false;
         }
     }catch (erro){
         console.error('Erro no servidor:',erro);
