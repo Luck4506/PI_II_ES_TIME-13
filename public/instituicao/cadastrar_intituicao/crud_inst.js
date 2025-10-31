@@ -7,18 +7,17 @@ async function adicionar(){
     //pegando os dados do form.
     const nome_int=document.getElementById("instituicao-nome").value.toLowerCase().trim();
     const sigla_int=document.getElementById("instituicao-sigla").value.toLowerCase().trim();
-    //informar o usuario que algo esta acontecendo visualmente.
-    botao_cadastrar.innerText = "Processando...";
     //validando os dados enviados.
     const valido= await verificar_inputs(nome_int,sigla_int,botao_cadastrar);
     //se for valido manda os dados para o db
+    document.getElementById("instituicao-nome").value = "";
+    document.getElementById("instituicao-sigla").value = "";
     if (valido){
         const realizarCadastro=await cadastrarInstituicao(nome_int,sigla_int);
         if(realizarCadastro){
             console.log("Instituicao cadastrada!");
             alert("Instituicao Cadastrada!");
             botao_cadastrar.disabled = false;
-            botao_cadastrar.innerText="Adicionar";
             return;
         }
     }else{
@@ -29,11 +28,11 @@ async function adicionar(){
 }
 async function verificar_inputs(nome,sigla,botao){
     if(nome === ""||sigla===""){
-        botao.innerText="Preencha todos os campos!";
+        alert("Preencha todos os campos!");
         return false;
     }
     if(!isNaN(nome)||!isNaN(sigla)){
-        botao.innerText="Dados Invalidos!";
+        alert("Dados Invalidos!");
         return false;
     }
     const dados={nome,sigla};
@@ -50,7 +49,7 @@ async function verificar_inputs(nome,sigla,botao){
         }
         const data=await resposta.json();
         if (data && data.id){
-            botao.innerText="Nome ou Sigla ja existe !"
+            alert("Nome ou Sigla ja existe !");
             return false;
         }else{
             console.log("Todos dados sao validos! (Finalizado verificacao de inputs)");
