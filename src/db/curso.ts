@@ -101,4 +101,26 @@ export async function apagarCursoComando(instituicao_id:number,nome:string) {
     await close(conn);
   }
 }
+export async function pegarIdCurso(instituicao_id:number,nome: string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT CURSO_ID
+      FROM CURSO
+      WHERE NOME = :nome
+      AND INSTITUICAO_ID = :instituicao_id
+      `,
+      { nome,instituicao_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    if (result.rows && result.rows.length > 0) {
+      return (result.rows[0] as any).CURSO_ID;
+    } else {
+      return null;
+    }
+  } finally {
+    await close(conn);
+  }
+}
 

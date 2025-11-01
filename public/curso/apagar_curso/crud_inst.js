@@ -10,6 +10,14 @@ async function apagarCurso(){
     const valido= await verificar_inputs(instituicao_id,nome,botao_cadastrar);
     //se for valido manda os dados para o db
     if (valido){
+
+        const pegarIdCursoPorNomeEIdInst = await pegarIdCurso(instituicao_id,nome);
+        console.log('Id curso:',pegarIdCursoPorNomeEIdInst);
+        //const temDisciplina = await existeDisciplina(pegarIdCursoPorNomeEIdInst); tem q trabalhar em produzir elas
+        
+        //console.log('Tem disciplina:', temDisciplina);
+
+
         const apagado=await apagarCursoDb(instituicao_id,nome);
         if (apagado){
             console.log("Curso apagada com sucesso!")
@@ -82,7 +90,31 @@ async function apagarCursoDb(instituicao_id,nome) {
         return false;
     }
 }
+async function pegarIdCurso(instituicao_id,nome) {
+    const dados = { nome: nome,instituicao_id:instituicao_id};
+
+    try {
+        const resposta = await fetch('/curso/verificar/pegarid', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            console.error('Erro ao apagar:', erro);
+            return false;
+        }
+        const { cursoId } = await resposta.json();
+        return cursoId;
+    } catch (erro) {
+        console.error('Erro no servidor:', erro);
+        return false;
+    }
+}
+
 function limparCampos(){
     document.getElementById("instituicao_id").value = "";
     document.getElementById("nome_curso").value = "";
 }
+
