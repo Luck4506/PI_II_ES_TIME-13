@@ -68,4 +68,4 @@ function cadastrarDisciplina(){
     }
 }
 
-console.log("Script de disciplina.js carregado com sucesso!")
+console.log("Script de add_disciplina.js carregado com sucesso!")
