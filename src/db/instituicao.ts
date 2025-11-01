@@ -6,10 +6,12 @@ export interface Instituicao {
   nome: string,
   sigla: string,
 };
+
 export interface Instituicao_verifyByName{
   id: number,
   nome: string,
 };
+
 //Saber se o nome ou sigla existem.
 export async function verifyByNameESigla(nome:string,sigla:string) {
   const conn=await open();
@@ -28,6 +30,7 @@ export async function verifyByNameESigla(nome:string,sigla:string) {
     await close(conn);
   }
 }
+
 export async function verifyByName(nome:string) {
   const conn=await open();
   try{
@@ -44,6 +47,7 @@ export async function verifyByName(nome:string) {
     await close(conn);
   }
 }
+
 export async function registrarInstituicao(nome: string, sigla: string, docente_id: number) {
   const conn = await open();
   try {
@@ -58,6 +62,7 @@ export async function registrarInstituicao(nome: string, sigla: string, docente_
     await close(conn);
   }
 }
+
 export async function listarInstituicao() {
   const conn = await open();
   try {
@@ -78,6 +83,7 @@ export async function listarInstituicao() {
     await conn.close();
   }
 }
+
 export async function atualizarInstituicao(nome: string, sigla: string) {
   const conn = await open();
   try {
@@ -91,6 +97,7 @@ export async function atualizarInstituicao(nome: string, sigla: string) {
     await close(conn);
   }
 }
+
 export async function apagarInstituicao(nome: string, sigla: string) {
   const conn = await open();
   try {
@@ -104,6 +111,7 @@ export async function apagarInstituicao(nome: string, sigla: string) {
     await close(conn);
   }
 }
+
 export async function pegarIdPorNome(nome: string) {
   const conn = await open();
   try {

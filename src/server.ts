@@ -13,6 +13,7 @@ import { addDocente } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
+import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById } from "./db/turma";
 
 declare module 'express-session' {
   interface SessionData {
@@ -30,9 +31,12 @@ app.use(session({
   secret: "bT8pG6k@3L#9vQz!sW4eH2xN1rJ0dYfC7tB", 
   resave: false, 
   saveUninitialized: false, 
-  cookie: {
-   maxAge: 1000 * 60 * 60 * 3, //3 Horas
-  }
+    cookie: {
+    httpOnly: true,
+    sameSite: "lax",      
+    secure: false,        
+    maxAge: 1000 * 60 * 60 * 4, // 4h
+  },
 }));
 
 app.use(bodyParser.json());
@@ -96,7 +100,7 @@ app.post('/login', async (req: Request, res: Response) => {
 
     // Compara as senhas
     if (senhaBanco === senhaUsuario) {
-      //
+      // Senhas coincidem, cria a sessão
       req.session.user = { id: docente.id, nome: docente.nome};
       return res.json({ autenticado: true });
 
@@ -354,6 +358,8 @@ app.post('/curso/verifyInstituicao', async (req, res) => {
     }
 });
 
+
+//rota para pegar id da instituicao pelo nome
 app.post('/instituicao/verificar/pegarid', async (req, res) => {
     const { nome} = req.body;
 
@@ -367,6 +373,9 @@ app.post('/instituicao/verificar/pegarid', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para pegar id do curso pelo nome e instituicao_id
 app.post('/curso/verificar/pegarid', async (req, res) => {
     const { nome, instituicao_id } = req.body;
     try {
@@ -379,6 +388,7 @@ app.post('/curso/verificar/pegarid', async (req, res) => {
 });
 
 
+//rota para verificar docente antes de cadastrar
 app.post('/instituicao/verificar/existeDocente', async (req, res) => {
     const { instituicao_id } = req.body;
     try {
@@ -389,6 +399,9 @@ app.post('/instituicao/verificar/existeDocente', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+
+//rota para verificar curso antes de cadastrar
 app.post('/instituicao/verificar/existeCurso', async (req, res) => {
     const { instituicao_id } = req.body;
     try {
@@ -399,7 +412,6 @@ app.post('/instituicao/verificar/existeCurso', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
 
 
 //rota para verificar curso antes de cadastrar
@@ -444,6 +456,9 @@ app.post('/curso/cadastrar', async (req, res) => {
     return res.status(501).json({ error: 'Curso duplicado!' });
   }
 });
+
+
+//rota para listar curso
 app.post("/curso/listar", async (req, res) => {
   try {
     const { instituicao_id } = req.body;
@@ -459,6 +474,9 @@ app.post("/curso/listar", async (req, res) => {
     res.status(500).send("Erro ao buscar cursos");
   }
 });
+
+
+//rota para verificar curso antes de atualizar
 app.post('/curso/verificar', async (req, res) => {
     const { instituicao_id,nome} = req.body;
 
@@ -471,6 +489,8 @@ app.post('/curso/verificar', async (req, res) => {
     }
 });
 
+
+//rota para atualizar curso
 app.post('/curso/atualizar', async (req, res) => {
     const { nome_antigo,nome_novo,instituicao_id } = req.body;
 
@@ -489,6 +509,8 @@ app.post('/curso/atualizar', async (req, res) => {
     }
 });
 
+
+//rota para apagar curso
 app.post('/curso/apagar', async (req, res) => {
     const { instituicao_id,nome } = req.body;
 
@@ -507,6 +529,7 @@ app.post('/curso/apagar', async (req, res) => {
     }
 });
 
+
 //Rota para sair (logout)
 app.get('/logout', (req: Request, res: Response) => {
   req.session.destroy((err) => {
@@ -515,6 +538,122 @@ app.get('/logout', (req: Request, res: Response) => {
     }
     res.redirect('/login');
   });
+});
+
+//Rota para criar turma
+app.post("/turma/criar", async (req: Request, res: Response) => {
+
+  try {
+
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Não autenticado" });
+    }
+    const {nome, id_disciplina} = req.body;
+    const docente_id = req.session.user.id;
+
+    if (!nome || !id_disciplina) {
+      return res.status(400).json({ error: "Campos nome e id_disciplina são obrigatórios." });
+    }
+
+    const id = await addTurma(id_disciplina, docente_id, nome);
+    res.status(201).json({ message: "Turma criada com sucesso", id });
+  } 
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Erro ao criar Turma." });
+  }
+});
+
+//Rota para página de mostrar todas as turmas
+app.get('/turmas', verificarSessao, async (req, res) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Não autenticado" });
+    }
+
+    const docenteId = req.session.user.id;
+    const turmas = await getAllTurmasPerDocente(docenteId);
+
+    res.json(turmas);
+
+  } 
+  catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Erro ao carregar turmas.' });
+  }
+});
+
+
+//Rota mostrar a turma selecionada
+app.get('/turma/:id', verificarSessao, async (req: Request, res: Response) => {
+  try {
+    const idTurma = Number(req.params.id);
+
+    if (!Number.isFinite(idTurma) || idTurma <= 0) {
+    return res.status(400).json({ error: "ID inválido." });
+    }
+
+    const turma = await getTurmaById(idTurma);
+
+    if (!turma) {
+    return res.status(404).json({ error: "Turma não encontrada." });
+    }
+
+    if (!req.session.user) {
+    return res.status(401).json({ error: "Não autenticado" });
+    }
+    const docente_id = req.session.user.id;
+
+    if (turma.id_docente !== docente_id) {
+    return res.status(403).json({ error: "Acesso negado: esta turma não pertence ao docente." });
+    }
+
+    const turmaPublica = {
+      id: turma.id,
+      nome: turma.nome,
+      id_disciplina: turma.id_disciplina,
+    };
+    return res.json(turmaPublica);
+  }
+  catch (error) {
+    console.error(error);
+    return res.status(500).json({ error: "Erro ao buscar turma." });
+  }
+});
+
+
+//Rota para excluir turma
+app.delete('/turma/:id', verificarSessao, async (req: Request, res: Response) => {
+  try {
+    const idTurma = Number(req.params.id);
+    if (!Number.isFinite(idTurma) || idTurma <= 0) {
+      return res.status(400).json({ error: "ID inválido." });
+    }
+
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Não autenticado" });
+    }
+
+    const docente_id = req.session.user.id;
+
+    const turma = await getTurmaById(idTurma);
+
+    if (!turma || turma.id_docente !== docente_id) {
+      return res.status(404).json({ error: "Turma não encontrada." });
+    }
+
+    const deletar = await deleteTurmaById(idTurma);
+
+    if (!deletar) {
+      return res.status(404).json({ error: "Turma não encontrada." });
+    }
+
+    return res.status(200).json({ message: "Turma excluída com sucesso", id: idTurma });
+  } 
+  catch (error: any) {
+    console.error("Erro ao excluir turma:", error);
+    return res.status(500).json({ error: "Erro interno ao excluir turma." });
+  }
 });
 
 
