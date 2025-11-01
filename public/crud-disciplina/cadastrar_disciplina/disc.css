@@ -1,9 +1,11 @@
+/* Reset básico */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Fundo */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #0cf4f8 0%, #1205cd 100%);
@@ -14,6 +16,7 @@ body {
   padding: 20px;
 }
 
+/* Card */
 .disciplina-container {
   background: white;
   padding: 40px;
@@ -24,13 +27,15 @@ body {
   text-align: center;
 }
 
+/* Título */
 .disciplina-title {
   color: #333;
   margin-bottom: 30px;
   font-size: 28px;
-  font-weight: 300;
+  font-weight: bold;
 }
 
+/* Form */
 .disciplina-form {
   margin-bottom: 20px;
   text-align: left;
@@ -61,6 +66,7 @@ body {
   gap: 40px; /* espaço entre os campos */
 }
 
+/* Botão */
 .disciplina-button {
   width: 50%;
   padding: 14px;
