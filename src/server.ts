@@ -3,7 +3,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
 import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso} from "./db/instituicao";
-import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso } from "./db/curso";
+import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -367,6 +367,19 @@ app.post('/instituicao/verificar/pegarid', async (req, res) => {
         const existeInst = await pegarIdPorNome(nome);
         if (existeInst) {
               return res.json(existeInst);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+app.post('/curso/verificar/disciplina', async (req, res) => {
+    const { curso_id} = req.body;
+
+    try {
+        const existeDisciplina = await pegarDisciplinaPorId(curso_id);
+        if (existeDisciplina) {
+              return res.json(existeDisciplina);
         }
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);

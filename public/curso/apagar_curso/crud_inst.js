@@ -13,19 +13,27 @@ async function apagarCurso(){
 
         const pegarIdCursoPorNomeEIdInst = await pegarIdCurso(instituicao_id,nome);
         console.log('Id curso:',pegarIdCursoPorNomeEIdInst);
-        //const temDisciplina = await existeDisciplina(pegarIdCursoPorNomeEIdInst); tem q trabalhar em produzir elas
-        
-        //console.log('Tem disciplina:', temDisciplina);
 
 
-        const apagado=await apagarCursoDb(instituicao_id,nome);
-        if (apagado){
-            console.log("Curso apagada com sucesso!")
-            alert('Curso apagada com sucesso!');
+        const temDisciplina = await existeDisciplina(pegarIdCursoPorNomeEIdInst);
+        console.log('Tem disciplina:', temDisciplina);
+
+        if(!temDisciplina){
+            const apagado=await apagarCursoDb(instituicao_id,nome);
+            if (apagado){
+                console.log("Curso apagada com sucesso!")
+                alert('Curso apagada com sucesso!');
+                botao_cadastrar.disabled = false;
+                limparCampos();
+                return;
+            }
+        }else{
+            alert('Apague todas as disciplinas para apagar curso!')
             botao_cadastrar.disabled = false;
             limparCampos();
             return;
         }
+        
     }else{
         limparCampos();
         botao_cadastrar.disabled = false;
@@ -116,5 +124,27 @@ async function pegarIdCurso(instituicao_id,nome) {
 function limparCampos(){
     document.getElementById("instituicao_id").value = "";
     document.getElementById("nome_curso").value = "";
+}
+async function existeDisciplina(curso_id) {
+    const dados = {curso_id:curso_id};
+
+    try {
+        const resposta = await fetch('/curso/verificar/disciplina', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            console.error('Erro ao apagar:', erro);
+            return false;
+        }
+        const resultado = await resposta.json();
+        return resultado;
+    } catch (erro) {
+        console.error('Erro no servidor:', erro);
+        return false;
+    }
 }
 

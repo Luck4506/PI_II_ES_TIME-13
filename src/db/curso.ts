@@ -123,4 +123,26 @@ export async function pegarIdCurso(instituicao_id:number,nome: string) {
     await close(conn);
   }
 }
+export async function pegarDisciplinaPorId(curso_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1
+      FROM CURSO
+      WHERE CURSO_ID = :curso_id
+      `,
+      { curso_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    if (result.rows && result.rows.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } finally {
+    await close(conn);
+  }
+}
+
 
