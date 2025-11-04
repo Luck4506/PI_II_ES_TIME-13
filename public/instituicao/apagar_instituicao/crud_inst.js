@@ -48,7 +48,6 @@ async function apagar(){
             return;
         }
     }else{
-        console.log("Erro ao Apagar!");
         botao_cadastrar.disabled = false;
         return;
     }
@@ -72,10 +71,12 @@ async function verificar_inputs(nome,sigla,botao){
             return;
         }
         const data=await resposta.json();
-        if (data && data.id){
-            console.log("Todos dados sao validos! (Finalizado verificacao de inputs)");
+        if (data){
+            console.log("Todos dados sao validos!");
             return true;
         }else{
+            console.log("Instituicao nao existe!");
+            alert('Instituicao nao existe!');
             return false;
         }
     }catch (erro){

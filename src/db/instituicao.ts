@@ -140,9 +140,9 @@ export async function existeDocente(instituicao_id: number) {
   try {
     const result = await conn.execute(
       `
-      SELECT DOCENTE_ID
-      FROM INSTITUICAO
-      WHERE INSTITUICAO_ID = :instituicao_id
+      SELECT docente_id
+      FROM DOCENTE
+      WHERE instituicao_id = :instituicao_id
       AND ROWNUM = 1
       `,
       { instituicao_id },

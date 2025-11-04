@@ -231,10 +231,10 @@ app.post('/instituicao/verificar', async (req, res) => {
         const instituicao = await verifyByNameESigla(nome, sigla);
         if (instituicao) {
             // existe no DB
-            return res.json(instituicao); // pode retornar o objeto
+            return res.json(true);
         } else {
             // não existe
-            return res.json(null);
+            return res.json(false);
         }
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);
