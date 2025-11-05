@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="disc.css">
+  <title>NotaDez - Cadastro diciplina</title>
+  <script src="add_disciplina.js"></script>
+</head>
+<body>
+  <div class="disciplina-container">
+    <h1 class="disciplina-title">Cadastrar Disciplinas!</h1>
+    <div class="disciplina-form">
+      <label for="disciplina-nome" class="disciplina-label">Nome:</label>
+      <input type="text" id="disciplina-nome" class="disciplina-input" name="nome" required placeholder="Nome da disciplina">
+    </div>
+    <div class="disciplina-row">
+      <div class="disciplina-form">
+        <label for="disciplina-sigla" class="disciplina-label">Sigla:</label>
+        <input type="text" id="disciplina-sigla" class="disciplina-input" name="sigla" required placeholder="Sigla da disciplina">
+      </div>
+      <div class="disciplina-form">
+        <label for="disciplina-codigo" class="disciplina-label">Código:</label>
+        <input type="text" id="disciplina-codigo" class="disciplina-input" name="codigo" required placeholder="Código da disciplina">
+      </div>
+    </div>
+    <div class="disciplina-form">
+      <label for="disciplina-periodo" class="disciplina-label">Período:</label>
+      <input type="text" id="disciplina-periodo" class="disciplina-input" name="periodo_curso" required placeholder="Período da disciplina (meses)">
+    </div>
+    <button type="button" class="disciplina-button" id="btn-cadastrar" onclick="cadastrarDisciplina()">Cadastrar diciplina</button>
+  </div>
+</body>
+</html>
