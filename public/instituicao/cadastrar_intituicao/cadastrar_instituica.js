@@ -76,8 +76,7 @@ async function verificar_inputs(nome,sigla){
     }
 }
 async function cadastrarInstituicao(nome_int, sigla_int) {
-    const docente_id = 1; // ID fixo de teste (depois pode pegar da sessão pois e preciso ter ao menos 1 docente)
-    const dados2 = { nome: nome_int, sigla: sigla_int, docente_id };
+    const dados2 = { nome: nome_int, sigla: sigla_int};
 
     try {
         const resposta = await fetch('/instituicao/cadastrar', {

@@ -245,8 +245,12 @@ app.post('/instituicao/verificar', async (req, res) => {
 
 //rota para cadastrar instituicao
 app.post('/instituicao/cadastrar', async (req, res) => {
-  const { nome, sigla, docente_id } = req.body;
+  const { nome, sigla } = req.body;
   console.log('Dados recebidos:', req.body);
+  if(!req.session.user){
+    return;
+  }
+  const docente_id= req.session.user.id;
 
   // Verifica se todos os campos obrigatórios vieram
   if (!nome || !sigla || !docente_id) {
