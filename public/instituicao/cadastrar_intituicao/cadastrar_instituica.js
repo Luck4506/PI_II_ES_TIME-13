@@ -18,11 +18,15 @@ async function adicionar(){
         //se tudo der certo faz o cadastro da instituicao
         const realizarCadastro=await cadastrarInstituicao(nome_int,sigla_int);
         if(realizarCadastro){
-            console.log("Instituicao cadastrada!");
+            const instituicao_id=await pegarIdPorNome(nome_int);
+            const realizarCadastroRelacao=await cadastrarRelacao(instituicao_id);
+            if(realizarCadastroRelacao){
+                console.log("Instituicao cadastrada!");
             alert("Instituicao Cadastrada!");
             botao_cadastrar.disabled = false;
             limparCampos();
             return;
+            }
         }
     }else{
 
@@ -46,8 +50,8 @@ async function verificar_inputs(nome,sigla){
         return false;
     }
 
-    //verifica se existe o nome ou sigla existe
-    const dados={nome,sigla};
+    //verifica se existe o nome
+    const dados={nome};
     try{
         const resposta = await fetch('/instituicao/verificar', {
             method: 'POST',
@@ -60,14 +64,13 @@ async function verificar_inputs(nome,sigla){
             console.warn('HTTP error:', resposta.status, resposta.statusText);
             return;
         }
-        
-        const data=await resposta.json();
-
-        if (data && data.id){
-            alert("Nome ou Sigla ja existe !");
+        const existe = await resposta.json();
+        if (existe === true) {
+            alert("Nome já existe!");
+            console.log("Erro na verificacao: nome ja existe");
             return false;
-        }else{
-            console.log("Todos inputs sao validos!");
+        } else {
+            console.log("Todos os inputs são válidos!");
             return true;
         }
     }catch (erro){
@@ -98,6 +101,60 @@ async function cadastrarInstituicao(nome_int, sigla_int) {
         return false;
     }
 }
+async function cadastrarRelacao(instituicao_id) {
+    const dados={instituicao_id};
+    try{
+        const resposta = await fetch('/instituicao/cadastrarRelacao', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify(dados)
+        });
+
+        if (!resposta.ok){
+            alert('Erro ao tentar autenticar.');
+            console.warn('HTTP error:', resposta.status, resposta.statusText);
+            return;
+        }
+        const sucesso = await resposta.json();
+        if (sucesso === true) {
+            return true;
+        } else {
+            console.log("Erro ao criar relacao");
+            return false;
+        }
+    }catch (erro){
+        console.error('Erro no servidor:',erro);
+        return false;
+    }
+}
+async function pegarIdPorNome(nome_int) {
+    const dados={nome_int};
+    try{
+        const resposta = await fetch('/instituicao/verificar/pegarid', {
+            method: 'POST',
+            headers: {'Content-Type':'application/json'},
+            body:JSON.stringify(dados)
+        });
+
+        if (!resposta.ok){
+            alert('Erro ao tentar autenticar.');
+            console.warn('HTTP error:', resposta.status, resposta.statusText);
+            return;
+        }
+        const sucesso = await resposta.json();
+        if (sucesso) {
+            return sucesso;
+        } else {
+            console.log("Erro ao pegar id");
+            return false;
+        }
+    }catch (erro){
+        console.error('Erro no servidor:',erro);
+        return false;
+    }
+}
+
+
 async function limparCampos() {
     document.getElementById("instituicao-nome").value = "";
     document.getElementById("instituicao-sigla").value = "";

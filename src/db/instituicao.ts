@@ -1,60 +1,35 @@
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 
-export interface Instituicao {
-  id: number,
-  nome: string,
-  sigla: string,
-};
 
-export interface Instituicao_verifyByName{
-  id: number,
-  nome: string,
-};
-
-//Saber se o nome ou sigla existem.
-export async function verifyByNameESigla(nome:string,sigla:string) {
-  const conn=await open();
-  try{
-    const result= await conn.execute<Instituicao>(
-      `
-      SELECT INSTITUICAO_ID as "id", NOME as "nome", SIGLA as "sigla"
-      FROM INSTITUICAO
-      WHERE NOME = :nome
-      OR SIGLA = :sigla`,
-      {nome,sigla},
-      {outFormat: OracleDB.OUT_FORMAT_OBJECT}
-    );
-    return (result.rows && result.rows[0]) as Instituicao |null;
-  }finally{
-    await close(conn);
-  }
-}
-
-export async function verifyByName(nome:string) {
-  const conn=await open();
-  try{
-    const result= await conn.execute<Instituicao_verifyByName>(
-      `
-      SELECT INSTITUICAO_ID as "id", NOME as "nome"
-      FROM INSTITUICAO
-      WHERE NOME = :nome`,
-      {nome},
-      {outFormat: OracleDB.OUT_FORMAT_OBJECT}
-    );
-    return (result.rows && result.rows[0]) as Instituicao_verifyByName |null;
-  }finally{
-    await close(conn);
-  }
-}
-
-export async function registrarInstituicao(nome: string, sigla: string, docente_id: number) {
+export async function verifyByName(nome: string): Promise<boolean> {
   const conn = await open();
   try {
     const result = await conn.execute(
-      `INSERT INTO INSTITUICAO (NOME, SIGLA, DOCENTE_ID)
-       VALUES (:nome, :sigla, :docente_id)`,
-      { nome, sigla, docente_id },
+      `
+      SELECT 1 
+      FROM INSTITUICAO
+      WHERE NOME = :nome
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { nome },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    // se encontrou pelo menos uma linha, retorna true
+    return !!result.rows?.length;
+  } finally {
+    await close(conn);
+  }
+}
+
+export async function registrarInstituicao(nome: string, sigla: string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `INSERT INTO INSTITUICAO (NOME, SIGLA)
+       VALUES (:nome, :sigla)`,
+      { nome, sigla },
       { autoCommit: true }
     );
     return result.rowsAffected && result.rowsAffected > 0;
@@ -62,6 +37,21 @@ export async function registrarInstituicao(nome: string, sigla: string, docente_
     await close(conn);
   }
 }
+export async function cadastrarRelacao(instituicao_id: number, docente_id: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `INSERT INTO DOCENTE_INSTITUICAO (docente_id, instituicao_id)
+      VALUES (:docente_id, :instituicao_id)`,
+      { instituicao_id,docente_id },
+      { autoCommit: true }
+    );
+    return result.rowsAffected && result.rowsAffected > 0;
+  } finally {
+    await close(conn);
+  }
+}
+
 
 export async function listarInstituicao() {
   const conn = await open();

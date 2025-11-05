@@ -2,7 +2,7 @@
 
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
-import { verifyByNameESigla, registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso} from "./db/instituicao";
+import { registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
 import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
@@ -225,15 +225,31 @@ app.get('/api/session', (req: Request, res: Response) => {
 
 //rota para verificar se a instituicao existe
 app.post('/instituicao/verificar', async (req, res) => {
-    const { nome, sigla } = req.body;
+    const { nome } = req.body;
 
     try {
-        const instituicao = await verifyByNameESigla(nome, sigla);
+        const instituicao = await verifyByName(nome);
         if (instituicao) {
-            // existe no DB
             return res.json(true);
         } else {
-            // não existe
+            return res.json(false);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+app.post('/instituicao/cadastrarRelacao', async (req, res) => {
+    const { instituicao_id } = req.body;
+    if(!req.session.user){
+    return;
+    }
+    const docente_id= req.session.user.id;
+    try {
+        const cadastrada = await cadastrarRelacao(instituicao_id,docente_id);
+        if (cadastrada) {
+            return res.json(true);
+        } else {
             return res.json(false);
         }
     } catch (erro) {
@@ -243,22 +259,20 @@ app.post('/instituicao/verificar', async (req, res) => {
 });
 
 
+
 //rota para cadastrar instituicao
 app.post('/instituicao/cadastrar', async (req, res) => {
   const { nome, sigla } = req.body;
   console.log('Dados recebidos:', req.body);
-  if(!req.session.user){
-    return;
-  }
-  const docente_id= req.session.user.id;
+  
 
   // Verifica se todos os campos obrigatórios vieram
-  if (!nome || !sigla || !docente_id) {
+  if (!nome || !sigla) {
     return res.status(400).json({ error: 'Campos obrigatórios não preenchidos' });
   }
 
   try {
-    const sucesso = await registrarInstituicao(nome, sigla, docente_id);
+    const sucesso = await registrarInstituicao(nome, sigla);
     if (sucesso) {
       return res.json({ message: 'Instituição cadastrada com sucesso' });
     } else {
@@ -365,10 +379,10 @@ app.post('/curso/verifyInstituicao', async (req, res) => {
 
 //rota para pegar id da instituicao pelo nome
 app.post('/instituicao/verificar/pegarid', async (req, res) => {
-    const { nome} = req.body;
+    const { nome_int} = req.body;
 
     try {
-        const existeInst = await pegarIdPorNome(nome);
+        const existeInst = await pegarIdPorNome(nome_int);
         if (existeInst) {
               return res.json(existeInst);
         }
