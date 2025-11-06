@@ -22,6 +22,28 @@ export async function verifyByName(nome: string): Promise<boolean> {
     await close(conn);
   }
 }
+export async function verifyByNameESigla(nome: string,sigla:string): Promise<boolean> {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1 
+      FROM INSTITUICAO
+      WHERE NOME = :nome
+      AND SIGLA = :sigla
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { nome,sigla },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    // se encontrou pelo menos uma linha, retorna true
+    return !!result.rows?.length;
+  } finally {
+    await close(conn);
+  }
+}
+
 
 export async function registrarInstituicao(nome: string, sigla: string) {
   const conn = await open();
@@ -87,6 +109,7 @@ export async function atualizarInstituicao(nome: string, sigla: string) {
     await close(conn);
   }
 }
+
 
 export async function apagarInstituicao(nome: string, sigla: string) {
   const conn = await open();

@@ -2,7 +2,7 @@
 
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
-import { registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
+import { registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao,verifyByNameESigla} from "./db/instituicao";
 import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
@@ -302,13 +302,13 @@ app.post('/instituicao/atualizar/verificar', async (req, res) => {
     const { nome,sigla } = req.body;
 
     try {
-        const instituicao = await verifyByName(nome);
+        const instituicao = await verifyByNameESigla(nome,sigla);
         if (instituicao) {
-              return res.json(instituicao);
+              return res.json(true);
              // pode retornar o objeto
         } else {
             // não existe
-            return res.json(null);
+            return res.json(false);
         }
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);
@@ -468,7 +468,6 @@ app.post('/curso/verifyCurso', async (req, res) => {
 //rota para cadastrar curso
 app.post('/curso/cadastrar', async (req, res) => {
   const { instituicao_id,nome } = req.body;
-  console.log('Dados recebidos:', req.body);
 
   // Verifica se todos os campos obrigatórios vieram
   if (!instituicao_id || !nome) {

@@ -6,13 +6,12 @@ async function atualizar(){
     botao_cadastrar.disabled = true;
     //pegando os dados do form.
     const nome_int=document.getElementById("instituicao-nome").value.toLowerCase().trim();
-    const sigla_int_nova=document.getElementById("instituicao-sigla").value.toLowerCase().trim();
+    const sigla_int_antiga=document.getElementById("instituicao-sigla-antiga").value.toLowerCase().trim();
+    const sigla_int_nova=document.getElementById("instituicao-sigla-nova").value.toLowerCase().trim();
     //informar o usuario que algo esta acontecendo visualmente.
     
     //validando os dados enviados.
-    const valido= await verificar_inputs(nome_int,sigla_int_nova,botao_cadastrar);
-    document.getElementById("instituicao-nome").value = "";
-    document.getElementById("instituicao-sigla").value = "";
+    const valido= await verificar_inputs(nome_int,sigla_int_antiga,sigla_int_nova,botao_cadastrar);
     if (valido){
         const dados={ nome: nome_int, sigla: sigla_int_nova };
         try{
@@ -48,19 +47,19 @@ async function atualizar(){
         return;
     }
 }
-async function verificar_inputs(nome,sigla_nova,botao){
-    if(nome === ""||sigla_nova===""){
+async function verificar_inputs(nome,sigla_antiga,sigla_nova,botao){
+    if(nome === ""||sigla_nova===""||sigla_antiga===""){
         alert('Preencha todos os campos!');
         botao.disabled = false;
         return false;
     }
-    if(!isNaN(nome)||!isNaN(sigla_nova)){
+    if(!isNaN(nome)||!isNaN(sigla_nova)||!isNaN(sigla_antiga)){
         alert('Dados Invalidos!');
         botao.disabled = false;
         return false;
     }
     
-    const dados={nome,sigla_nova};
+    const dados = { nome, sigla: sigla_antiga };
     try{
         const resposta = await fetch('/instituicao/atualizar/verificar', {
             method: 'POST',
@@ -73,11 +72,11 @@ async function verificar_inputs(nome,sigla_nova,botao){
             return;
         }
         const data=await resposta.json();
-        if (data && data.id){
-            console.log("Todos dados sao validos! (Finalizado verificacao de inputs)");
+        if (data){
+            console.log("Todos dados sao validos!");
             return true;
         }else{
-            botao.innerText="Nome de instituição nao existe !"
+            alert("Nome de instituição nao existe !");
             return false;
             
         }
@@ -85,6 +84,4 @@ async function verificar_inputs(nome,sigla_nova,botao){
         console.error('Erro no servidor:',erro);
         return false;
     }
-    //se tudo der certo.
-    return true;
 }
