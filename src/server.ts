@@ -2,7 +2,7 @@
 
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
-import { registrarInstituicao, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao,verifyByNameESigla} from "./db/instituicao";
+import { registrarInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
 import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
@@ -221,10 +221,24 @@ app.get('/api/session', (req: Request, res: Response) => {
   }
   return res.status(401).json({ error: 'Não autenticado' });
 });
+app.post('/instituicao/verificarNomeSigla', async (req, res) => {
+    const { nome,sigla } = req.body;
 
+    try {
+        const instituicao = await verifyByNameSigla(nome,sigla);
+        if (instituicao) {
+            return res.json(true);
+        } else {
+            return res.json(false);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
 //rota para verificar se a instituicao existe
-app.post('/instituicao/verificar', async (req, res) => {
+app.post('/instituicao/verificarNome', async (req, res) => {
     const { nome } = req.body;
 
     try {
@@ -302,7 +316,7 @@ app.post('/instituicao/atualizar/verificar', async (req, res) => {
     const { nome,sigla } = req.body;
 
     try {
-        const instituicao = await verifyByNameESigla(nome,sigla);
+        const instituicao = await verifyByNameSigla(nome,sigla);
         if (instituicao) {
               return res.json(true);
              // pode retornar o objeto
@@ -379,7 +393,7 @@ app.post('/curso/verifyInstituicao', async (req, res) => {
 
 //rota para pegar id da instituicao pelo nome
 app.post('/instituicao/verificar/pegarid', async (req, res) => {
-    const { nome_int} = req.body;
+    const { nome:nome_int} = req.body;
 
     try {
         const existeInst = await pegarIdPorNome(nome_int);

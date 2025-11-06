@@ -53,7 +53,7 @@ async function verificar_inputs(nome,sigla){
     //verifica se existe o nome
     const dados={nome};
     try{
-        const resposta = await fetch('/instituicao/verificar', {
+        const resposta = await fetch('/instituicao/verificarNome', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify(dados)
@@ -128,28 +128,25 @@ async function cadastrarRelacao(instituicao_id) {
     }
 }
 async function pegarIdPorNome(nome_int) {
-    const dados={nome_int};
-    try{
+    const dados = { nome: nome_int };   // CORRIGIDO ✅
+
+    try {
         const resposta = await fetch('/instituicao/verificar/pegarid', {
             method: 'POST',
-            headers: {'Content-Type':'application/json'},
-            body:JSON.stringify(dados)
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
         });
 
-        if (!resposta.ok){
+        if (!resposta.ok) {
             alert('Erro ao tentar autenticar.');
-            console.warn('HTTP error:', resposta.status, resposta.statusText);
             return;
         }
+
         const sucesso = await resposta.json();
-        if (sucesso) {
-            return sucesso;
-        } else {
-            console.log("Erro ao pegar id");
-            return false;
-        }
-    }catch (erro){
-        console.error('Erro no servidor:',erro);
+        return sucesso || false;
+
+    } catch (erro) {
+        console.error('Erro no servidor:', erro);
         return false;
     }
 }

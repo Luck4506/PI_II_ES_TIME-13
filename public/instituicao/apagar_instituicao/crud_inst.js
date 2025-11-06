@@ -13,14 +13,15 @@ async function apagar(){
     document.getElementById("instituicao-sigla").value = "";
     if (valido){
         const pegarIdInstPorNome = await pegarIdPorNome(nome_int);
-
+        //feito e fuuncional
         const temDocente = await existeDocente(pegarIdInstPorNome);
         console.log('Tem docente:', temDocente);
-
+        //arumar tudo do curso antes de implementar
         const temCurso = await existeCurso(pegarIdInstPorNome);
         console.log('Tem curso:', temCurso);
-
+        
         if (!temDocente) {
+            /*
             if(!temCurso){
                 const apagado=await apagarInstituicao(nome_int,sigla_int);
                 if (apagado){
@@ -47,11 +48,12 @@ async function apagar(){
             botao_cadastrar.disabled = false;
             return;
         }
+            */
     }else{
         botao_cadastrar.disabled = false;
         return;
     }
-}
+}}
 async function verificar_inputs(nome,sigla,botao){
     if(nome === ""||sigla===""||!isNaN(nome)||!isNaN(sigla)){
         alert('Dados Invalidos!');
@@ -60,7 +62,7 @@ async function verificar_inputs(nome,sigla,botao){
     }
     const dados={nome,sigla};
     try{
-        const resposta = await fetch('/instituicao/verificar', {
+        const resposta = await fetch('/instituicao/verificarNomeSigla', {
             method: 'POST',
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify(dados)

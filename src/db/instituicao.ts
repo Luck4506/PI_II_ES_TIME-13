@@ -22,7 +22,7 @@ export async function verifyByName(nome: string): Promise<boolean> {
     await close(conn);
   }
 }
-export async function verifyByNameESigla(nome: string,sigla:string): Promise<boolean> {
+export async function verifyByNameSigla(nome: string,sigla:string): Promise<boolean> {
   const conn = await open();
   try {
     const result = await conn.execute(
@@ -153,8 +153,8 @@ export async function existeDocente(instituicao_id: number) {
   try {
     const result = await conn.execute(
       `
-      SELECT docente_id
-      FROM DOCENTE
+      SELECT 1
+      FROM DOCENTE_INSTITUICAO
       WHERE instituicao_id = :instituicao_id
       AND ROWNUM = 1
       `,
