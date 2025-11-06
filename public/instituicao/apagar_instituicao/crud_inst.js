@@ -21,7 +21,7 @@ async function apagar(){
         console.log('Tem curso:', temCurso);
         
         if (!temDocente) {
-            /*
+            
             if(!temCurso){
                 const apagado=await apagarInstituicao(nome_int,sigla_int);
                 if (apagado){
@@ -48,12 +48,11 @@ async function apagar(){
             botao_cadastrar.disabled = false;
             return;
         }
-            */
     }else{
         botao_cadastrar.disabled = false;
         return;
     }
-}}
+}
 async function verificar_inputs(nome,sigla,botao){
     if(nome === ""||sigla===""||!isNaN(nome)||!isNaN(sigla)){
         alert('Dados Invalidos!');

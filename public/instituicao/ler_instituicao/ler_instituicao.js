@@ -8,8 +8,11 @@ async function lerInstituicoes() {
 
   const corpo = document.getElementById("tabela_instituicoes");
   corpo.innerHTML = "";
-
-  dados.forEach(inst => {
+  if (corpo.length === 0) {
+    botao_cadastrar.disabled = false;
+    corpo.innerHTML = "<tr><td colspan='1'>Nenhum curso encontrado.</td></tr>";
+  } else {
+    dados.forEach(inst => {
     corpo.innerHTML += `
       <tr>
         <td>${inst.INSTITUICAO_ID}</td>
@@ -17,6 +20,6 @@ async function lerInstituicoes() {
         <td>${inst.SIGLA}</td>
       </tr>`;
   });
-}
-
+  }
+};
 lerInstituicoes();
