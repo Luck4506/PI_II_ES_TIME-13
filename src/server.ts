@@ -3,7 +3,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
 import { registrarInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
-import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId } from "./db/curso";
+import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -425,7 +425,20 @@ app.post('/curso/verificar/pegarid', async (req, res) => {
     const { nome, instituicao_id } = req.body;
     try {
         const cursoId = await pegarIdCurso(instituicao_id, nome);
-        return res.json({ cursoId });
+        return res.json( cursoId );
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/curso/cadastrarRelacao', async (req, res) => {
+    const { instituicao_id,curso_id } = req.body;
+    try {
+        const sucesso = await cadastrarRelacaoCurso(instituicao_id, curso_id);
+        if(sucesso){
+          return res.json( true );
+        }
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);
         return res.status(500).json({ error: 'Erro no servidor' });

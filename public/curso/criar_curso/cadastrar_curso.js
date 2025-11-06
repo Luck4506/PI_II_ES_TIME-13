@@ -17,15 +17,17 @@ async function criarCurso(){
             if(realizarCreate){
                 console.log("Curso cadastrado!");
                 alert("Curso Cadastrado!");
-                const curso_id=await pegarIdCurso(id_inst,nome_curso);
-                const realizarCreateRelacao=await createRelacao(id_inst,curso_id)
-                if(realizarCreateRelacao)
-                botao_cadastrar.disabled = false;
-                limparCampos(id_inst,nome_curso);
-                return;
+                const curso_id=await pegarIdCurso(nome_curso,id_inst);
+                console.log(curso_id);
+                const realizarCreateRelacao=await createRelacao(id_inst,curso_id);
+                if(realizarCreateRelacao){
+                    botao_cadastrar.disabled = false;
+                    limparCampos(id_inst,nome_curso);
+                    return;
+                }
             }
         }else{
-            alert("Curso ja existe!")
+            alert("Curso ja existe!");
             botao_cadastrar.disabled = false;
             limparCampos(id_inst,nome_curso);
         }
@@ -133,6 +135,53 @@ async function createCurso(id,nome) {
 
         const data = await resposta.json();
         return data;
+    } catch (erro) {
+        console.error('Erro no servidor:', erro);
+        return false;
+    }
+}
+
+async function createRelacao(id,curso_id) {
+    const dados = { instituicao_id: id, curso_id: curso_id};
+
+    try {
+        const resposta = await fetch('/curso/cadastrarRelacao', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            console.error('Erro no cadastro:', erro);
+            return false;
+        }
+
+        const data = await resposta.json();
+        return data;
+    } catch (erro) {
+        console.error('Erro no servidor:', erro);
+        return false;
+    }
+}
+async function pegarIdCurso(nome,instituicao_id) {
+    const dados = {nome: nome,instituicao_id:instituicao_id};
+
+    try {
+        const resposta = await fetch('/curso/verificar/pegarid', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+
+        if (!resposta.ok) {
+            const erro = await resposta.json();
+            console.error('Erro no cadastro:', erro);
+            return false;
+        }
+
+        const sucesso = await resposta.json();
+        return sucesso;
     } catch (erro) {
         console.error('Erro no servidor:', erro);
         return false;

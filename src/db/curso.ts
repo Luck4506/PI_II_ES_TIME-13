@@ -145,4 +145,23 @@ export async function pegarDisciplinaPorId(curso_id:number) {
   }
 }
 
+export async function cadastrarRelacaoCurso(instituicao_id:number, curso_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `INSERT INTO DOCENTE_CURSO (instituicao_id, curso_id)
+       VALUES (:instituicao_id, :curso_id)`,
+      { instituicao_id,curso_id },
+      { autoCommit: true },
+    );
+    if (result.rows && result.rows.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } finally {
+    await close(conn);
+  }
+}
+
 
