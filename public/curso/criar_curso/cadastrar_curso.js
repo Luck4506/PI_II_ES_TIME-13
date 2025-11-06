@@ -17,6 +17,9 @@ async function criarCurso(){
             if(realizarCreate){
                 console.log("Curso cadastrado!");
                 alert("Curso Cadastrado!");
+                const curso_id=await pegarIdCurso(id_inst,nome_curso);
+                const realizarCreateRelacao=await createRelacao(id_inst,curso_id)
+                if(realizarCreateRelacao)
                 botao_cadastrar.disabled = false;
                 limparCampos(id_inst,nome_curso);
                 return;
@@ -66,7 +69,7 @@ async function verificar_inputs(id, nome, botao) {
         const existeInstituicao = await resposta.json(); // espera receber true ou false
 
         if (existeInstituicao) {
-            console.log("Instituição existe! Pode prosseguir para cadastrar o curso.");
+            console.log("Instituição existe!");
             //precisa adicionar impedir enviar o create se o nome de curso ja existir adicionar essa verificacao aq e concatenar o console.log pra dentro desse if ou dividir ele em partes.
             return true;
         } else {
@@ -101,7 +104,7 @@ async function verificar_inputs_aux(id, nome) {
         const existeCurso = await resposta.json(); // espera receber true ou false
 
         if (existeCurso) {
-            console.log("Curso existe! Nao pode prosseguir para cadastrar.");
+            alert("Curso ja existe nessa instituicao!");
             return false;
         } else {
             return true;
