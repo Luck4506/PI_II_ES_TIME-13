@@ -10,7 +10,7 @@ async function lerInstituicoes() {
   corpo.innerHTML = "";
   if (corpo.length === 0) {
     botao_cadastrar.disabled = false;
-    corpo.innerHTML = "<tr><td colspan='1'>Nenhum curso encontrado.</td></tr>";
+    alert("Nenhuma institicao encontrada");
   } else {
     dados.forEach(inst => {
     corpo.innerHTML += `
