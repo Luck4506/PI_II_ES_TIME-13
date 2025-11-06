@@ -23,11 +23,12 @@ async function listarCurso() {
 
     if (dados.length === 0) {
         botao_cadastrar.disabled = false;
-      corpo.innerHTML = "<tr><td colspan='1'>Nenhum curso encontrado.</td></tr>";
+        alert("Nenhum curso encontrado!");
     } else {
       dados.forEach(curso => {
         corpo.innerHTML += `
           <tr>
+            <td>${curso.CURSO_ID}</td>
             <td>${curso.NOME}</td>
           </tr>`;
       });

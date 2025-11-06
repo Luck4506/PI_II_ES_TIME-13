@@ -58,7 +58,7 @@ export async function listarCurso(instituicao_id: number) {
   try {
     const result = await conn.execute(
       `
-      SELECT NOME
+      SELECT CURSO_ID, NOME
       FROM CURSO
       WHERE INSTITUICAO_ID = :id
       `,
@@ -69,6 +69,7 @@ export async function listarCurso(instituicao_id: number) {
     const rows = result.rows as any[] || [];
 
     return rows.map((row: any) => ({
+      CURSO_ID: row.CURSO_ID,
       NOME: row.NOME
     }));
   } finally {
