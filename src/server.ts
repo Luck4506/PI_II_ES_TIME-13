@@ -3,7 +3,7 @@
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
 import { registrarInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
-import { verificarCursoInstituica,cadastrarCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
+import { verificarCursoInstituica,cadastrarCurso,apagarRelacaoCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
@@ -411,7 +411,9 @@ app.post('/curso/verificar/disciplina', async (req, res) => {
     try {
         const existeDisciplina = await pegarDisciplinaPorId(curso_id);
         if (existeDisciplina) {
-              return res.json(existeDisciplina);
+              return res.json(true);
+        }else{
+          return res.json(false);
         }
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);
@@ -422,7 +424,7 @@ app.post('/curso/verificar/disciplina', async (req, res) => {
 
 //rota para pegar id do curso pelo nome e instituicao_id
 app.post('/curso/verificar/pegarid', async (req, res) => {
-    const { nome, instituicao_id } = req.body;
+    const { instituicao_id,nome } = req.body;
     try {
         const cursoId = await pegarIdCurso(instituicao_id, nome);
         return res.json( cursoId );
@@ -433,12 +435,17 @@ app.post('/curso/verificar/pegarid', async (req, res) => {
 });
 
 app.post('/curso/cadastrarRelacao', async (req, res) => {
-    const { instituicao_id,curso_id } = req.body;
+    const {curso_id} = req.body;
+    
     try {
-        const sucesso = await cadastrarRelacaoCurso(instituicao_id, curso_id);
-        if(sucesso){
-          return res.json( true );
-        }
+      if (!req.session.user) {
+        return res.status(401).json({ error: "Não autenticado" });
+      }
+      const docente_id = req.session.user.id;
+      const sucesso = await cadastrarRelacaoCurso(docente_id, curso_id);
+      if(sucesso){
+        return res.json( true );
+      }
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);
         return res.status(500).json({ error: 'Erro no servidor' });
@@ -586,7 +593,21 @@ app.post('/curso/apagar', async (req, res) => {
     }
 });
 
+app.post('/curso/apagarRelacao', async (req, res) => {
+    const { curso_id } = req.body;
 
+    try {
+        const apagado = await apagarRelacaoCurso(curso_id);
+        if (apagado) {
+              return res.json(true);
+        } else {
+            return res.json(false);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 //Rota para sair (logout)
 app.get('/logout', (req: Request, res: Response) => {
   req.session.destroy((err) => {

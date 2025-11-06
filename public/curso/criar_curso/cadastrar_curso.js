@@ -15,19 +15,17 @@ async function criarCurso(){
         if(valido_aux){
             const realizarCreate=await createCurso(id_inst,nome_curso);
             if(realizarCreate){
-                console.log("Curso cadastrado!");
-                alert("Curso Cadastrado!");
                 const curso_id=await pegarIdCurso(nome_curso,id_inst);
-                console.log(curso_id);
-                const realizarCreateRelacao=await createRelacao(id_inst,curso_id);
+                const realizarCreateRelacao=await createRelacao(curso_id);
                 if(realizarCreateRelacao){
+                    console.log("Curso cadastrado!");
+                    alert("Curso Cadastrado!");
                     botao_cadastrar.disabled = false;
                     limparCampos(id_inst,nome_curso);
                     return;
                 }
             }
         }else{
-            alert("Curso ja existe!");
             botao_cadastrar.disabled = false;
             limparCampos(id_inst,nome_curso);
         }
@@ -72,7 +70,6 @@ async function verificar_inputs(id, nome, botao) {
 
         if (existeInstituicao) {
             console.log("Instituição existe!");
-            //precisa adicionar impedir enviar o create se o nome de curso ja existir adicionar essa verificacao aq e concatenar o console.log pra dentro desse if ou dividir ele em partes.
             return true;
         } else {
             alert("Instituição não encontrada!");
@@ -141,8 +138,8 @@ async function createCurso(id,nome) {
     }
 }
 
-async function createRelacao(id,curso_id) {
-    const dados = { instituicao_id: id, curso_id: curso_id};
+async function createRelacao(curso_id) {
+    const dados = { curso_id: curso_id };
 
     try {
         const resposta = await fetch('/curso/cadastrarRelacao', {
