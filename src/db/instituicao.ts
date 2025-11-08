@@ -45,6 +45,60 @@ export async function verifyByNameSigla(nome: string,sigla:string): Promise<bool
 }
 
 
+export async function verifyIdInstituicao(instituicao_id: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1 
+      FROM INSTITUICAO
+      WHERE INSTITUICAO_ID = :instituicao_id
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { instituicao_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    return !!result.rows?.length;
+  } finally {
+    await close(conn);
+  }
+}
+
+export async function verificarDocenteCurso(instituicao_id: number,docente_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1 
+      FROM DOCENTE_INSTITUICAO
+      WHERE INSTITUICAO_ID = :instituicao_id
+      AND DOCENTE_ID = :docente_id
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { instituicao_id,docente_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    return !!result.rows?.length;
+  } finally {
+    await close(conn);
+  }
+}
+export async function entrarIdInstituicao(instituicao_id: number, docente_id: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `INSERT INTO DOCENTE_INSTITUICAO (docente_id, instituicao_id)
+      VALUES (:docente_id, :instituicao_id)`,
+      { instituicao_id,docente_id },
+      { autoCommit: true }
+    );
+    return result.rowsAffected && result.rowsAffected > 0;
+  } finally {
+    await close(conn);
+  }
+}
 export async function registrarInstituicao(nome: string, sigla: string) {
   const conn = await open();
   try {
@@ -125,6 +179,19 @@ export async function apagarInstituicao(nome: string, sigla: string) {
   }
 }
 
+export async function removerRelacaoDocente(instituicao_id:number,docente_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `DELETE FROM DOCENTE_INSTITUICAO WHERE DOCENTE_ID=:docente_id AND INSTITUICAO_ID=:instituicao_id`,
+      { docente_id,instituicao_id },
+      { autoCommit: true }
+    );
+    return result.rowsAffected && result.rowsAffected > 0;
+  } finally {
+    await close(conn);
+  }
+}
 export async function pegarIdPorNome(nome: string) {
   const conn = await open();
   try {

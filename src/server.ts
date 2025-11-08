@@ -2,14 +2,14 @@
 
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
-import { registrarInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
+import { registrarInstituicao,removerRelacaoDocente,verificarDocenteCurso,entrarIdInstituicao,verifyIdInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
 import { verificarCursoInstituica,cadastrarCurso,apagarRelacaoCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
 import session from "express-session";
 import 'express-session';
-import { addDocente } from "./db/docentes";
+import { addDocente,listarDocente } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
@@ -405,6 +405,48 @@ app.post('/instituicao/verificar/pegarid', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+
+app.post('/instituicao/verificarExisteId', async (req, res) => {
+    const { instituicao_id } = req.body;
+
+    try {
+        const existe = await verifyIdInstituicao(instituicao_id);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/instituicao/entrarInstituicao', async (req, res) => {
+    const { instituicao_id } = req.body;
+    if(!req.session.user){
+    return;
+    }
+    const docente_id= req.session.user.id;
+    try {
+        const existe = await entrarIdInstituicao(instituicao_id,docente_id);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/instituicao/verificarExisteDocente', async (req, res) => {
+    const { instituicao_id } = req.body;
+    if(!req.session.user){
+    return;
+    }
+    const docente_id= req.session.user.id;
+    try {
+        const existe = await verificarDocenteCurso(instituicao_id,docente_id);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 app.post('/curso/verificar/disciplina', async (req, res) => {
     const { curso_id} = req.body;
 
@@ -465,6 +507,21 @@ app.post('/instituicao/verificar/existeDocente', async (req, res) => {
     }
 });
 
+app.post('/instituicao/verificar/existeRelacao', async (req, res) => {
+    const { instituicao_id,docente_id } = req.body;
+    try {
+        const existe = await verificarDocenteCurso(instituicao_id,docente_id);
+        if (existe){
+          return res.json(true);
+        }else{
+          return res.json(false);
+        }
+        
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
 //rota para verificar curso antes de cadastrar
 app.post('/instituicao/verificar/existeCurso', async (req, res) => {
@@ -539,6 +596,21 @@ app.post("/curso/listar", async (req, res) => {
   }
 });
 
+app.post("/docente/listar", async (req, res) => {
+  try {
+    const { instituicao_id } = req.body;
+
+    if (!instituicao_id) {
+      return res.status(400).json({ error: "ID da instituição é obrigatório" });
+    }
+
+    const dados = await listarDocente(instituicao_id);
+    res.json(dados);
+  } catch (err) {
+    console.error("Erro ao buscar cursos:", err);
+    res.status(500).send("Erro ao buscar cursos");
+  }
+});
 
 //rota para verificar curso antes de atualizar
 app.post('/curso/verificar', async (req, res) => {
@@ -592,7 +664,21 @@ app.post('/curso/apagar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+app.post('/instituicao/removerRelacao', async (req, res) => {
+    const { instituicao_id,docente_id } = req.body;
+    try {
+        const removido = await removerRelacaoDocente(instituicao_id,docente_id);
+        if (removido){
+          return res.json(true);
+        }else{
+          return res.json(false);
+        }
+        
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 app.post('/curso/apagarRelacao', async (req, res) => {
     const { curso_id } = req.body;
 

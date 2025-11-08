@@ -34,3 +34,28 @@ export async function addDocente(nome: string, email: string, telefone: string, 
     await close(conn);
   }
 }
+export async function listarDocente(instituicao_id: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 
+        d.docente_id,
+        d.nome
+      FROM DOCENTE d
+      JOIN DOCENTE_INSTITUICAO di 
+        ON di.docente_id = d.docente_id
+      WHERE di.instituicao_id = :id
+      `,
+      { id: instituicao_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    const rows = result.rows as any[] || [];
+    return rows.map((row: any) => ({
+      docente_id: row.DOCENTE_ID,
+      nome: row.NOME
+    }));
+  } finally {
+    await close(conn);
+  }
+}
