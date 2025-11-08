@@ -3,13 +3,13 @@
 import express, { Request, Response, NextFunction } from "express";
 import { getDocenteByEmail } from "./db/login";
 import { registrarInstituicao,removerRelacaoDocente,verificarDocenteCurso,entrarIdInstituicao,verifyIdInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
-import { verificarCursoInstituica,cadastrarCurso,apagarRelacaoCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
+import { verificarCursoInstituica,verificarCursoExiste,estaRelacaoCurso,estaInstituicao,existeCursoId,cadastrarCurso,apagarRelacaoCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
 import bodyParser from "body-parser";
 import path from "path";
 import cors from "cors";
 import session from "express-session";
 import 'express-session';
-import { addDocente,listarDocente } from "./db/docentes";
+import { addDocente,listarDocente,listarDocenteCurso } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
@@ -390,6 +390,21 @@ app.post('/curso/verifyInstituicao', async (req, res) => {
     }
 });
 
+app.post('/curso/verifyCursoExiste', async (req, res) => {
+    const { curso_id } = req.body;
+
+    try {
+        const existeCurso = await verificarCursoExiste(curso_id);
+        if (existeCurso) {
+              return res.json(true);
+        } else {
+            return res.json(false);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
 //rota para pegar id da instituicao pelo nome
 app.post('/instituicao/verificar/pegarid', async (req, res) => {
@@ -494,6 +509,61 @@ app.post('/curso/cadastrarRelacao', async (req, res) => {
     }
 });
 
+app.post('/curso/verifyExisteCurso', async (req, res) => {
+    const {curso_id} = req.body;
+    
+    try {
+      const sucesso = await existeCursoId(curso_id);
+      if(sucesso){
+        return res.json( true );
+      }else{
+        return res.json( false );
+      }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/curso/verifyEstaInstituicao', async (req, res) => {
+    const {instituicao_id} = req.body;
+    
+    try {
+      if (!req.session.user) {
+        return res.status(401).json({ error: "Não autenticado" });
+      }
+      const docente_id = req.session.user.id;
+      const esta = await estaInstituicao(instituicao_id,docente_id);
+      if(esta){
+        return res.json( true );
+      }else{
+        return res.json( false );
+      }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/curso/verifyExisteRelacao', async (req, res) => {
+    const {curso_id} = req.body;
+    
+    try {
+      if (!req.session.user) {
+        return res.status(401).json({ error: "Não autenticado" });
+      }
+      const docente_id = req.session.user.id;
+      const esta = await estaRelacaoCurso(docente_id,curso_id);
+      if(esta){
+        return res.json( true );
+      }else{
+        return res.json( false );
+      }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
 //rota para verificar docente antes de cadastrar
 app.post('/instituicao/verificar/existeDocente', async (req, res) => {
@@ -605,6 +675,17 @@ app.post("/docente/listar", async (req, res) => {
     }
 
     const dados = await listarDocente(instituicao_id);
+    res.json(dados);
+  } catch (err) {
+    console.error("Erro ao buscar cursos:", err);
+    res.status(500).send("Erro ao buscar cursos");
+  }
+});
+app.post("/docente/curso/listar", async (req, res) => {
+  try {
+    const { curso_id } = req.body;
+
+    const dados = await listarDocenteCurso(curso_id);
     res.json(dados);
   } catch (err) {
     console.error("Erro ao buscar cursos:", err);

@@ -21,6 +21,62 @@ export async function verificarCursoInstituica(id:number) {
     await close(conn);
   }
 }
+export async function existeCursoId(curso_id:number) {
+  const conn=await open();
+  try{
+    const result= await conn.execute(
+      `
+      SELECT 1
+      FROM CURSO
+      WHERE CURSO_ID = :CURSO_ID
+      `,
+      { CURSO_ID: curso_id },
+      {outFormat: OracleDB.OUT_FORMAT_OBJECT}
+    );
+    return !!(result.rows && result.rows.length > 0);
+  }finally{
+    await close(conn);
+  }
+}
+
+export async function estaInstituicao(instituicao_id:number,docente_id:number) {
+  const conn=await open();
+  try{
+    const result= await conn.execute(
+      `
+      SELECT 1
+      FROM DOCENTE_INSTITUICAO
+      WHERE DOCENTE_ID = :docente_id
+      AND INSTITUICAO_ID = :instituicao_id
+      `,
+      {  instituicao_id,docente_id },
+      {outFormat: OracleDB.OUT_FORMAT_OBJECT}
+    );
+    return !!(result.rows && result.rows.length > 0);
+  }finally{
+    await close(conn);
+  }
+}
+
+
+export async function estaRelacaoCurso(docente_id:number,curso_id:number) {
+  const conn=await open();
+  try{
+    const result= await conn.execute(
+      `
+      SELECT 1
+      FROM DOCENTE_CURSO
+      WHERE DOCENTE_ID = :docente_id
+      AND CURSO_ID = :curso_id
+      `,
+      {  docente_id,curso_id },
+      {outFormat: OracleDB.OUT_FORMAT_OBJECT}
+    );
+    return !!(result.rows && result.rows.length > 0);
+  }finally{
+    await close(conn);
+  }
+}
 export async function verificarCurso(INSTITUICAO_ID:number,NOME:string) {
   const conn=await open();
   try{
@@ -160,6 +216,27 @@ export async function pegarDisciplinaPorId(curso_id:number) {
   }
 }
 
+export async function verificarCursoExiste(curso_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1
+      FROM CURSO
+      WHERE CURSO_ID = :curso_id
+      `,
+      { curso_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    if (result.rows && result.rows.length > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } finally {
+    await close(conn);
+  }
+}
 export async function cadastrarRelacaoCurso(docente_id:number, curso_id:number) {
   const conn = await open();
   try {
