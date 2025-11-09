@@ -1,21 +1,4 @@
-async function verificarInstituicao() {
-  try {
-    const resp = await fetch('/verificarTemInstituicao', {
-      method: 'POST',
-      credentials: 'same-origin'
-    });
-    const data = await resp.json();
-    if (!data.temInstituicao) {
-      window.location.href = '/menu';
-      return;
-    }
-  } catch (err) {
-    console.error("Erro ao verificar instituição:", err);
-  }
-}
-
 document.addEventListener("DOMContentLoaded", async () => {
-  await verificarInstituicao();
   try {
     const resposta = await fetch("/api/session", { credentials: "same-origin" });
     if (resposta.ok) {
@@ -33,4 +16,3 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Erro ao obter dados da sessão:", err);
   }
 });
-

@@ -85,3 +85,21 @@ export async function listarDocenteCurso(curso_id: number) {
     await close(conn);
   }
 }
+
+export async function possuiInstituicao(docente_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1
+      FROM DOCENTE_INSTITUICAO
+      WHERE DOCENTE_ID = :docente_id
+      `,
+      { docente_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    return result.rows!.length > 0;
+  } finally {
+    await close(conn);
+  }
+}

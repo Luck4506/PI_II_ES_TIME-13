@@ -9,7 +9,7 @@ import path from "path";
 import cors from "cors";
 import session from "express-session";
 import 'express-session';
-import { addDocente,listarDocente,listarDocenteCurso } from "./db/docentes";
+import { addDocente,possuiInstituicao,listarDocente,listarDocenteCurso } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
@@ -152,6 +152,24 @@ app.post('/recuperar-senha', async (req: Request, res: Response) => {
   }
 });
 
+app.post('/verificarTemInstituicao', async (req, res) => {
+  try {
+    if(!req.session.user){
+      return;
+    }
+    const docente_id= req.session.user.id;
+    const temInstituicaoDocente = await possuiInstituicao(docente_id);
+    if (temInstituicaoDocente) {
+      return res.json(true);
+    } else {
+      return res.json(false);
+    }
+    
+  } catch (err) {
+    console.error("Erro ao verificar instituição:", err);
+    return res.status(500).json({ erro: 'Erro no servidor' });
+  }
+});
 
 //rota para página de mudar senha
 app.get('/mudar_senha', (req: Request, res: Response) => {
