@@ -13,21 +13,28 @@ async function criarCurso(){
     if (valido){
         const valido_aux=await verificar_inputs_aux(id_inst,nome_curso);
         if(valido_aux){
-            const realizarCreate=await createCurso(id_inst,nome_curso);
-            if(realizarCreate){
-                const curso_id=await pegarIdCurso(nome_curso,id_inst);
-                const realizarCreateRelacao=await createRelacao(curso_id);
-                if(realizarCreateRelacao){
-                    console.log("Curso cadastrado!");
-                    alert("Curso Cadastrado!");
-                    botao_cadastrar.disabled = false;
-                    limparCampos(id_inst,nome_curso);
-                    return;
+            const estaInstiticao=await verificarDentroDaInstituuicao(id_inst);
+            if(estaInstiticao){
+                const realizarCreate=await createCurso(id_inst,nome_curso);
+                if(realizarCreate){
+                    const curso_id=await pegarIdCurso(nome_curso,id_inst);
+                    const realizarCreateRelacao=await createRelacao(curso_id);
+                    if(realizarCreateRelacao){
+                        console.log("Curso cadastrado!");
+                        alert("Curso Cadastrado!");
+                        botao_cadastrar.disabled = false;
+                        limparCampos(id_inst,nome_curso);
+                        return;
+                    }
                 }
             }
+            botao_cadastrar.disabled = false;
+            limparCampos(id_inst,nome_curso);
+            return;
         }else{
             botao_cadastrar.disabled = false;
             limparCampos(id_inst,nome_curso);
+            return;
         }
     }else{
         console.log("Erro ao criar curso!");
@@ -183,6 +190,31 @@ async function pegarIdCurso(nome,instituicao_id) {
         console.error('Erro no servidor:', erro);
         return false;
     }
+}
+async function verificarDentroDaInstituuicao(instituicao_id) {
+  const dados = { instituicao_id:instituicao_id };
+    try {
+        const resposta = await fetch('/curso/verifyEstaInstituicao', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+        if (!resposta.ok) {
+            alert('Erro ao tentar autenticar.');
+            console.warn('HTTP error:', resposta.status, resposta.statusText);
+            return false;
+        }
+        const estaDentroInstituicao = await resposta.json();
+        if (estaDentroInstituicao) {
+            return true;
+        } else {
+            alert("Entre na instituicao para criar um curso!");
+            return false;
+        }
+  } catch (erro) {
+    console.error('Erro no servidor:', erro);
+    return false;
+  }
 }
 function limparCampos(id,nome){
     document.getElementById("instituicao_id").value = "";

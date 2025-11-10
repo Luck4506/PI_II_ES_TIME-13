@@ -160,9 +160,9 @@ app.post('/verificarTemInstituicao', async (req, res) => {
     const docente_id= req.session.user.id;
     const temInstituicaoDocente = await possuiInstituicao(docente_id);
     if (temInstituicaoDocente) {
-      return res.json(true);
+      return res.json({ temInstituicao: true });
     } else {
-      return res.json(false);
+      return res.json({ temInstituicao: false });
     }
     
   } catch (err) {
