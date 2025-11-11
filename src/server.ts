@@ -15,6 +15,7 @@ import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
 import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById } from "./db/turma";
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
+import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, importarAlunos } from "./db/aluno";
 
 declare module 'express-session' {
   interface SessionData {
@@ -1013,8 +1014,106 @@ app.delete('/componente-nota/:id', async (req: Request, res: Response) => {
 
 //Rota de Alunos
 
+// Rota cadastrar aluno
+app.post('/aluno', async (req: Request, res: Response) => {
+  try {
+    const { ra, nome } = req.body;
 
+    if (!ra || !nome) {
+      return res.status(400).json({ error: "Campos 'ra' e 'nome' são obrigatórios." });
+    }
 
+    const id = await addAluno(Number(ra), String(nome));
+    return res.status(201).json({ message: 'Aluno criado com sucesso', ra: id });
+  } catch (error) {
+    console.error('Erro ao criar aluno:', error);
+    return res.status(500).json({ error: 'Erro ao criar aluno.' });
+  }
+});
+
+// rota para buscar aluno por RA
+app.get('/aluno/:ra', async (req: Request, res: Response) => {
+  try {
+    const ra = Number(req.params.ra);
+
+    if (!Number.isFinite(ra) || ra <= 0) {
+      return res.status(400).json({ error: 'RA inválido.' });
+    }
+
+    const aluno = await buscarAlunoPorRA(ra);
+    if (!aluno) {
+      return res.status(404).json({ error: 'Aluno não encontrado.' });
+    }
+
+    return res.json(aluno);
+  } catch (error) {
+    console.error('Erro ao buscar aluno:', error);
+    return res.status(500).json({ error: 'Erro ao buscar aluno.' });
+  }
+});
+
+// Rota para buscar aluno por RA
+app.delete('/aluno/:ra', async (req: Request, res: Response) => {
+  try {
+    const ra = Number(req.params.ra);
+
+    if (!Number.isFinite(ra) || ra <= 0) {
+      return res.status(400).json({ error: 'RA inválido.' });
+    }
+
+    const deletado = await excluirAlunoPorRA(ra);
+    if (!deletado) {
+      return res.status(404).json({ error: 'Aluno não encontrado.' });
+    }
+
+    return res.status(200).json({ message: 'Aluno excluído com sucesso', ra });
+  } catch (error) {
+    console.error('Erro ao excluir aluno:', error);
+    return res.status(500).json({ error: 'Erro interno ao excluir aluno.' });
+  }
+});
+
+// Rota para listar todos os alunos
+app.get('/alunos', async (_req: Request, res: Response) => {
+  try {
+    const alunos = await listarTodosAlunos();
+    return res.json(alunos);
+  } catch (error) {
+    console.error('Erro ao listar alunos:', error);
+    return res.status(500).json({ error: 'Erro ao listar alunos.' });
+  }
+});
+
+// Rota para importar múltiplos alunos (AINDA EM TESTES)
+
+app.post('/alunos/importar', async (req: Request, res: Response) => {
+  try {
+    // Aceita tanto { alunos: [...] } quanto um array direto no body
+    const payload = Array.isArray(req.body) ? req.body : req.body?.alunos;
+
+    if (!Array.isArray(payload) || payload.length === 0) {
+      return res.status(400).json({ error: "Envie um array 'alunos' com objetos { ra, nome }." });
+    }
+
+    // Normaliza e valida minimamente os itens
+    const alunos = payload
+      .map((a: any) => ({
+        ra: Number(a?.ra),
+        nome: String(a?.nome ?? '').trim(),
+      }))
+      .filter((a: any) => Number.isFinite(a.ra) && a.ra > 0 && a.nome.length > 0);
+
+    if (alunos.length === 0) {
+      return res.status(400).json({ error: "Nenhum aluno válido encontrado no payload." });
+    }
+
+    const resumo = await importarAlunos(alunos);
+    return res.status(201).json({ message: 'Importação concluída', resumo });
+  } catch (error) {
+    console.error('Erro ao importar alunos:', error);
+    return res.status(500).json({ error: 'Erro ao importar alunos.' });
+  }
+});
 
 // Inicia o servidor
 app.listen(port, () => {
