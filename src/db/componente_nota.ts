@@ -10,11 +10,7 @@ export interface ComponenteNota {
   descricao?: string | null;
 }
 
-export async function addComponenteNota(
-  codigo_disciplina: number,
-  nome: string,
-  sigla?: string | null,
-  descricao?: string | null
+export async function addComponenteNota(codigo_disciplina: number, nome: string, sigla?: string | null, descricao?: string | null
 ): Promise<number> {
   const conn = await open();
   try {
@@ -51,9 +47,7 @@ export async function addComponenteNota(
   }
 }
 
-export async function getAllComponentesByDisciplina(
-  disciplinaId: number
-): Promise<ComponenteNota[]> {
+export async function getAllComponentesByDisciplina(disciplinaId: number): Promise<ComponenteNota[]> {
   const conn = await open();
   try {
     const result = await conn.execute(
@@ -77,9 +71,7 @@ export async function getAllComponentesByDisciplina(
   }
 }
 
-export async function getComponenteNotaById(
-  idValue: number
-): Promise<ComponenteNota | null> {
+export async function getComponenteNotaById(idValue: number): Promise<ComponenteNota | null> {
   const conn = await open();
   try {
     const result = await conn.execute(
@@ -106,9 +98,7 @@ export async function getComponenteNotaById(
   }
 }
 
-export async function deleteComponenteNotaById(
-  idValue: number
-): Promise<boolean> {
+export async function deleteComponenteNotaById(idValue: number): Promise<boolean> {
   const conn = await open();
   try {
     const result = await conn.execute(

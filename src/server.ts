@@ -1,7 +1,7 @@
 //Importaçãoes de módulos necessários
 
 import express, { Request, Response, NextFunction } from "express";
-import { getDocenteByEmail } from "./db/login";
+import { getDocenteByEmail, generarCodigoDeVerificacao } from "./db/login";
 import { registrarInstituicao,removerRelacaoDocente,verificarDocenteCurso,entrarIdInstituicao,verifyIdInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
 import { verificarCursoInstituica,verificarCursoExiste,estaRelacaoCurso,estaInstituicao,existeCursoId,cadastrarCurso,apagarRelacaoCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
 import bodyParser from "body-parser";
@@ -14,6 +14,7 @@ import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
 import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById } from "./db/turma";
+import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
 
 declare module 'express-session' {
   interface SessionData {
@@ -63,20 +64,33 @@ app.get('/', (req: Request, res: Response) => {
 
 //Rota para inserir um docente
 app.post("/cadastrar", async (req: Request, res: Response) => {
-
   try {
     const {nome, email, telefone, senha } = req.body;
     if (!nome || !email || !telefone || !senha) {
       return res.status(400).json({ error: "Campos nome, email, telefone e senha obrigatórios." });
     }
 
+    const codigoVericacao = await generarCodigoDeVerificacao();
+
+    const enviado = await enviarEmail(
+      email,
+      "Teste de Envio de Email",
+      `<p>O codigo de verificao do seu email é ${codigoVericacao}</p>`
+    );
+
+    if (!enviado) {
+      return res.status(500).json({ error: "Falha ao enviar email." });
+    }
+
     const id = await addDocente(nome, email, telefone, senha);
-    res.status(201).json({ message: "Docente adicionado com sucesso", id });
+    return res.status(201).json({ message: "Docente adicionado com sucesso", id });
+
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: "Erro ao inserir Docente." });
+    return res.status(500).json({ error: "Erro ao inserir Docente." });
   }
 });
+
 
 
 //Rota para verificar login (recebe email e senha e compara com o banco)
@@ -918,6 +932,88 @@ app.delete('/turma/:id', verificarSessao, async (req: Request, res: Response) =>
     return res.status(500).json({ error: "Erro interno ao excluir turma." });
   }
 });
+
+//Rotas componentes de nota
+
+// Criar componente de nota
+app.post('/componente-nota', async (req: Request, res: Response) => {
+  try {
+    const { codigo_disciplina, nome, sigla, descricao } = req.body;
+
+    if (!codigo_disciplina || !nome) {
+      return res.status(400).json({ error: "Campos 'codigo_disciplina' e 'nome' são obrigatórios." });
+    }
+
+    const id = await addComponenteNota(Number(codigo_disciplina), String(nome), sigla ?? null, descricao ?? null);
+    return res.status(201).json({ message: 'Componente de nota criado com sucesso', id });
+  } catch (error) {
+    console.error('Erro ao criar componente de nota:', error);
+    return res.status(500).json({ error: 'Erro ao criar componente de nota.' });
+  }
+});
+
+// Listar componentes de nota por disciplina
+app.get('/componentes-nota/:disciplinaId', async (req: Request, res: Response) => {
+  try {
+    const disciplinaId = Number(req.params.disciplinaId);
+
+    if (!Number.isFinite(disciplinaId) || disciplinaId <= 0) {
+      return res.status(400).json({ error: 'ID de disciplina inválido.' });
+    }
+
+    const componentes = await getAllComponentesByDisciplina(disciplinaId);
+    return res.json(componentes);
+  } catch (error) {
+    console.error('Erro ao listar componentes de nota:', error);
+    return res.status(500).json({ error: 'Erro ao listar componentes de nota.' });
+  }
+});
+
+// Obter um componente de nota por ID
+app.get('/componente-nota/:id', async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isFinite(id) || id <= 0) {
+      return res.status(400).json({ error: 'ID inválido.' });
+    }
+
+    const componente = await getComponenteNotaById(id);
+    if (!componente) {
+      return res.status(404).json({ error: 'Componente de nota não encontrado.' });
+    }
+
+    return res.json(componente);
+  } catch (error) {
+    console.error('Erro ao buscar componente de nota:', error);
+    return res.status(500).json({ error: 'Erro ao buscar componente de nota.' });
+  }
+});
+
+// Excluir componente de nota por ID
+app.delete('/componente-nota/:id', async (req: Request, res: Response) => {
+  try {
+    const id = Number(req.params.id);
+
+    if (!Number.isFinite(id) || id <= 0) {
+      return res.status(400).json({ error: 'ID inválido.' });
+    }
+
+    const deletado = await deleteComponenteNotaById(id);
+    if (!deletado) {
+      return res.status(404).json({ error: 'Componente de nota não encontrado.' });
+    }
+
+    return res.status(200).json({ message: 'Componente de nota excluído com sucesso', id });
+  } catch (error) {
+    console.error('Erro ao excluir componente de nota:', error);
+    return res.status(500).json({ error: 'Erro interno ao excluir componente de nota.' });
+  }
+});
+
+//Rota de Alunos
+
+
 
 
 // Inicia o servidor
