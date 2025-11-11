@@ -1,44 +1,52 @@
 <!DOCTYPE html>
 <html lang="pt-br">
-<!--csv e json
+  <!--csv e json
 -->
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="/importar/importar.css">
-  <script src="/importar/importar.js" defer></script>
-  <script src="/importar/importar_csv.js" defer></script>
-  <title>NotaDez - Importar Alunos</title>
-</head>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/importar/importar.css" />
+    <script src="/importar/importar.js" defer></script>
+    <script src="/importar/importar_csv.js" defer></script>
+    <title>NotaDez - Importar Alunos</title>
+  </head>
 
-<body>
-  <div class="importar-container">
-    <h1 class="importar-title">Importar Alunos</h1>
-    <!--se for mais q 100, mudar manualmente no js-->
-    <p id="texto-importar">
-      Selecione um arquivo <strong>JSON</strong> ou <strong>CSV</strong> com os dados dos alunos<br>
-      O sistema mostrará até <strong>100 alunos</strong> e indicará o total importado
-    </p>
+  <body>
+    <div class="importar-container">
+      <h1 class="importar-title">Importar Alunos</h1>
+      <!--se for mais q 100, mudar manualmente no js-->
+      <p id="texto-importar">
+        Selecione um arquivo <strong>CSV</strong> com os dados dos alunos<br />
+        O sistema mostrará até <strong>100 alunos</strong> e indicará o total
+        importado
+      </p>
 
-    <form id="form-importar">
-      <div class="formulario">
-        <label for="arquivo">Arquivo:</label>
-        <input type="file" id="arquivo" class="entrada-arquivo" accept=".json, .csv" required>
+      <form id="form-importar">
+        <div class="formulario">
+          <label for="arquivo">Arquivo:</label>
+          <input
+            type="file"
+            id="arquivo"
+            class="entrada-arquivo"
+            accept=".json, .csv"
+            required
+          />
+        </div>
+
+        <button type="button" id="btnImportar" class="importar-button">
+          Importar
+        </button>
+      </form>
+
+      <div id="resultado">
+        <h3>Alunos importados:</h3>
+        <p id="resumo"></p>
+        <ul id="lista-alunos"></ul>
       </div>
 
-      <button type="button" id="btnImportar" class="importar-button">Importar</button>
-    </form>
-
-    <div id="resultado">
-      <h3>Alunos importados:</h3>
-      <p id="resumo"></p>
-      <ul id="lista-alunos"></ul>
+      <div class="links-container">
+        <a href="../login/index.html" class="link">voltar para o login</a>
+      </div>
     </div>
-
-    <div class="links-container">
-      <a href="../login/index.html" class="link">voltar para o login</a>
-    </div>
-  </div>
-</body>
-
+  </body>
 </html>
