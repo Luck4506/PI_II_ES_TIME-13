@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cálculo de Média</title>
+
+  <link rel="stylesheet" href="./media.css">
+</head>
+<body>
+  <div class="media-container">
+    <h1 class="media-title">Cálculo de Média</h1>
+
+    <div class="formulario">
+      <label for="tipoMedia">Selecione o tipo de média:</label>
+      <select id="tipoMedia">
+        <option value="aritmetica">Aritmética</option>
+        <option value="ponderada">Ponderada</option>
+      </select>
+    </div>
+
+    <div id="inputsNotas"></div>
+
+    <button id="adicionarNota" class="media-button">Adicionar Nota</button>
+    <button id="calcular" class="media-button">Calcular Média</button>
+
+    <div id="resultado" class="resultado"></div>
+
+    <button id="novoRegistro" class="media-button btn-limpar">
+      Novo Registro / Apagar Dados
+    </button>
+
+  </div>
+
+  <script src="./media.js"></script>
+</body>
+</html>
