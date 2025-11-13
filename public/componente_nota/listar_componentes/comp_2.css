@@ -1,0 +1,40 @@
+/* Reset já foi feito pela configuração padrão do Bootstrap */
+
+/* Fundo */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(135deg, #a3c2c3 0%, #2db1ea 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center; /* centraliza na vertical*/
+  justify-content: center; /* centraliza na horizontal */
+  padding: 20px;
+}
+
+/* Card */
+.card {
+  background: white;
+  padding: 60px 40px;
+  border-radius: 12px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 700px;
+  text-align: center;
+}
+
+/* Título */
+#title {
+  color: #333;
+  margin-bottom: 60px;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+/* Label */
+.componente_label {
+  display: block;
+  margin-bottom: 8px;
+  color: #555;
+  font-weight: 500;
+  font-size: 24px;
+}

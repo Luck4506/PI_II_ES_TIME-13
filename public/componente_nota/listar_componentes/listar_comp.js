@@ -1,7 +1,34 @@
+
+function validarId(id){
+
+    if(id === undefined || id === null || id === ''){
+        throw new Error('Campo vazio.');
+    }
+
+    id = Number(id);
+
+    if(Number.isNaN(id)){
+        throw new Error('Esse ID não é um número.')
+    }
+
+    if(!Number.isInteger(id)){
+        throw new Error('Esse ID não é um inteiro.');
+    }
+
+    if(id <= 0){
+        throw new Error('Valor inválido para ID. Digite um número inteiro positivo diferente de zero.');
+    }
+
+    return id;
+}
+
 async function preencherTabela(){ // dados é o JSON
 
     try{
-        const dados = await fetch('/ver_disciplina')
+        const disciplinaId_Str = document.getElementById('componente_disc_id').value.trim();
+        const disciplinaId = validarId(disciplinaId_Str);
+
+        const dados = await fetch(`/componentes-nota/${disciplinaId}`)
             .then(response => {
 
             if(!response.ok){
@@ -23,14 +50,14 @@ async function preencherTabela(){ // dados é o JSON
 
         dados.forEach(item => { // Para cada elemento do array de objetos JSON.
             
-            const tr = document.createElement("tr"); // Dava para ter declarado uma constante para cada elemento criado e inserido
-            tr.innerHTML =                           // valores no .textContent (desse modo: tdNome.textContent = data.nome); 
+            const tr = document.createElement("tr");
+            tr.innerHTML =
             `
                 <th>${item.id}</th>
+                <td>${item.codigo_disciplina}</td>
                 <td>${item.nome}</td>
                 <td>${item.sigla}</td>
-                <td>${item.codigo}</td>
-                <td>${item.periodo_curso} meses</td>
+                <td>${item.descricao}</td>
             `;
 
             tbody.append(tr); // Insere a(s) nova(s) linha(s) no tbody ( corpo da tabela --> <tbody>[...]</tbody> );
@@ -40,5 +67,3 @@ async function preencherTabela(){ // dados é o JSON
         console.error(error);
     }
 }
-
-preencherTabela();
