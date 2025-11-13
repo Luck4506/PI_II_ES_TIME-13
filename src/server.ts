@@ -195,12 +195,12 @@ app.get('/mudar_senha', (req: Request, res: Response) => {
 // Rota para inserir uma disciplina
 app.post('/disciplina', async (req: Request, res: Response) => {
   try{
-    const {nome, sigla, codigo, periodo_curso} = req.body;
-    if(!nome || !sigla || !codigo || !periodo_curso){
-      return res.status(400).json({error: "Campos 'nome', 'sigla', 'codigo' e 'periodo_curso' são obrigatórios."});
+    const {curso_ID, nome, sigla, codigo, periodo_curso} = req.body;
+    if(!curso_ID || !nome || !sigla || !codigo || !periodo_curso){
+      return res.status(400).json({error: "Campos 'curso_ID', 'nome', 'sigla', 'codigo' e 'periodo_curso' são obrigatórios."});
     }
 
-    const id = await addDisciplina(nome, sigla, codigo, periodo_curso);
+    const id = await addDisciplina(curso_ID, nome, sigla, codigo, periodo_curso);
     res.status(201).json({message: "Disciplina adicionada com sucesso", id});
   }catch(error){
     console.error(error);

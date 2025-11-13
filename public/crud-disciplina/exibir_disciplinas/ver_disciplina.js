@@ -1,0 +1,44 @@
+async function preencherTabela(){ // dados é o JSON
+
+    try{
+        const dados = await fetch('/ver_disciplina')
+            .then(response => {
+
+            if(!response.ok){
+                throw new Error("Não foi possível buscar o recurso.");
+            }            
+
+            return response.json();
+        })
+
+        const tbody = document.querySelector(".table tbody"); // Constante representando o <tbody>
+        tbody.innerHTML = ""; // Limpa a tabela.
+
+        // text-muted, classe do Bootstrap, deixa o texto cinza.
+
+        if(!Array.isArray(dados) || dados.length === 0){
+            tbody.innerHTML = `<tr><td colspan="5" class = "text-muted">Nenhum registro encontrado.</td></tr>`; // Mescla as colunas horizontalmente (colspan). Restando uma única célula (intersecção).
+            return;
+        }
+
+        dados.forEach(item => { // Para cada elemento do array de objetos JSON.
+            
+            const tr = document.createElement("tr"); // Dava para ter declarado uma constante para cada elemento criado e inserido
+            tr.innerHTML =                           // valores no .textContent (desse modo: tdNome.textContent = data.nome); 
+            `
+                <th scope="row">${item.id}</th>
+                <td>${item.nome}</td>
+                <td>${item.sigla}</td>
+                <td>${item.codigo}</td>
+                <td>${item.periodo_curso} meses</td>
+            `;
+
+            tbody.append(tr); // Insere a(s) nova(s) linha(s) no tbody ( corpo da tabela --> <tbody>[...]</tbody> );
+        })
+    }
+    catch(error){
+        console.error(error);
+    }
+}
+
+preencherTabela();

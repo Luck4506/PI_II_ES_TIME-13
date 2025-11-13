@@ -3,22 +3,23 @@ import OracleDB from "oracledb";
 
 export interface Disciplina{
   id: number,
+  curso_ID: number,
   nome: string,
   sigla: string,
   codigo: string,
   periodo_curso: number
 };
 
-export async function addDisciplina(nome: string, sigla: string, codigo: string, periodo_curso: number): Promise<number> {
+export async function addDisciplina(curso_ID: number, nome: string, sigla: string, codigo: string, periodo_curso: number): Promise<number> {
   const conn = await open();
   try{
     const result = await conn.execute<{ outBinds : { id: number }}>(
       `
-      INSERT INTO DISCIPLINA (NOME, SIGLA, CODIGO, PERIODO_CURSO)
-      VALUES (:nome, :sigla, :codigo, :periodo_curso)
+      INSERT INTO DISCIPLINA (CURSO_ID, NOME, SIGLA, CODIGO, PERIODO_CURSO)
+      VALUES (:curso_ID, :nome, :sigla, :codigo, :periodo_curso)
       RETURNING CODIGO_DISCIPLINA INTO :id
       `,
-      {nome, sigla, codigo, periodo_curso, id: { dir: OracleDB.BIND_OUT, type: OracleDB.NUMBER }},
+      {curso_ID, nome, sigla, codigo, periodo_curso, id: { dir: OracleDB.BIND_OUT, type: OracleDB.NUMBER }},
       { autoCommit: true }
     );
 
