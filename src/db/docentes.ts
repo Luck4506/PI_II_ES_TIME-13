@@ -14,7 +14,7 @@ export async function addDocente(nome: string, email: string, telefone: string, 
   try {
     const result = await conn.execute<{ outBinds: { id: number } }>(
       `
-      INSERT INTO DOCENTE (NOME, EMAIL, TELEFONE, SENHA)
+      INSERT INTO DOCENTE (NOME, EMAIL, TELEFONE_CELULAR, SENHA)
       VALUES (:nome, :email, :telefone, :senha)
       RETURNING DOCENTE_ID INTO :id
       `,
