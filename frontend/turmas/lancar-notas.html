@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>Lançar Notas - NotaDez</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./lancar-notas.css" />
+</head>
+<body>
+    <main class="card">
+        <h1>Lançar Notas</h1>
+        <p class="muted">
+        Digite as notas dos componentes. A <strong>Nota Final</strong> é calculada automaticamente
+        pela <em>fórmula da disciplina</em>.
+        </p>
+
+        <section class="grid-3">
+        <div>
+            <label for="turma">Turma</label>
+            <select id="turma" class="entrada">
+            <!-- BD preencher com as turmas do docente -->
+            <option value="TURMA1">Turma 1</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="disciplina">Disciplina</label>
+            <select id="disciplina" class="entrada" disabled>
+            <!-- BD escolher a turma, carregar a turma -->
+            <option value="DISC1">Projeto Integrador 2 (PI2)</option>
+            </select>
+        </div>
+
+        <div aria-hidden="true"></div>
+        </section>
+        <section class="toolbar">
+        <!-- BD selecionar/abrir a turma, buscar a fórmula da DISCIPLINA da turma -->
+        <div>Fórmula vigente: <code id="formula">(P1 + P2 + T1) / 3</code></div>
+        </section>
+
+        <!-- Tabela -->
+        <section class="tabela">
+        <table id="tabela" class="table">
+            <thead>
+            <tr>
+                <th style="width:120px">Matrícula</th>
+                <th>Aluno</th>
+
+                <th>P1</th>
+                <th>P2</th>
+                <th>T1</th>
+                <th>Nota Final</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            <!-- BD montar as linhas usando a lista de alunos da turma (RA + nome) -->
+            </tbody>
+        </table>
+        </section>
+
+        <!-- ADC NO BD -->
+        <section class="toolbar end">
+        <button id="btnSalvar" class="media-button primario">Salvar (exemplo)</button>
+        <button id="btnRecarregar" class="media-button">Recarregar</button>
+        </section>
+    </main>
+
+    <script src="./lancar-notas.js"></script>
+</body>
+</html>
