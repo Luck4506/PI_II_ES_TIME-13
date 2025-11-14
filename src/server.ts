@@ -1,7 +1,7 @@
 //Importaçãoes de módulos necessários
 
 import express, { Request, Response, NextFunction } from "express";
-import { getDocenteByEmail, generarCodigoDeVerificacao,verificarExisteEmail } from "./db/login";
+import { getDocenteByEmail, generarCodigoDeVerificacao,verificarExisteEmail,fazerUpdateSenha } from "./db/login";
 import { registrarInstituicao,removerRelacaoDocente,verificarDocenteCurso,entrarIdInstituicao,verifyIdInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
 import { verificarCursoInstituica,verificarCursoExiste,estaRelacaoCurso,estaInstituicao,existeCursoId,cadastrarCurso,apagarRelacaoCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
 import bodyParser from "body-parser";
@@ -70,19 +70,6 @@ app.post("/cadastrar", async (req: Request, res: Response) => {
     if (!nome || !email || !telefone || !senha) {
       return res.status(400).json({ error: "Campos nome, email, telefone e senha obrigatórios." });
     }
-    /*
-    const codigoVericacao = await generarCodigoDeVerificacao();
-
-    const enviado = await enviarEmail(
-      email,
-      "Teste de Envio de Email",
-      `<p>O codigo de verificao do seu email é ${codigoVericacao}</p>`
-    );
-
-    if (!enviado) {
-      return res.status(500).json({ error: "Falha ao enviar email." });
-    }
-*/
     const id = await addDocente(nome, email, telefone, senha);
     return res.status(201).json({ message: "Docente adicionado com sucesso", id });
 
@@ -326,6 +313,20 @@ app.post('/instituicao/cadastrarRelacao', async (req, res) => {
 });
 
 
+app.post('/updateSenhaDb', async (req, res) => {
+    const { email,senha } = req.body;
+    try {
+        const registrado = await fazerUpdateSenha(email,senha);
+        if (registrado) {
+            return res.json(true);
+        } else {
+            return res.json(false);
+        }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
 //rota para cadastrar instituicao
 app.post('/instituicao/cadastrar', async (req, res) => {

@@ -45,6 +45,25 @@ export async function verificarExisteEmail(email: string) {
     await close(conn);
   }
 }
+
+export async function fazerUpdateSenha(email: string, senha: string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      UPDATE DOCENTE
+      SET SENHA = :senha
+      WHERE EMAIL = :email
+      `,
+      { senha, email },
+      { autoCommit: true }
+    );
+
+    return result.rowsAffected && result.rowsAffected > 0;
+  } finally {
+    await close(conn);
+  }
+}
 export function generarCodigoDeVerificacao(): string {
   const min = 10000;
   const max = 99999;

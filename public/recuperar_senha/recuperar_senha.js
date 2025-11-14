@@ -3,10 +3,14 @@ btn?.addEventListener('click', (e) => { e.preventDefault(); recuperarSenha(); })
 document.querySelector('form')?.addEventListener('submit', (e) => e.preventDefault());
 document.querySelector('#verify-btn').addEventListener('click', verificarCodigo);
 document.querySelector('#sair-btn').addEventListener('click', sair);
+document.querySelector('#sairAtualizar-btn').addEventListener('click', sair);
+document.querySelector('#atualizar-btn').addEventListener('click', atualizarSenha);
+
 const modalVerify = document.querySelector('#verificacao-modal');
 const modalSenha = document.querySelector('#recuperarSenha-modal');
 let email = '';
-
+let senha = '';
+let senhaIgual = '';
 async function validarEntradas() {
   capturarEntradas();
   if (email === ''||!isNaN(email)) {
@@ -75,6 +79,8 @@ function verificarCodigo(){
         if(tentativa===String(codigoCorreto)){
             window.alert('Codigo verificado com sucesso!');
             modalVerify.style.display = 'none';
+            modalSenha.style.display='flex';
+
         }else{
             window.alert('Codigo diferente do enviado no email!');
             document.getElementById("input-modal").value = "";
@@ -88,6 +94,41 @@ function verificarInputCodigo(codigo){
     }else{
         return true;
     }
+}
+async function atualizarSenha(){
+  if(verificarInputSenha()){
+    await updateSenha(email);
+    modalSenha.style.display='none';
+    sair();
+  }
+}
+function verificarInputSenha(){
+  capturarEntradasSenha();
+  if(senha==''||senhaIgual==''||senha!=senhaIgual){
+    window.alert('Dados Invalidos!');
+    return false;
+  }
+  return true;
+}
+async function updateSenha(email) {
+  const dados = {
+        email:email,
+        senha:senha
+    };
+    try {
+     await fetch('/updateSenhaDb', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
+    });
+  } catch (erro) {
+    console.error('Erro ao enviar email:', erro);
+    return false;
+  }
+}
+function capturarEntradasSenha() {
+  senha = document.querySelector('#input-senha-modal').value;
+  senhaIgual = document.querySelector('#input-senha-segundo-modal').value;
 }
 function sair(){
     window.location.href = "/login";
