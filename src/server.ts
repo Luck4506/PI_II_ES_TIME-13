@@ -70,7 +70,7 @@ app.post("/cadastrar", async (req: Request, res: Response) => {
     if (!nome || !email || !telefone || !senha) {
       return res.status(400).json({ error: "Campos nome, email, telefone e senha obrigatórios." });
     }
-
+    /*
     const codigoVericacao = await generarCodigoDeVerificacao();
 
     const enviado = await enviarEmail(
@@ -82,7 +82,7 @@ app.post("/cadastrar", async (req: Request, res: Response) => {
     if (!enviado) {
       return res.status(500).json({ error: "Falha ao enviar email." });
     }
-
+*/
     const id = await addDocente(nome, email, telefone, senha);
     return res.status(201).json({ message: "Docente adicionado com sucesso", id });
 
@@ -92,6 +92,26 @@ app.post("/cadastrar", async (req: Request, res: Response) => {
   }
 });
 
+app.post('/enviarCodigoEmail', async (req, res) => {
+    const { codigo,email } = req.body;
+
+    try {
+        const enviado = await enviarEmail(
+      email,
+      "Codigo de verificacao",
+      `<p>O codigo de verificao do seu email é ${codigo}</p>`
+    );
+
+    if (!enviado) {
+            return res.status(500).json({ error: "Falha ao enviar email." });
+        }
+    return res.status(200).json({ message: "Código enviado com sucesso." });
+    
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
 
 //Rota para verificar login (recebe email e senha e compara com o banco)
