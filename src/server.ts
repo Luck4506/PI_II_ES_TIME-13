@@ -1,7 +1,7 @@
 //Importaçãoes de módulos necessários
 
 import express, { Request, Response, NextFunction } from "express";
-import { getDocenteByEmail, generarCodigoDeVerificacao,verificarExisteEmail,fazerUpdateSenha } from "./db/login";
+import { getDocenteByEmail,verificarExisteEmail,fazerUpdateSenha } from "./db/login";
 import { registrarInstituicao,removerRelacaoDocente,verificarDocenteCurso,entrarIdInstituicao,verifyIdInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
 import { verificarCursoInstituica,verificarCursoExiste,estaRelacaoCurso,estaInstituicao,existeCursoId,cadastrarCurso,apagarRelacaoCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
 import bodyParser from "body-parser";

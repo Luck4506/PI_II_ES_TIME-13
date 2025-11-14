@@ -3,14 +3,14 @@ async function adicionar(){
 
     const botao_cadastrar=document.getElementById("btn-cadastrar");
     
-    //desativa clicar o botao novamente.
+    //desativa botao
     botao_cadastrar.disabled = true;
 
     //pegar os dados do index
     const nome_int=document.getElementById("instituicao-nome").value.toLowerCase().trim();
     const sigla_int=document.getElementById("instituicao-sigla").value.toLowerCase().trim();
 
-    //variavel que verifica a validade dos inputs
+    //verifica a validade dos inputs
     const valido= await verificar_inputs(nome_int,sigla_int);
 
     if (valido){
@@ -18,15 +18,15 @@ async function adicionar(){
         //se tudo der certo faz o cadastro da instituicao
         const realizarCadastro=await cadastrarInstituicao(nome_int,sigla_int);
         if(realizarCadastro){
+            //pega o id da institicao
             const instituicao_id=await pegarIdPorNome(nome_int);
-            const realizarCadastroRelacao=await cadastrarRelacao(instituicao_id);
-            if(realizarCadastroRelacao){
-                console.log("Instituicao cadastrada!");
+            //utiliza o id da instituicao e docente_id para criar a relacao na tabela docente_institicao
+            await cadastrarRelacao(instituicao_id);
             alert("Instituicao Cadastrada!");
+            //ativa o bota
             botao_cadastrar.disabled = false;
             limparCampos();
             return;
-            }
         }
     }else{
 
@@ -58,13 +58,14 @@ async function verificar_inputs(nome,sigla){
             headers: {'Content-Type':'application/json'},
             body:JSON.stringify(dados)
         });
-
+        //se der erro na verificacao
         if (!resposta.ok){
             alert('Erro ao tentar autenticar.');
             console.warn('HTTP error:', resposta.status, resposta.statusText);
             return;
         }
         const existe = await resposta.json();
+        //se existir para o cadastro
         if (existe === true) {
             alert("Nome já existe!");
             console.log("Erro na verificacao: nome ja existe");
@@ -78,6 +79,7 @@ async function verificar_inputs(nome,sigla){
         return false;
     }
 }
+//funcao quue envia os dados da institicao para o db
 async function cadastrarInstituicao(nome_int, sigla_int) {
     const dados2 = { nome: nome_int, sigla: sigla_int};
 
@@ -101,6 +103,7 @@ async function cadastrarInstituicao(nome_int, sigla_int) {
         return false;
     }
 }
+//funcao que enviar os dados da relacao pro db
 async function cadastrarRelacao(instituicao_id) {
     const dados={instituicao_id};
     try{
@@ -127,8 +130,9 @@ async function cadastrarRelacao(instituicao_id) {
         return false;
     }
 }
+//funcao de pegar id da instituicao pelo nome dela do db
 async function pegarIdPorNome(nome_int) {
-    const dados = { nome: nome_int };   // CORRIGIDO ✅
+    const dados = { nome: nome_int };
 
     try {
         const resposta = await fetch('/instituicao/verificar/pegarid', {
