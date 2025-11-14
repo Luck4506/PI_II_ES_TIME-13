@@ -26,7 +26,25 @@ export async function getDocenteByEmail(email: string): Promise<Docente | null> 
   }
 }
 
+export async function verificarExisteEmail(email: string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1 
+      FROM DOCENTE
+      WHERE EMAIL = :email
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { email },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
 
+    return result.rows && result.rows.length > 0;
+  } finally {
+    await close(conn);
+  }
+}
 export function generarCodigoDeVerificacao(): string {
   const min = 10000;
   const max = 99999;

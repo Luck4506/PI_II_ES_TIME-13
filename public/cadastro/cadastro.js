@@ -33,8 +33,11 @@ function validarEntradas(){
         window.alert('As senhas precisam ser iguais!')
         return false
     }
-
-    else{
+    
+    else if (existeEmail(email)){
+        window.alert('Ja existe uma conta com esse email!');
+        return false;
+    }else{
         return true
     }
 }
@@ -81,6 +84,21 @@ function verificarCodigo(){
             document.getElementById("input-modal").value = "";
         }
     }
+}
+async function existeEmail(email){
+    const dados = {
+        email:email
+    };
+    try {
+     await fetch('/verificarEmailCadastrado', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(dados)
+    });
+  } catch (erro) {
+    console.error('Erro ao enviar email:', erro);
+    return false;
+  }
 }
 function verificarInputCodigo(codigo){
     if(codigo==''||isNaN(codigo)){

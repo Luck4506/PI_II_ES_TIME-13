@@ -1,7 +1,7 @@
 //Importaçãoes de módulos necessários
 
 import express, { Request, Response, NextFunction } from "express";
-import { getDocenteByEmail, generarCodigoDeVerificacao } from "./db/login";
+import { getDocenteByEmail, generarCodigoDeVerificacao,verificarExisteEmail } from "./db/login";
 import { registrarInstituicao,removerRelacaoDocente,verificarDocenteCurso,entrarIdInstituicao,verifyIdInstituicao,verifyByNameSigla, listarInstituicao, verifyByName, atualizarInstituicao, apagarInstituicao,pegarIdPorNome,existeDocente,existeCurso,cadastrarRelacao} from "./db/instituicao";
 import { verificarCursoInstituica,verificarCursoExiste,estaRelacaoCurso,estaInstituicao,existeCursoId,cadastrarCurso,apagarRelacaoCurso,verificarCurso,listarCurso,atualizarCurso,apagarCursoComando,pegarIdCurso,pegarDisciplinaPorId,cadastrarRelacaoCurso } from "./db/curso";
 import bodyParser from "body-parser";
@@ -823,6 +823,18 @@ app.post('/curso/apagarRelacao', async (req, res) => {
         } else {
             return res.json(false);
         }
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/verificarEmailCadastrado', async (req, res) => {
+    const { email } = req.body;
+
+    try {
+        const existe = await verificarExisteEmail(email);
+        return (existe);
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);
         return res.status(500).json({ error: 'Erro no servidor' });
