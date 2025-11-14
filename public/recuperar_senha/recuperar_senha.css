@@ -151,7 +151,7 @@ gap: 10px;
     outline: none;
     height: 30px;
 }
-#verify-btn,#recuperar-btn,#sairSenha-btn, #sair-btn{
+#verify-btn,#atualizar-btn,#sairAtualizar-btn, #sair-btn{
     cursor: pointer;
     margin: 10px auto 0 auto;
     border-radius: 10px;
