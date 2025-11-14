@@ -23,9 +23,32 @@
 
     <button type="submit" class="recuperar-button" id="btn-recuperar-senha">Recuperar senha</button>
     </form>
-
-    <div id="resposta">
-    <p id="mensagem-recuperacao"><span id="texto-recuperacao"></span></p>
+    <div id="verificacao-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Verifique sua conta</h2>
+        <p>Enviamos um código de 5 dígitos para seu email. </p>
+        
+        <div id="code-inputs">
+          <input type="text" id="input-modal" class="code-input" maxlength="5" required>
+        </div>
+        
+        <button id="verify-btn">Verificar</button>
+        <button id="sair-btn">Sair</button>
+      </div>
+    </div>
+    <div id="recuperarSenha-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Nova senha</h2>
+        <p>Digite a nova senha. </p>
+        
+        <div id="code-inputs">
+          <input type="text" id="input-modal" class="code-input" required>
+          <input type="text" id="input-modal" class="code-input" required>
+        </div>
+        
+        <button id="verify-btn">Atualizar</button>
+        <button id="sair-btn">Sair</button>
+      </div>
     </div>
 </body>
 </html>

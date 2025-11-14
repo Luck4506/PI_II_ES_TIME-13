@@ -1,7 +1,12 @@
 document.querySelector('#btn-cadastrar').addEventListener('click', cadastrarUsuario) // Quando o botão for clicado, a função chamada 'cadastrarUsuario' será executada.
 document.querySelector('#verify-btn').addEventListener('click', verificarCodigo);
 document.querySelector('#sair-btn').addEventListener('click', sair);
-const modal = document.querySelector('#verificacao-modal');
+document.querySelector('#sairSenha-btn').addEventListener('click', sair);
+document.querySelector('#recuperar-btn').addEventListener('click',recuperar );
+
+const modalVerify = document.querySelector('#verificacao-modal');
+const modalSenha = document.querySelector('#recuperarSenha-modal');
+
 let nome = ''
 let email = ''
 //precisa adicionar verificacao se o email ja existe no db...
@@ -19,33 +24,31 @@ function capturarEntradas(){
 
 }
 
-function validarEntradas(){
+async function validarEntradas(){
 
-    capturarEntradas()
-
+    capturarEntradas();
     if (nome == '' || email == '' || telefone == '' || senha == '' || senhaConfirmacao == '')
     {
         window.alert('Por favor, preencha todos os campos!')
         return false
     }
 
-    else if (senha != senhaConfirmacao){
+    if (senha != senhaConfirmacao){
         window.alert('As senhas precisam ser iguais!')
         return false
     }
-    
-    else if (existeEmail(email)){
-        window.alert('Ja existe uma conta com esse email!');
+    const existe = await existeEmail(email);
+    if (existe){
+        modalSenha.style.display = 'flex';
         return false;
-    }else{
-        return true
     }
+        return true;
 }
 
 
 async function cadastrarUsuario(){
-    if (validarEntradas() == true){
-        modal.style.display = 'flex';
+    if (await validarEntradas()){
+        modalVerify.style.display = 'flex';
         enviarCodigo(email);
     }
 }
@@ -77,7 +80,7 @@ function verificarCodigo(){
     if(verificarInputCodigo(tentativa)){
         if(tentativa===String(codigoCorreto)){
             window.alert('Codigo verificado com sucesso!');
-            modal.style.display = 'none';
+            modalVerify.style.display = 'none';
             enviarCadastroDb();
         }else{
             window.alert('Codigo diferente do enviado no email!');
@@ -86,19 +89,20 @@ function verificarCodigo(){
     }
 }
 async function existeEmail(email){
-    const dados = {
-        email:email
-    };
     try {
-     await fetch('/verificarEmailCadastrado', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(dados)
-    });
-  } catch (erro) {
-    console.error('Erro ao enviar email:', erro);
-    return false;
-  }
+        const resp = await fetch("/verificarEmailCadastrado", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ email })
+        });
+
+        const resultado = await resp.json();
+        return resultado;
+    }
+    catch (erro) {
+        console.error("Erro ao verificar email:", erro);
+        return false;
+    }
 }
 function verificarInputCodigo(codigo){
     if(codigo==''||isNaN(codigo)){
@@ -137,6 +141,10 @@ function enviarCadastroDb(){
 }
 function sair(){
     window.location.href = "/login";
+    return;
+}
+function recuperar(){
+    window.location.href = "/recuperar_senha/";
     return;
 }
 console.log("Script de cadastro.js carregado com sucesso!");

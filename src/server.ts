@@ -834,7 +834,7 @@ app.post('/verificarEmailCadastrado', async (req, res) => {
 
     try {
         const existe = await verificarExisteEmail(email);
-        return (existe);
+        return res.json(existe);
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);
         return res.status(500).json({ error: 'Erro no servidor' });
