@@ -16,12 +16,16 @@ padding: 20px;
 
 .login-container {
 background: white;
-padding: 40px;
+padding: 20px;
 border-radius: 12px;
 box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
 width: 100%;
-max-width: 400px;
+max-width: 1600px;
+height: 800px;
 text-align: center;
+}
+.menu-container {
+    display: flex;
 }
 
 .login-title {
@@ -59,8 +63,8 @@ border-color: #667eea;
 }
 
 .button {
-width: 100%;
-padding: 14px;
+width: 200px;
+padding: 10px;
 background: linear-gradient(135deg, #1dc7ff 0%, #190aec 100%);
 color: white;
 border: none;
@@ -70,6 +74,7 @@ font-weight: 600;
 cursor: pointer;
 transition: transform 0.2s ease, box-shadow 0.2s ease;
 margin-top: 10px;
+display: block;
 }
 
 .button:hover {
@@ -122,4 +127,91 @@ padding: 30px 20px;
 flex-direction: column;
 gap: 10px;
 }
+}
+.menu-container {
+  display: flex;
+  flex-direction: column; /* um em cima do outro */
+  position: absolute;
+  left: 200px;
+  top: 280px;
+}
+
+/* Dropdown principal */
+.dropdown {
+  position: relative;
+  width: 260px;
+  margin-bottom: 10px;
+}
+
+/* Botões principais */
+.dropdown-btn {
+  width: 100%;
+}
+
+/* Conteúdo padrão do dropdown */
+.dropdown-content {
+  position: absolute;
+  left: 270px;        /* aparece à direita */
+  top: 0;
+  display: none;
+  flex-direction: column;
+  width: 250px;
+}
+
+/* Abrir dropdown */
+.dropdown.open > .dropdown-content {
+  display: flex;
+}
+
+/* Subdropdown (submenu dentro da Instituição e Curso) */
+.dropdown.sub {
+  position: relative;
+  margin-left: 0;
+}
+
+.dropdown.sub .dropdown-content {
+  left: 270px; /* submenu ao lado do submenu */
+  top: 0;
+}
+.turmas{
+  width: 100%;
+  height: 100%;
+}
+.turmas {
+  flex: 1;
+  display: flex;
+  justify-content: center;   /* centro horizontal */
+  align-items: flex-start;   /* alinhado abaixo do título */
+  padding-top: 40px;
+}
+
+#tabela-turmas {
+  width: 70%;
+  max-width: 900px;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 10px;
+  overflow: hidden; /* bordas arredondadas */
+  box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+}
+
+#tabela-turmas th {
+  background: #1a4fff;
+  color: white;
+  padding: 14px;
+  font-size: 18px;
+  text-align: left;
+}
+
+#tabela-turmas td {
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
+  font-size: 16px;
+}
+
+#tabela-turmas tr:nth-child(even) {
+  background: #f7f7f7;
+}
+#tabela-turmas tr:hover {
+  background-color: #e6e6e6;
 }

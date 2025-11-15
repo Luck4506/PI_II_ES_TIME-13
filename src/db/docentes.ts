@@ -86,6 +86,35 @@ export async function listarDocenteCurso(curso_id: number) {
   }
 }
 
+export async function pegarTurmasDb(docente_id: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 
+        t.codigo_turma,
+        d.nome AS nome_disciplina,
+        t.nome AS nome_turma
+      FROM TURMA t
+      JOIN DISCIPLINA d 
+        ON d.codigo_disciplina = t.codigo_disciplina
+      WHERE t.docente_id = :docente_id
+      ORDER BY t.codigo_turma
+      `,
+      { docente_id },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    const rows = result.rows || [];
+    return rows.map((row: any) => ({
+      CODIGO_TURMA: row.CODIGO_TURMA,
+      NOME_DISCIPLINA: row.NOME_DISCIPLINA,
+      NOME_TURMA: row.NOME_TURMA
+    }));
+  } finally {
+    await close(conn);
+  }
+}
 export async function possuiInstituicao(docente_id:number) {
   const conn = await open();
   try {

@@ -9,7 +9,7 @@ import path from "path";
 import cors from "cors";
 import session from "express-session";
 import 'express-session';
-import { addDocente,possuiInstituicao,listarDocente,listarDocenteCurso } from "./db/docentes";
+import { addDocente,possuiInstituicao,listarDocente,listarDocenteCurso,pegarTurmasDb } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
@@ -311,8 +311,19 @@ app.post('/instituicao/cadastrarRelacao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
-
+app.post("/turma/listarDoDocente", async (req, res) => {
+    if (!req.session.user) {
+        return res.status(401).json({ erro: "Não autenticado" });
+    }
+    const docente_id= req.session.user.id;
+    try {
+        const turmas = await pegarTurmasDb(docente_id);
+        return res.json(turmas);
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ erro: "Erro no servidor" });
+    }
+});
 app.post('/updateSenhaDb', async (req, res) => {
     const { email,senha } = req.body;
     try {

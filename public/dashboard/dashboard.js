@@ -33,4 +33,58 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.error("Erro ao obter dados da sessão:", err);
   }
 });
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdownButtons = document.querySelectorAll(".dropdown-btn");
+
+  dropdownButtons.forEach(btn => {
+    btn.addEventListener("click", () => {
+      const parent = btn.parentElement;
+
+      // abre/fecha somente o dropdown clicado
+      parent.classList.toggle("open");
+    });
+  });
+});
+document.addEventListener("DOMContentLoaded", carregarTurmasDocente);
+
+async function carregarTurmasDocente() {
+    try {
+        const resp = await fetch("/turma/listarDoDocente", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" }
+        });
+
+        if (!resp.ok) {
+            console.error("Erro ao buscar turmas");
+            return;
+        }
+
+        const dados = await resp.json();
+        const corpo = document.getElementById("lista-turmas");
+
+        corpo.innerHTML = "";
+
+        if (dados.length === 0) {
+            corpo.innerHTML = `
+                <tr>
+                    <td colspan="3" style="text-align:center">Nenhuma turma encontrada!</td>
+                </tr>
+            `;
+            return;
+        }
+
+        dados.forEach(t => {
+            corpo.innerHTML += `
+                <tr>
+                    <td>${t.CODIGO_TURMA}</td>
+                    <td>${t.NOME_DISCIPLINA}</td>
+                    <td>${t.NOME_TURMA ?? "-"}</td>
+                </tr>
+            `;
+        });
+
+    } catch (erro) {
+        console.error("Erro ao carregar turmas:", erro);
+    }
+}
 
