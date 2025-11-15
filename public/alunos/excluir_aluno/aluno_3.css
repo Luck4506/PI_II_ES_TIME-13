@@ -8,7 +8,7 @@
 /* Fundo */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #0cf4f8 0%, #1205cd 100%);
+  background: linear-gradient(130deg, #17dee1 0%, #4035bc 100%);
   min-height: 100vh;
   display: flex;
   align-items: center;
@@ -18,7 +18,7 @@ body {
 }
 
 /* Card */
-.disciplina-container {
+.card {
   background: white;
   padding: 36px;
   border-radius: 14px;
@@ -28,26 +28,28 @@ body {
   text-align: left;
 }
 
-/* Título e subtítulo */
-.disciplina-title {
+/* Título */
+#title {
   margin-bottom: 8px;
   font-size: 28px;
   font-weight: 600;
   color: #1e293b;
 }
 
-.disciplina-subtitle {
+/* Subtítulo */
+.aluno_subtitle {
   margin-bottom: 24px;
   font-size: 15px;
   color: #475569;
 }
 
-/* Form */
-.disciplina-form {
+/* Form (container) */
+.aluno_form {
   margin-bottom: 18px;
 }
 
-.disciplina-label {
+/* Label */
+.aluno_label {
   display: block;
   margin-bottom: 8px;
   color: #334155;
@@ -55,7 +57,8 @@ body {
   font-size: 15px;
 }
 
-.disciplina-input {
+/* Input */
+.aluno_input {
   width: 100%;
   padding: 12px 14px;
   border: 2px solid #e2e8f0;
@@ -65,12 +68,13 @@ body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
-.disciplina-input:focus {
+.aluno_input:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
 }
 
-.disciplina-help {
+/* Help */
+.aluno_help {
   display: block;
   margin-top: 6px;
   color: #64748b;
@@ -78,7 +82,7 @@ body {
 }
 
 /* Botão */
-.disciplina-button {
+.aluno_button {
   width: 100%;
   padding: 14px;
   border: none;
@@ -90,16 +94,17 @@ body {
   /* dispara (mas não somente) com pseudoclasses - ex: :hover :focus :active */
   transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
   color: #fff;
-  background: linear-gradient(135deg, #ef4444 0%, #7f1d1d 100%);
+  background: #9b2a2a;
+  background: linear-gradient(135deg, rgba(155, 42, 42, 1) 45%, rgba(237, 142, 83, 1) 100%); /* Porcentagem é a posição da cor em relação ao gradiente */
   box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
 }
 
-.disciplina-button:hover {
+.aluno_button:hover {
   transform: translateY(-1px);
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
-.disciplina-button:active {
+.aluno_button:active {
   transform: translateY(0);
   opacity: 0.95;
 }

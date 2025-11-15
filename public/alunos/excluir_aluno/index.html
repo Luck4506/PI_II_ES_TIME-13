@@ -4,34 +4,35 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <link rel="stylesheet" href="comp_3.css">
-    <title>NotaDez - Excluir componente de nota</title>
+    <title>NotaDez - Excluir aluno</title>
+    <link href="aluno_3.css" rel="stylesheet">
     </head>
     <body>
         <div class="card">
 
-            <h1 id="title">Excluir Componente de Nota</h1>
+            <h1 id="title">Excluir Aluno</h1>
 
-            <p class="componente_subtitle">
+            <p class="aluno_subtitle">
             Digite o <strong>identificador (ID)</strong> do componente de nota que deseja remover.
             </p>
 
-            <div class="componente_form">
-                <label for="componente_nota_id" class="componente_label">ID do Componente</label>
+            <div class="aluno_form">
+                <label for="aluno_ra" class="aluno_label">RA do Aluno</label>
                 <input 
-                    type="text" 
-                    id="componente_nota_id"
-                    class="componente_input" 
-                    name="id"
+                    type="text"
+                    id="aluno_ra" 
+                    class="aluno_input" 
+                    name="ra"
                     required
-                    placeholder="Ex.: 1, 3, 67"
+                    placeholder="Ex.: 25005651, 25008403, ..."
                     autocomplete="off"
                 />
-                <small class="componente_help">
+                <small class="aluno_help">
                     Este é o identificador único do componente de nota no sistema.
                 </small>
             </div>
 
-            <button type="button" class="componente_button" id="btn_excluir" onclick="excluirDisciplina()">
+            <button type="button" class="aluno_button" id="btn_excluir" onclick="excluirDisciplina()">
             Excluir
             </button>
 

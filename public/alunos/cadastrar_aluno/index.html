@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="pt-br">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width" />
+        <title>NotaDez - Cadastro de aluno</title>
+        <link href="aluno.css" rel="stylesheet">
+    </head>
+    <body>
+        <div class="card">
+
+            <h1 id="title">Novo Aluno</h1>
+
+            <div class="field">
+                <label for="aluno_ra" class="aluno_label">RA</label>
+                <input id="aluno_ra" class="aluno_input" requiered placeholder="1, 2, ...">
+            </div>
+            <div class="field">
+                <label for="aluno_nome" class="aluno_label">Nome</label>
+                <input id="aluno_nome" class="aluno_input" requiered placeholder="Henrique, Júlia, ...">
+            </div>
+            <div class="field">
+                <label for="aluno_data_nasc" class="aluno_label">Data de nascimento</label>
+                <input type="date" id="aluno_data_nasc" class="aluno_input" requiered>            
+            </div>
+            <br><br>
+            <button type="button" id="aluno_button" onclick="">Criar</button>
+
+        </div>
+    </body>
+</html>

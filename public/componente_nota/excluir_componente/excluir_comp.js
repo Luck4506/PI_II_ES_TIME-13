@@ -1,6 +1,6 @@
 
 function validarEntradas(){
-    const id_Str = document.querySelector('#disciplina-codigo').value.trim();
+    const id_Str = document.querySelector('#componente_nota_id').value.trim();
 
     if (!id_Str) // undefined, null e '' (vazio)
     {
@@ -26,7 +26,7 @@ function excluirDisciplina(){
     const id = validarEntradas();
     if(id === null) return;
 
-    fetch(`http://localhost:3000/disciplina/${id}`, {
+    fetch(`http://localhost:3000/componente-nota/${id}`, {
         method: 'DELETE'
     })
     .then(response => {
@@ -38,14 +38,14 @@ function excluirDisciplina(){
     })
 
     .then(data => {
-        window.alert('Disciplina excluída com sucesso!')
+        window.alert('Componente de nota excluído com sucesso!')
         console.log(data)
     })
 
     .catch(error => {
-        window.alert('Erro ao excluir disciplina.')
+        window.alert('Erro ao excluir componente de nota.')
         console.log(error)
     })
 }
 
-console.log("Script de delete_disciplina.js carregado com sucesso!")
+console.log("Script de excluir_comp.js carregado com sucesso!")
