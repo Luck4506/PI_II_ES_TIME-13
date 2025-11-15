@@ -1,114 +1,117 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard - NotaDez</title>
-  <link rel="stylesheet" href="dashboard.css">
-  <script src="dashboard.js" defer></script>
-</head>
-<body>
-  <div class="login-container">
-    <h1 class="login-title">Painel do Docente</h1>
-    <p id="saudacao"></p>
-    <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
-          Bem-vindo ao sistema <strong>NotaDez</strong>!<br>
-          Aqui você pode gerenciar suas disciplinas, alunos e notas.
-        </p>
-        <h2>Turmas Do Docente</h2>
-    <div class="turmas">
-  <table id="tabela-turmas">
-    <thead>
-      <tr>
-        <th>Código</th>
-        <th>Disciplina</th>
-        <th>Nome</th>
-      </tr>
-    </thead>
-    <tbody id="lista-turmas">
-      <tr></tr>
-    </tbody>
-  </table>
-</div>    
-    <div class="menu-container">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - NotaDez</title>
+    <link rel="stylesheet" href="dashboard.css">
+    <script src="dashboard.js" defer></script>
+  </head>
+  <body>
+    <div class="login-container">
 
-  <!-- DROPDOWN 1 - INSTITUIÇÃO -->
-  <div class="dropdown">
-    <button class="button dropdown-btn">Instituição</button>
-    <div class="dropdown-content">
-      <button class="button" onclick="window.location.href='/instituicao/cadastrar_intituicao'">Cadastrar Instituição</button>
-      <button class="button" onclick="window.location.href='/instituicao/ler_instituicao'">Listar Instituições</button>
-      <button class="button" onclick="window.location.href='/instituicao/atualizar_instituicao'">Atualizar Sigla</button>
-      <button class="button" onclick="window.location.href='/instituicao/apagar_instituicao'">Apagar Instituição</button>
+      <h1 class="login-title">Painel do Docente</h1>
 
-      <!-- SUBMENU DOCENTE -->
-      <div class="dropdown sub">
-        <button class="button dropdown-btn">Docente</button>
-        <div class="dropdown-content">
-          <button class="button" onclick="window.location.href='/instituicao/adicionar_docente'">Adicionar Docente</button>
-          <button class="button" onclick="window.location.href='/instituicao/listar_docente'">Listar Docente</button>
-          <button class="button" onclick="window.location.href='/instituicao/remover_docente'">Remover Docente</button>
-        </div>
+      <p id="saudacao"></p>
+      <p style="font-size: 18px; color: #333; margin-bottom: 20px;">
+        Bem-vindo ao sistema <strong>NotaDez</strong>!<br>
+        Aqui você pode gerenciar suas disciplinas, alunos e notas.
+      </p>
+
+      <h2>Turmas do Docente</h2>
+
+      <div class="turmas">
+        <table id="tabela-turmas">
+          <thead>
+            <tr>
+              <th>Código</th>
+              <th>Disciplina</th>
+              <th>Nome</th>
+            </tr>
+          </thead>
+          <tbody id="lista-turmas">
+            <tr></tr>
+          </tbody>
+        </table>
       </div>
 
-    </div>
-  </div>
+      <div class="menu-container">
 
-  <!-- DROPDOWN 2 - CURSO -->
-  <div class="dropdown">
-    <button class="button dropdown-btn">Curso</button>
-    <div class="dropdown-content">
+        <!-- DROPDOWN 1 - INSTITUIÇÃO -->
+        <div class="dropdown">
+          <button class="button dropdown-btn">Instituição</button>
+          <div class="dropdown-content">
+            <button class="button" onclick="window.location.href='/instituicao/cadastrar_intituicao'">Cadastrar Instituição</button>
+            <button class="button" onclick="window.location.href='/instituicao/ler_instituicao'">Listar Instituições</button>
+            <button class="button" onclick="window.location.href='/instituicao/atualizar_instituicao'">Atualizar Sigla</button>
+            <button class="button" onclick="window.location.href='/instituicao/apagar_instituicao'">Apagar Instituição</button>
 
-      <button class="button" id="crud-instituicao" onclick="window.location.href='/curso/criar_curso'">Criar curso</button>
-      <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/ler_curso'">Listar Cursos</button>
-      <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/update_curso'">Atualizar nome</button>
-      <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/apagar_curso'">Apagar Curso</button>
-
-      <!-- SUBMENU DENTRO DE CURSO -->
-      <div class="dropdown sub">
-        <button class="button dropdown-btn">Docente</button>
-        <div class="dropdown-content">
-          <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/adicionar_docente'">Adicionar Docente</button>
-          <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/listar_docente'">Listar docentes</button>
+            <!-- SUBMENU DOCENTE -->
+            <div class="dropdown sub">
+              <button class="button dropdown-btn">Docente</button>
+              <div class="dropdown-content">
+                <button class="button" onclick="window.location.href='/instituicao/adicionar_docente'">Adicionar Docente</button>
+                <button class="button" onclick="window.location.href='/instituicao/listar_docente'">Listar Docente</button>
+                <button class="button" onclick="window.location.href='/instituicao/remover_docente'">Remover Docente</button>
+              </div>
+            </div>
+          </div>
         </div>
+
+        <!-- DROPDOWN 2 - CURSO -->
+        <div class="dropdown">
+          <button class="button dropdown-btn">Curso</button>
+          <div class="dropdown-content">
+
+            <button class="button" id="crud-instituicao" onclick="window.location.href='/curso/criar_curso'">Criar curso</button>
+            <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/ler_curso'">Listar Cursos</button>
+            <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/update_curso'">Atualizar nome</button>
+            <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/apagar_curso'">Apagar Curso</button>
+
+            <!-- SUBMENU DENTRO DE CURSO -->
+            <div class="dropdown sub">
+              <button class="button dropdown-btn">Docente</button>
+              <div class="dropdown-content">
+                <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/adicionar_docente'">Adicionar Docente</button>
+                <button class="button" id="crud-disciplinas"  onclick="window.location.href='/curso/listar_docente'">Listar docentes</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DROPDOWN 3 - DISCIPLINA -->
+        <div class="dropdown">
+          <button class="button dropdown-btn">Disciplina</button>
+          <div class="dropdown-content">
+            <button class="button" id="crud-disciplina" onclick="window.location.href='/disciplina/cadastrar_disciplina'">Cadastrar Disciplina</button>
+            <button class="button" id="crud-disciplinas"  onclick="window.location.href='/disciplina/exibir_disciplina'">Listar Disciplinas</button>
+            <button class="button" id="crud-disciplinas"  onclick="window.location.href='/disciplina/apagar_disciplina'">Apagar Disciplina</button>
+          </div>
+        </div>
+
+        <!-- DROPDOWN 4 - TURMAS -->
+        <div class="dropdown">
+          <button class="button dropdown-btn">Turmas</button>
+          <div class="dropdown-content">
+            <button class="button" onclick="window.location.href='/turma/cadastrar'">Cadastrar Turma</button>
+            <button class="button" onclick="window.location.href='/turma/listar'">Listar Turmas</button>
+            <button class="button" onclick="window.location.href='/turma/atualizar'">Atualizar Turma</button>
+            <button class="button" onclick="window.location.href='/turma/remover'">Remover Turma</button>
+          </div>
+        </div>
+
+        <div class="dropdown">
+          <button class="button dropdown-btn">Aluno</button>
+          <div class="dropdown-content">
+            <button class="button" id="crud-disciplina" onclick="window.location.href='/alunos/cadastrar_aluno/'">Cadastrar</button>
+            <button class="button" id="crud-disciplinas" onclick="window.location.href='/alunos/listar_alunos/'">Listar</button>
+            <button class="button" id="crud-disciplinas" onclick="window.location.href='/alunos/excluir_aluno/'">Apagar</button>
+          </div>
+        </div>
+        
+        <button class="button logout-btn" onclick="window.location.href='/logout'">Sair</button>
+
       </div>
-
     </div>
-  </div>
-
-  <!-- DROPDOWN 3 - DISCIPLINA -->
-  <div class="dropdown">
-    <button class="button dropdown-btn">Disciplina</button>
-    <div class="dropdown-content">
-      <button class="button" id="crud-disciplina" onclick="window.location.href='/disciplina/cadastrar_disciplina'">Cadastrar Disciplina</button>
-      <button class="button" id="crud-disciplinas"  onclick="window.location.href='/disciplina/exibir_disciplina'">Listar Disciplinas</button>
-      <button class="button" id="crud-disciplinas"  onclick="window.location.href='/disciplina/apagar_disciplina'">Apagar Disciplina</button>
-    </div>
-  </div>
-
-  <!-- DROPDOWN 4 - TURMAS -->
-  <div class="dropdown">
-    <button class="button dropdown-btn">Turmas</button>
-    <div class="dropdown-content">
-      <button class="button" onclick="window.location.href='/turma/cadastrar'">Cadastrar Turma</button>
-      <button class="button" onclick="window.location.href='/turma/listar'">Listar Turmas</button>
-      <button class="button" onclick="window.location.href='/turma/atualizar'">Atualizar Turma</button>
-      <button class="button" onclick="window.location.href='/turma/remover'">Remover Turma</button>
-    </div>
-    
-  </div>
-
-  <div class="dropdown">
-    <button class="button dropdown-btn">Aluno</button>
-    <div class="dropdown-content">
-      <button class="button" id="crud-disciplina" onclick="window.location.href='/alunos/cadastrar_aluno/'">Cadastrar</button>
-      <button class="button" id="crud-disciplinas"  onclick="window.location.href='/alunos/listar_alunos/'">Listar</button>
-      <button class="button" id="crud-disciplinas"  onclick="window.location.href='/alunos/excluir_aluno/'">Apagar</button>
-    </div>
-  </div>
-  <button class="button logout-btn" onclick="window.location.href='/logout'">Sair</button>
-</div>
-    </div>
-  </div>
-</body>
+  </body>
 </html>
