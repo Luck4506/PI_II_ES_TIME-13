@@ -1096,7 +1096,7 @@ app.get('/aluno/:ra', async (req: Request, res: Response) => {
   }
 });
 
-// Rota para buscar aluno por RA
+// Rota para deletar aluno por RA
 app.delete('/aluno/:ra', async (req: Request, res: Response) => {
   try {
     const ra = Number(req.params.ra);

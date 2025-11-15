@@ -31,10 +31,12 @@ function validarEntradas(){
 
     else if (isNaN(curso_ID)){
         window.alert('O campo "ID do Curso" precisa ser um número!')
+        return false
     }
 
     else if (isNaN(periodo_curso)){
         window.alert('O campo "Período" precisa ser um número!')
+        return false
     }
 
     else {

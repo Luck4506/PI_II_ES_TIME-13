@@ -29,6 +29,7 @@ function validarEntradas(){
 
     else if (isNaN(codigo_disciplina)){
         window.alert('O campo "Código da Disciplina Correspondente" precisa ser um número!')
+        return false
     }
 
     else {
