@@ -16,6 +16,7 @@ import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/dis
 import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById } from "./db/turma";
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
 import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, importarAlunos } from "./db/aluno";
+import { inserirAlunoTurma } from "./db/nota_final";
 
 declare module 'express-session' {
   interface SessionData {
@@ -1158,6 +1159,59 @@ app.post('/alunos/importar', async (req: Request, res: Response) => {
     return res.status(500).json({ error: 'Erro ao importar alunos.' });
   }
 });
+
+
+//Rota adiconar aluno na turma
+app.post('/turma/adicionar-aluno', async (req: Request, res: Response) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ error: 'Não autenticado' });
+    }
+
+    const docenteId = req.session.user.id;
+
+    const { codigo_turma, ra_aluno } = req.body;
+
+    if (!codigo_turma || !ra_aluno) {
+      return res.status(400).json({ error: "Campos 'codigo_turma' e 'ra_aluno' são obrigatórios." });
+    }
+
+    const codigoTurmaNum = Number(codigo_turma);
+    const raAlunoNum = Number(ra_aluno);
+
+    if (!Number.isFinite(codigoTurmaNum) || codigoTurmaNum <= 0) {
+      return res.status(400).json({ error: 'Código de turma inválido.' });
+    }
+
+    if (!Number.isFinite(raAlunoNum) || raAlunoNum <= 0) {
+      return res.status(400).json({ error: 'RA do aluno inválido.' });
+    }
+
+    // Garante que a turma existe e pertence ao docente logado
+    const turma = await getTurmaById(codigoTurmaNum);
+    if (!turma) {
+      return res.status(404).json({ error: 'Turma não encontrada.' });
+    }
+
+    
+
+    if (turma.id_docente !== docenteId) {
+      return res.status(403).json({ error: 'Acesso negado: esta turma não pertence ao docente logado.' });
+    }
+
+    await inserirAlunoTurma(codigoTurmaNum, raAlunoNum);
+
+    return res.status(201).json({
+      message: 'Aluno vinculado à turma com sucesso.',
+      codigo_turma: codigoTurmaNum,
+      ra_aluno: raAlunoNum
+    });
+  } catch (error) {
+    console.error('Erro ao adicionar aluno na turma:', error);
+    return res.status(500).json({ error: 'Erro ao adicionar aluno na turma.' });
+  }
+});
+
 
 // Inicia o servidor
 app.listen(port, () => {
