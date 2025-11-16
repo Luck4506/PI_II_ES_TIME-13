@@ -1,7 +1,33 @@
+function validarId(id){
+
+    if(id === undefined || id === null || id === ''){
+        throw new Error('Campo vazio.');
+    }
+
+    id = Number(id);
+
+    if(Number.isNaN(id)){
+        throw new Error('Esse ID não é um número.')
+    }
+
+    if(!Number.isInteger(id)){
+        throw new Error('Esse ID não é um inteiro.');
+    }
+
+    if(id <= 0){
+        throw new Error('Valor inválido para ID. Digite um número inteiro positivo diferente de zero.');
+    }
+
+    return id;
+}
+
 async function preencherTabela(){ // dados é o JSON
 
     try{
-        const dados = await fetch('/alunos')
+        const turmaId_Str = document.getElementById('aluno_cod_turma').value.trim();
+        const turmaId = validarId(turmaId_Str);
+
+        const dados = await fetch('/alunos') // <-- Falta a rota (por enquanto está listando sem filtro).
             .then(response => {
 
             if(!response.ok){
@@ -38,5 +64,3 @@ async function preencherTabela(){ // dados é o JSON
         console.error(error);
     }
 }
-
-preencherTabela();

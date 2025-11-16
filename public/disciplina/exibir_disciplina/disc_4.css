@@ -30,6 +30,7 @@ body {
   font-weight: bold;
 }
 
+/* Botão de sair */
 #btn-sair{
   border: none;
   display: block;

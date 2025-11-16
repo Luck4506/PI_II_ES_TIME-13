@@ -108,3 +108,21 @@ body {
   transform: translateY(0);
   opacity: 0.95;
 }
+
+/* Botão de sair */
+#btn-sair{
+  border: none;
+  display: block;
+  font-weight: bold;
+  color: gray;
+  background: none;
+  margin-bottom: 30px;
+  border: solid 1px;
+  padding: 4px 6px;
+  width: 5%;
+}
+
+#btn-sair:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+}

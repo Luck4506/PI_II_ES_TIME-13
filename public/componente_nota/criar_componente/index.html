@@ -9,26 +9,28 @@
   <body>
     <div class="card">
 
-        <h1 id="title">Novo Componente de Nota</h1>
+      <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button>
 
-        <div class="field">
-            <label for="componente_cod_disciplina" class="componente_label">Código da Disciplina Correspondente</label>
-            <input id="componente_cod_disciplina" class="componente_input" requiered placeholder="1, 2, ..."> <!-- default type é "text" -->
-        </div>
-        <div class="field">
-            <label for="componente_nome" class="componente_label">Nome</label>
-            <input id="componente_nome" class="componente_input" requiered placeholder="Prova 1, Prova 2, ...">
-        </div>
-        <div class="field">
-            <label for="componente_sigla" class="componente_label">Sigla</label>
-            <input id="componente_sigla" class="componente_input" requiered placeholder="P1, P2, ...">
-        </div>
-        <div class="field">
-            <label for="componente_descricao" class="componente_label">Descrição</label>
-            <input id="componente_descricao" class="componente_input" requiered placeholder="Avaliação multipla-escolha, Dissertação, ...">
-        </div>
-        <br><br>
-        <button type="button" id="componente_button" onclick="criarComponente()">Criar</button>
+      <h1 id="title">Novo Componente de Nota</h1>
+
+      <div class="field">
+          <label for="componente_cod_disciplina" class="componente_label">Código da Disciplina Correspondente</label>
+          <input id="componente_cod_disciplina" class="componente_input" requiered placeholder="1, 2, ..."> <!-- default type é "text" -->
+      </div>
+      <div class="field">
+          <label for="componente_nome" class="componente_label">Nome</label>
+          <input id="componente_nome" class="componente_input" requiered placeholder="Prova 1, Prova 2, ...">
+      </div>
+      <div class="field">
+          <label for="componente_sigla" class="componente_label">Sigla</label>
+          <input id="componente_sigla" class="componente_input" requiered placeholder="P1, P2, ...">
+      </div>
+      <div class="field">
+          <label for="componente_descricao" class="componente_label">Descrição</label>
+          <input id="componente_descricao" class="componente_input" requiered placeholder="Avaliação multipla-escolha, Dissertação, ...">
+      </div>
+      <br><br>
+      <button type="button" id="componente_button" onclick="criarComponente()">Criar</button>
 
     </div>
   <script src="criar_comp.js"></script>

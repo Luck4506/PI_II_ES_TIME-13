@@ -29,3 +29,49 @@ body {
   font-size: 40px;
   font-weight: bold;
 }
+
+/* Label */
+.aluno_label {
+  display: block;
+  margin-bottom: 8px;
+  color: hsl(0, 0%, 26%);
+  font-weight: 500;
+  font-size: 24px;
+}
+
+/* Input */
+.aluno_input {
+  width: 270px;
+  margin-bottom: 6px;
+}
+
+/* Botão */
+.btn {
+  padding: 4px;
+  font-weight: bold;
+  font-size: medium;
+  border: solid white 3px;
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease, border-color 0.2s ease;
+}
+
+.btn:hover {
+  border: solid 3px;
+  transform: translateY(-1px);
+}
+
+/* Botão de sair */
+#btn-sair{
+  border: none;
+  display: block;
+  font-weight: bold;
+  color: gray;
+  margin-bottom: 40px;
+  border: solid 1px;
+  padding: 4px 6px;
+  width: 5%;
+}
+
+#btn-sair:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+}

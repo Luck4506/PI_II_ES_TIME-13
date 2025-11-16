@@ -104,10 +104,16 @@ body {
   opacity: 0.95;
 }
 
+/* Botão de sair */
 #btn-sair{
+  border: none;
   display: block;
-  margin-top: 40px;
-  background: hsl(124, 60%, 64%);
+  font-weight: bold;
+  color: gray;
+  background: none;
+  box-shadow: none;
+  margin-bottom: 40px;
+  border: solid 1px;
   padding: 4px 6px;
-  width: 25%;
+  width: 5%;
 }
