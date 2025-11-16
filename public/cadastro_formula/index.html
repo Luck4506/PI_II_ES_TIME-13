@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>Cadastro de Fórmula - NotaDez</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./cadastro-formula.css" />
+</head>
+<body>
+    <main class="card">
+        <h1>Cadastro de Fórmula</h1>
+        <p class="muted">
+        Digite a expressão da <strong>nota final</strong> usando quaisquer variáveis (ex.: P1, P2, T1, P3...)
+        e os operadores <code>+ - * / ( )</code>.<br />
+        <small>Dica: a correspondência das variáveis com as colunas/lançamentos é feita pela sua disciplina/turma.</small>
+        </p>
+
+        <!-- adc turmas e disicplina -->
+        <section class="grid">
+            <label for="disciplina">Disciplina</label>
+            <select id="disciplina" class="entrada">
+                <option value="DISC1">Projeto Integrador 2 (PI2)</option>
+            </select>
+        </section>
+
+        <div class="hr"></div>
+        <section class="toolbar">
+            <button id="btnMediaAritmetica" class="media-button">Média aritmética</button>
+            <button id="btnPonderadaEx" class="media-button">Ponderada (exemplo)</button>
+            <button id="btnLimpar" class="media-button perigo">Limpar</button>
+        </section>
+
+        <section class="grid">
+            <label for="expr"><strong>Expressão da Nota Final</strong></label>
+            <textarea id="expr" rows="3" class="entrada" placeholder="Ex.: (P1 + P2 + T1) / 3"></textarea>
+
+            <div id="erros" class="erros"></div>
+        </section>
+        <!-- ADC FUNÇÃO NO BD -->
+        <section class="toolbar end">
+            <button id="btnSalvar" class="media-button primario">Salvar (exemplo)</button>
+        </section>
+    </main>
+
+    <script src="./cadastro-formula.js"></script>
+</body>
+</html>
