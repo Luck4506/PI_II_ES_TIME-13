@@ -1,3 +1,5 @@
+/* Autor: Henrique Young de Azevedo 25005651 */
+
 function validarId(id){
 
     if(id === undefined || id === null || id === ''){

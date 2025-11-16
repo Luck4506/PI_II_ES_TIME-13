@@ -54,15 +54,15 @@ function cadastrarAluno(){
         .then(response => response.json())
 
         .then(data => {
-            window.alert('Aluno cadastrado com sucesso!')
+            window.alert('Aluno cadastrado na turma com sucesso!')
             console.log(data)
         })
 
         .catch(error => {
-            window.alert('Erro ao cadastrar aluno.')
+            window.alert('Erro ao cadastrar aluno na turma.')
             console.log(error)
         })
     }
 }
 
-console.log("Script de cadastrar_aluno.js carregado com sucesso!")
+console.log("Script de aluno_turma.js carregado com sucesso!")

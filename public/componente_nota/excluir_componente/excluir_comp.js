@@ -1,3 +1,4 @@
+/* Autor: Henrique Young de Azevedo 25005651 */
 
 function validarEntradas(){
     const id_Str = document.querySelector('#componente_nota_id').value.trim();

@@ -1,3 +1,5 @@
+/* Autor: Henrique Young de Azevedo 25005651 */
+
 async function preencherTabela(){ // dados é o JSON
 
     try{

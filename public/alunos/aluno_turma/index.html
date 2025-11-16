@@ -1,0 +1,31 @@
+<!-- Autor: Henrique Young de Azevedo 25005651 -->
+
+<!doctype html>
+<html lang="pt-br">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width" />
+    <title>Notadez - Cadastro de aluno em turma</title>
+    <link href="aluno_t.css" rel="stylesheet">
+  </head>
+  <body>
+    <div class="card">
+
+        <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button>
+
+        <h1 id="title">Cadastro de Aluno em uma Turma</h1>
+
+        <div class="field">
+            <label for="aluno_ra" class="aluno_label">RA do aluno</label>
+            <input id="aluno_ra" class="aluno_input" requiered placeholder="25005651, 25006859, ...">
+        </div>
+        <div class="field">
+            <label for="cod_turma" class="aluno_label">Código da turma</label>
+            <input id="cod_turma" class="aluno_input" requiered placeholder="1, 3, ...">
+        </div>
+        <br/><br/>
+        <button type="button" id="aluno_button" onclick="">Cadastrar</button>
+
+    </div>
+  </body>
+</html>

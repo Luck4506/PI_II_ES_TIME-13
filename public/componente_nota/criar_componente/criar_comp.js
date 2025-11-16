@@ -1,3 +1,4 @@
+/* Autor: Henrique Young de Azevedo 25005651 */
 
 let codigo_disciplina = ''
 let nome = ''
