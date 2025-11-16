@@ -6,10 +6,10 @@ let descricao = ''
 
 function capturarEntradas(){
 
-    codigo_disciplina = document.querySelector('#disciplina-nome').value
-    nome = document.querySelector('#disciplina-curso').value
-    sigla = document.querySelector('#disciplina-sigla').value
-    descricao = document.querySelector('#disciplina-codigo').value
+    codigo_disciplina = document.querySelector('#componente_cod_disciplina').value
+    nome = document.querySelector('#componente_nome').value
+    sigla = document.querySelector('#componente_sigla').value
+    descricao = document.querySelector('#componente_descricao').value
 }
 
 function validarEntradas(){
@@ -49,7 +49,7 @@ function criarComponente(){
             descricao: descricao,
         }
 
-        fetch('http://localhost:3000//componente-nota', {
+        fetch('http://localhost:3000/componente-nota', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'

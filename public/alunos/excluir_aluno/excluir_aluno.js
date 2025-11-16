@@ -24,7 +24,7 @@ function validarEntradas(){
 
 }
 
-function excluirDisciplina(){
+function excluirAluno(){
 
     const ra = validarEntradas();
     if(ra === null) return;

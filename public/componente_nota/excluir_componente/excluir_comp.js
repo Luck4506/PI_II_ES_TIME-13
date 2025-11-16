@@ -21,7 +21,7 @@ function validarEntradas(){
 
 }
 
-function excluirDisciplina(){
+function excluirComponente(){
 
     const id = validarEntradas();
     if(id === null) return;
