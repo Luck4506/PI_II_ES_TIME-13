@@ -93,3 +93,11 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
 }
+
+#btn-sair{
+  display: block;
+  margin-top: 40px;
+  background: hsl(124, 60%, 64%);
+  padding: 4px 6px;
+  width: 25%;
+}

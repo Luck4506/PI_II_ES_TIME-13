@@ -29,3 +29,19 @@ body {
   font-size: 40px;
   font-weight: bold;
 }
+
+#btn-sair{
+  border: none;
+  display: block;
+  font-weight: bold;
+  color: gray;
+  margin-bottom: 40px;
+  border: solid 1px;
+  padding: 4px 6px;
+  width: 5%;
+}
+
+#btn-sair:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+}
