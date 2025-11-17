@@ -3,6 +3,33 @@ const disciplina = document.getElementById('disciplina');
 const expr = document.getElementById('expr');
 const erros = document.getElementById('erros');
 
+document.addEventListener('DOMContentLoaded', carregarDisciplinas);
+
+async function carregarDisciplinas() {
+    try {
+        const resp = await fetch('/formula/disciplinas');
+        if (!resp.ok) {
+            throw new Error('Falha ao buscar disciplinas');
+        }
+
+        const disciplinas = await resp.json(); // [{ id, nome }]
+
+        disciplina.innerHTML = '<option value="">Selecione a disciplina</option>';
+
+        disciplinas.forEach((d) => {
+            const opt = document.createElement('option');
+            opt.value = d.id;     
+            opt.textContent = d.nome;
+            disciplina.appendChild(opt);
+        });
+
+    } catch (erro) {
+        console.error('Erro ao carregar disciplinas:', erro);
+        alert('Erro ao carregar as disciplinas para o cadastro de fórmula.');
+    }
+}
+
+
 const btnSalvar = document.getElementById('btnSalvar');
 const btnMediaAritmetica = document.getElementById('btnMediaAritmetica');
 const btnPonderadaEx = document.getElementById('btnPonderadaEx');
@@ -29,15 +56,53 @@ btnLimpar.addEventListener('click', () => {
 // Validar enquanto digita
 expr.addEventListener('input', validarEMostrarErros);
 
-// “Salvar” - SEM O BACK BD
-btnSalvar.addEventListener('click', () => {
-    const resultado = validarExpressaoBasica(expr.value);
+// “Salvar” - envia para o back-end gravar no BD
+btnSalvar.addEventListener('click', async () => {
+    const texto = expr.value.trim();
+    const resultado = validarExpressaoBasica(texto);
+
     if (!resultado.ok) {
         alert('Corrija os erros antes de salvar.');
         return;
     }
-    //SE DER COLOCAR O ALERTA, SE NÃO, APAGAR
-    alert('Fórmula “salva” (exemplo, sem servidor).');
+
+    const idDisciplina = disciplina.value;
+    if (!idDisciplina) {
+        alert('Selecione uma disciplina.');
+        return;
+    }
+
+    try {
+        const resp = await fetch('/formula/cadastrar_formula', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                idDisciplina: Number(idDisciplina),
+                expressao: texto,
+            }),
+        });
+
+        if (!resp.ok) {
+            const erroTexto = await resp.text().catch(() => '');
+            console.error('Erro ao salvar fórmula:', resp.status, erroTexto);
+            alert('Ocorreu um erro ao salvar a fórmula.');
+            return;
+        }
+
+        let dados = null;
+        try {
+            dados = await resp.json();
+        } catch (_) {
+            // se não vier JSON, segue com mensagem padrão
+        }
+
+        alert(dados?.mensagem || 'Fórmula salva com sucesso!');
+    } catch (erro) {
+        console.error('Erro inesperado ao salvar fórmula:', erro);
+        alert('Erro inesperado ao salvar a fórmula.');
+    }
 });
 
 function validarEMostrarErros() {

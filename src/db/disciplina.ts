@@ -10,6 +10,11 @@ export interface Disciplina{
   periodo_curso: number
 };
 
+export interface DisciplinaOpcao {
+  id: number;
+  nome: string;
+}
+
 export async function addDisciplina(curso_ID: number, nome: string, sigla: string, codigo: string, periodo_curso: number): Promise<number> {
   const conn = await open();
   try{
@@ -38,13 +43,26 @@ export async function addDisciplina(curso_ID: number, nome: string, sigla: strin
 
 export async function getAllDisciplinas(): Promise<Disciplina[]> {
   const conn = await open();
-  try{
+  try {
     const result = await conn.execute(
-      `SELECT CODIGO_DISCIPLINA as "id", NOME as "nome", SIGLA as "sigla", CODIGO as "codigo", PERIODO_CURSO as "periodo_curso"
-      FROM DISCIPLINA`
+      `
+      SELECT 
+        CODIGO_DISCIPLINA AS "id",
+        CURSO_ID AS "curso_ID",
+        NOME AS "nome",
+        SIGLA AS "sigla",
+        CODIGO AS "codigo",
+        PERIODO_CURSO AS "periodo_curso"
+      FROM DISCIPLINA
+      ORDER BY NOME
+      `,
+      {},
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
     );
-    return result.rows as Disciplina[];
-  }finally{
+
+    const rows = (result.rows as any[]) || [];
+    return rows as Disciplina[];
+  } finally {
     await close(conn);
   }
 }

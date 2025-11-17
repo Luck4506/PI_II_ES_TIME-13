@@ -17,6 +17,8 @@ import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById } from 
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
 import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, importarAlunos } from "./db/aluno";
 import { inserirAlunoTurma } from "./db/nota_final";
+import { salvarFormula } from "./db/formula";
+
 
 declare module 'express-session' {
   interface SessionData {
@@ -1161,6 +1163,7 @@ app.post('/alunos/importar', async (req: Request, res: Response) => {
 });
 
 
+
 //Rota adiconar aluno na turma
 app.post('/turma/adicionar-aluno', async (req: Request, res: Response) => {
   try {
@@ -1209,6 +1212,43 @@ app.post('/turma/adicionar-aluno', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Erro ao adicionar aluno na turma:', error);
     return res.status(500).json({ error: 'Erro ao adicionar aluno na turma.' });
+  }
+});
+
+// Rota para listar disciplinas para fórmula
+app.get('/formula/disciplinas', async (_req: Request, res: Response) => {
+  try {
+    const disciplinas = await getAllDisciplinas();
+    return res.json(disciplinas); 
+  } catch (error) {
+    console.error('Erro ao listar disciplinas para fórmula:', error);
+    return res.status(500).json({ error: 'Erro ao listar disciplinas.' });
+  }
+});
+
+// Rota para cadastrar ou atualizar fórmula
+app.post('/formula/cadastrar_formula', async (req: Request, res: Response) => {
+  try {
+    const { idDisciplina, expressao } = req.body;
+
+    if (!idDisciplina || !expressao || typeof expressao !== 'string') {
+      return res.status(400).json({ mensagem: "Campos 'idDisciplina' e 'expressao' são obrigatórios." });
+    }
+
+    const idDisciplinaNum = Number(idDisciplina);
+    if (!Number.isFinite(idDisciplinaNum) || idDisciplinaNum <= 0) {
+      return res.status(400).json({ mensagem: "ID de disciplina inválido." });
+    }
+
+    const formula = await salvarFormula(idDisciplinaNum, expressao.trim());
+
+    return res.status(200).json({
+      mensagem: "Fórmula cadastrada/atualizada com sucesso.",
+      formula,
+    });
+  } catch (erro) {
+    console.error("Erro ao salvar fórmula:", erro);
+    return res.status(500).json({ mensagem: "Erro ao salvar fórmula." });
   }
 });
 
