@@ -222,3 +222,46 @@ export async function atualizarTurma(codigo_turma:number,nome_antigo:string,nome
     await close(conn);
   }
 }
+
+export async function listarTurmasPorDisciplina(idDisciplina: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT  CODIGO_TURMA AS "id", NOME AS "nome"
+      FROM TURMA
+      WHERE CODIGO_DISCIPLINA = :idDisciplina
+      ORDER BY NOME
+      `,
+      { idDisciplina },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    return result.rows as any[];
+  } finally {
+    await close(conn);
+  }
+}
+
+export async function listarAlunosDaTurma(codigoTurma: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT DISTINCT nfa.RA_ALUNO AS "id", a.NOME AS "nome"
+      FROM NOTADEZ.NOTA_FINAL_AJUSTADA nfa
+      JOIN NOTADEZ.ALUNO a
+      ON a.RA_ALUNO = nfa.RA_ALUNO
+      WHERE nfa.CODIGO_TURMA = :codigo_turma
+      ORDER BY a.NOME
+      `,
+      { codigo_turma: codigoTurma },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    const rows = (result.rows as any[]) || [];
+    return rows;
+  } finally {
+    await close(conn);
+  }
+}

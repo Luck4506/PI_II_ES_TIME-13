@@ -33,7 +33,7 @@ export async function LancarNota(
 
     const result = await conn.execute(
       `
-      INSERT INTO LANCAMENTO_NOTA
+      INSERT INTO NOTADEZ.LANCAMENTO_NOTA
         (CODIGO_TURMA, RA_ALUNO, COMPONENTE_NOTA_ID, DOCENTE_ID, VALOR)
       VALUES
         (:codigo_turma, :ra_aluno, :componente_nota_id, :docente_id, :valor)`,
@@ -87,7 +87,7 @@ export async function getLancamentoNotaByPK(
         COMPONENTE_NOTA_ID  AS "componente_nota_id",
         DOCENTE_ID AS "docente_id",
         VALOR AS "valor"
-      FROM LANCAMENTO_NOTA
+      FROM NOTADEZ.LANCAMENTO_NOTA
       WHERE CODIGO_TURMA = :codigo_turma AND RA_ALUNO = :ra_aluno AND COMPONENTE_NOTA_ID = :componente_nota_id
       `,
       {
@@ -119,7 +119,7 @@ export async function getAllLancamentosByTurmaEComponente(
         COMPONENTE_NOTA_ID AS "componente_nota_id",
         DOCENTE_ID AS "docente_id",
         VALOR AS "valor"
-      FROM LANCAMENTO_NOTA
+      FROM NOTADEZ.LANCAMENTO_NOTA
       WHERE CODIGO_TURMA = :codigo_turma AND COMPONENTE_NOTA_ID = :componente_nota_id
       ORDER BY RA_ALUNO
       `,
@@ -145,7 +145,7 @@ export async function updateLancamentoNotaValor(
     const valorNormalizado = normalizarValorNota(novoValorNota);
 
     const upd = await conn.execute(
-      `UPDATE LANCAMENTO_NOTA
+      `UPDATE NOTADEZ.LANCAMENTO_NOTA
          SET VALOR = :valor, DOCENTE_ID = :docente_id
        WHERE CODIGO_TURMA = :codigo_turma AND RA_ALUNO = :ra_aluno AND COMPONENTE_NOTA_ID = :componente_nota_id`,
       {
@@ -165,6 +165,53 @@ export async function updateLancamentoNotaValor(
     return { atualizado: true, depois: valorNormalizado };
   } 
   finally {
+    await close(conn);
+  }
+}
+
+export type NotaComponenteSalvar = Pick<LancamentoNota, "ra_aluno" | "valor">;
+
+export async function salvarNotasComponente(codigoTurma: number, componenteNotaId: number, docenteId: number, notas: NotaComponenteSalvar[]
+): Promise<void> {
+  if (!notas.length) {
+    return;
+  }
+
+  const conn = await open();
+  try {
+    const binds = notas.map((nota) => ({
+      codigo_turma: codigoTurma,
+      ra_aluno: nota.ra_aluno,
+      componente_nota_id: componenteNotaId,
+      docente_id: docenteId,
+      valor: normalizarValorNota(nota.valor),
+    }));
+
+    await conn.executeMany(
+      `
+      MERGE INTO NOTADEZ.LANCAMENTO_NOTA ln
+      USING (
+        SELECT :codigo_turma AS CODIGO_TURMA,
+               :ra_aluno AS RA_ALUNO,
+               :componente_nota_id AS COMPONENTE_NOTA_ID
+        FROM DUAL
+      ) src
+      ON (
+        ln.CODIGO_TURMA = src.CODIGO_TURMA
+        AND ln.RA_ALUNO = src.RA_ALUNO
+        AND ln.COMPONENTE_NOTA_ID = src.COMPONENTE_NOTA_ID
+      )
+      WHEN MATCHED THEN
+        UPDATE SET
+          ln.VALOR = :valor,
+          ln.DOCENTE_ID = :docente_id
+      WHEN NOT MATCHED THEN
+        INSERT (CODIGO_TURMA, RA_ALUNO, COMPONENTE_NOTA_ID, DOCENTE_ID, VALOR)
+        VALUES (:codigo_turma, :ra_aluno, :componente_nota_id, :docente_id, :valor)`,
+      binds,
+      { autoCommit: true }
+    );
+  } finally {
     await close(conn);
   }
 }

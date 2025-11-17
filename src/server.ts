@@ -13,11 +13,12 @@ import { addDocente,possuiInstituicao,listarDocente,listarDocenteCurso,pegarTurm
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
-import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById,verificarDisciplina,verificarNome,cadastrarTurma,verificarTurma,verificarNomeTurma,atualizarTurma,pegarIdDisciplina } from "./db/turma";
+import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById, verificarDisciplina, verificarNome, cadastrarTurma, verificarTurma, verificarNomeTurma, atualizarTurma, pegarIdDisciplina, listarTurmasPorDisciplina, listarAlunosDaTurma } from "./db/turma";
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
 import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, importarAlunos } from "./db/aluno";
-import { inserirAlunoTurma } from "./db/nota_final";
-import { salvarFormula } from "./db/formula";
+import { inserirAlunoTurma, atualizarNotasFinaisLote} from "./db/nota_final";
+import { salvarFormula, obterFormulaPorDisciplina } from "./db/formula";
+import { salvarNotasComponente, getAllLancamentosByTurmaEComponente } from "./db/lancamento_nota";
 
 
 declare module 'express-session' {
@@ -1243,7 +1244,35 @@ app.post('/alunos/importar', async (req: Request, res: Response) => {
   }
 });
 
+//Rota para listar turmas por disciplina
+app.get("/turma/por_disciplina/:id", async (req, res) => {
+  try {
+    const idDisciplina = Number(req.params.id);
+    const turmas = await listarTurmasPorDisciplina(idDisciplina);
+    res.json(turmas);
+  } catch (erro) {
+    console.error("Erro ao buscar turmas:", erro);
+    res.status(500).json({ mensagem: "Erro ao buscar turmas." });
+  }
+});
 
+
+// Rota para listar alunos de uma turma (usada na tela de lançamento de notas)
+app.get("/turma/:id/alunos", async (req: Request, res: Response) => {
+  try {
+    const idTurma = Number(req.params.id);
+
+    if (!Number.isFinite(idTurma) || idTurma <= 0) {
+      return res.status(400).json({ error: "ID de turma inválido." });
+    }
+
+    const alunos = await listarAlunosDaTurma(idTurma);
+    return res.json(alunos);
+  } catch (erro) {
+    console.error("Erro ao buscar alunos da turma:", erro);
+    return res.status(500).json({ mensagem: "Erro ao buscar alunos da turma." });
+  }
+});
 
 //Rota adiconar aluno na turma
 app.post('/turma/adicionar-aluno', async (req: Request, res: Response) => {
@@ -1330,6 +1359,127 @@ app.post('/formula/cadastrar_formula', async (req: Request, res: Response) => {
   } catch (erro) {
     console.error("Erro ao salvar fórmula:", erro);
     return res.status(500).json({ mensagem: "Erro ao salvar fórmula." });
+  }
+});
+
+// Rota para obter fórmula por disciplina
+app.get("/formula/por_disciplina/:id", async (req: Request, res: Response) => {
+  try {
+    const idDisciplina = Number(req.params.id);
+
+    if (!Number.isFinite(idDisciplina) || idDisciplina <= 0) {
+      return res.status(400).json({ mensagem: "ID de disciplina inválido." });
+    }
+
+    const formula = await obterFormulaPorDisciplina(idDisciplina);
+
+    if (!formula) {
+      return res.status(404).json({ mensagem: "Nenhuma fórmula cadastrada para esta disciplina." });
+    }
+    return res.json(formula);
+
+  } catch (erro) {
+    console.error("Erro ao obter fórmula por disciplina:", erro);
+    return res.status(500).json({ mensagem: "Erro ao obter fórmula da disciplina." });
+  }
+});
+
+
+// Rota para salvar notas de um componente (lote)
+app.post("/lancamento-nota/salvar", async (req: Request, res: Response) => {
+  try {
+    if (!req.session.user) {
+      return res.status(401).json({ error: "Não autenticado" });
+    }
+
+    const docenteId = req.session.user.id;
+    const { codigo_turma, componente_id, notas } = req.body;
+
+    if (!codigo_turma || !componente_id || !Array.isArray(notas)) {
+      return res.status(400).json({
+        error:
+          "Campos 'codigo_turma', 'componente_id' e 'notas' são obrigatórios.",
+      });
+    }
+
+    const codigoTurmaNum = Number(codigo_turma);
+    const componenteIdNum = Number(componente_id);
+
+    if (!Number.isFinite(codigoTurmaNum) || codigoTurmaNum <= 0) {
+      return res.status(400).json({ error: "Código de turma inválido." });
+    }
+
+    if (!Number.isFinite(componenteIdNum) || componenteIdNum <= 0) {
+      return res
+        .status(400)
+        .json({ error: "ID de componente de nota inválido." });
+    }
+
+    const notasNormalizadas = notas
+      .map((n: any) => ({
+        ra_aluno: Number(n.ra_aluno),
+        valor: Number(n.valor),
+      }))
+      .filter(
+        (n) => Number.isFinite(n.ra_aluno) && Number.isFinite(n.valor)
+      );
+
+    if (!notasNormalizadas.length) {
+      return res
+        .status(400)
+        .json({ error: "Nenhuma nota válida foi enviada para salvar." });
+    }
+
+    await salvarNotasComponente(
+      codigoTurmaNum,
+      componenteIdNum,
+      docenteId,
+      notasNormalizadas
+    );
+
+    return res
+      .status(200)
+      .json({ message: "Notas de componente salvas com sucesso." });
+  } catch (erro) {
+    console.error("Erro ao salvar notas de componente:", erro);
+    return res
+      .status(500)
+      .json({ error: "Erro ao salvar notas de componente." });
+  }
+});
+
+//Lançamento de nota final
+app.post("/nota-final/salvar-lote", async (req: Request, res: Response) => {
+  try {
+    const { notas } = req.body;
+
+    if (!Array.isArray(notas) || notas.length === 0) {
+      return res.status(400).json({ error: "Nenhuma nota final enviada para salvar." });
+    }
+
+    // Validação básica de campos obrigatórios
+    const registros = notas.map((n: any) => {
+      if (
+        n.codigo_turma == null ||
+        n.ra_aluno == null ||
+        n.valor_final == null
+      ) {
+        throw new Error("Registro de nota final inválido (campos obrigatórios ausentes).");
+      }
+
+      return {
+        codigo_turma: Number(n.codigo_turma),
+        ra_aluno: Number(n.ra_aluno),
+        valor_final: Number(n.valor_final),
+      };
+    });
+
+    await atualizarNotasFinaisLote(registros);
+
+    return res.status(200).json({ message: "Notas finais salvas com sucesso." });
+  } catch (erro) {
+    console.error("Erro em /nota-final/salvar-lote:", erro);
+    return res.status(500).json({ error: "Erro ao salvar notas finais." });
   }
 });
 

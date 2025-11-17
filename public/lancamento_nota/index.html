@@ -15,27 +15,36 @@
         </p>
 
         <section class="grid-3">
-        <div>
-            <label for="turma">Turma</label>
-            <select id="turma" class="entrada">
-            <!-- BD preencher com as turmas do docente -->
-            <option value="TURMA1">Turma 1</option>
-            </select>
-        </div>
-
-        <div>
+          <!-- 1) Seleção de DISCIPLINA -->
+          <div>
             <label for="disciplina">Disciplina</label>
-            <select id="disciplina" class="entrada" disabled>
-            <!-- BD escolher a turma, carregar a turma -->
-            <option value="DISC1">Projeto Integrador 2 (PI2)</option>
+            <select id="disciplina" class="entrada">
+              <!-- BD: listar todas as disciplinas do docente -->
+              <option value="">Selecione a disciplina</option>
             </select>
-        </div>
+          </div>
 
-        <div aria-hidden="true"></div>
+          <!-- 2) Seleção de TURMA, filtrada pela disciplina escolhida -->
+          <div>
+            <label for="turma">Turma</label>
+            <select id="turma" class="entrada" disabled>
+              <!-- BD: após escolher a disciplina, carregar as turmas dessa disciplina -->
+              <option value="">Selecione a turma</option>
+            </select>
+          </div>
+
+          <!-- 3) Seleção de COMPONENTE DE NOTA (P1, P2, T1, etc.) -->
+          <div>
+            <label for="componente">Componente de Nota</label>
+            <select id="componente" class="entrada" disabled>
+              <!-- BD: após escolher turma, carregar componentes de nota (tabela COMPONENTE_NOTA) -->
+              <option value="">Selecione o componente</option>
+            </select>
+          </div>
         </section>
         <section class="toolbar">
-        <!-- BD selecionar/abrir a turma, buscar a fórmula da DISCIPLINA da turma -->
-        <div>Fórmula vigente: <code id="formula">(P1 + P2 + T1) / 3</code></div>
+        <!-- BD: após selecionar disciplina (e opcionalmente turma), buscar a fórmula da DISCIPLINA -->
+        <div>Fórmula vigente: <code id="formula"></code></div>
         </section>
 
         <!-- Tabela -->
@@ -46,9 +55,9 @@
                 <th style="width:120px">Matrícula</th>
                 <th>Aluno</th>
 
-                <th>P1</th>
-                <th>P2</th>
-                <th>T1</th>
+                <th class="th-componente" data-index="0">Componente 1</th>
+                <th class="th-componente" data-index="1">Componente 2</th>
+                <th class="th-componente" data-index="2">Componente 3</th>
                 <th>Nota Final</th>
             </tr>
             </thead>
@@ -60,7 +69,7 @@
 
         <!-- ADC NO BD -->
         <section class="toolbar end">
-        <button id="btnSalvar" class="media-button primario">Salvar (exemplo)</button>
+        <button id="btnSalvar" class="media-button primario">Salvar</button>
         <button id="btnRecarregar" class="media-button">Recarregar</button>
         </section>
     </main>

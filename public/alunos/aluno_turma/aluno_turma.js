@@ -59,11 +59,11 @@ function cadastrarAluno(){
     if(validarEntradas() === true){
 
         const dados = { // Objeto JavaScript com o RA do aluno e Código da turma.
-            ra: ra,
-            cod_turma: cod_turma,           
-        }
+            ra_aluno: Number(ra),        // antes era ra
+            codigo_turma: Number(cod_turma), // antes era cod_turma
+}
 
-        fetch('http://localhost:3000/turma/adicionar-aluno', { // Requisição para o servidor.
+        fetch('/turma/adicionar-aluno', { // Requisição para o servidor.
 
             method: 'POST', // Método da requisição.
 
@@ -93,3 +93,13 @@ function cadastrarAluno(){
 
 // Mensagem de indicação de que o script foi carregado com sucesso.
 console.log("Script de aluno_turma.js carregado com sucesso!")
+
+document.addEventListener('DOMContentLoaded', () => {
+    const botoes = document.querySelectorAll('#aluno_button');
+    botoes.forEach((btn) => {
+        btn.addEventListener('click', (event) => {
+            event.preventDefault();
+            cadastrarAluno();
+        });
+    });
+});
