@@ -60,11 +60,14 @@ export async function getAllComponentesByDisciplina(disciplinaId: number): Promi
         DESCRICAO as "descricao"
       FROM COMPONENTE_NOTA
       WHERE CODIGO_DISCIPLINA = :disciplinaId
-      ORDER BY COMPONENTE_NOTA_ID DESC
+      ORDER BY COMPONENTE_NOTA_ID
       `,
-      { disciplinaId }
+      { disciplinaId },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
     );
-    return result.rows as ComponenteNota[];
+    
+    const rows = (result.rows as any[]) || [];
+    return rows as ComponenteNota[];
   } 
   finally {
     await close(conn);

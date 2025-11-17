@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>Notas Finais - NotaDez</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./nota_final.css" />
+</head>
+<body>
+    <main class="card">
+        <h1>Notas Finais</h1>
+        <p class="muted">
+          Visualize as notas dos componentes e a <strong>Nota Final</strong> já calculada para cada aluno.
+          Esta página é apenas para consulta; as notas não podem ser editadas aqui.
+        </p>
+
+        <section class="grid-3">
+          <!-- 1) Seleção de DISCIPLINA -->
+          <div>
+            <label for="disciplina">Disciplina</label>
+            <select id="disciplina" class="entrada">
+              <!-- BD: listar todas as disciplinas do docente -->
+              <option value="">Selecione a disciplina</option>
+            </select>
+          </div>
+
+          <!-- 2) Seleção de TURMA, filtrada pela disciplina escolhida -->
+          <div>
+            <label for="turma">Turma</label>
+            <select id="turma" class="entrada" disabled>
+              <!-- BD: após escolher a disciplina, carregar as turmas dessa disciplina -->
+              <option value="">Selecione a turma</option>
+            </select>
+          </div>
+        </section>
+        <section class="toolbar">
+        <!-- BD: após selecionar disciplina (e opcionalmente turma), buscar a fórmula da DISCIPLINA -->
+        <div>Fórmula vigente: <code id="formula"></code></div>
+        </section>
+
+        <!-- Tabela -->
+        <section class="tabela">
+        <table id="tabela" class="table">
+            <thead>
+            <tr>
+                <th style="width:120px">Matrícula</th>
+                <th>Aluno</th>
+
+                <th class="th-componente" data-index="0">Componente 1</th>
+                <th class="th-componente" data-index="1">Componente 2</th>
+                <th class="th-componente" data-index="2">Componente 3</th>
+                <th>Nota Final</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            <!-- BD montar as linhas usando a lista de alunos da turma (RA + nome) -->
+            </tbody>
+        </table>
+        </section>
+
+        <section class="toolbar end">
+        <button id="btnSalvar" class="media-button primario">Lançar Nota Final</button>
+        </section>
+    </main>
+
+    <script src="./nota_final.js"></script>
+</body>
+</html>
