@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato
 //funcao principal quue lista as instituicoes
 async function lerInstituicoes() {
     // Faz a requisicao GET para a rota que lista todas as instituicoes

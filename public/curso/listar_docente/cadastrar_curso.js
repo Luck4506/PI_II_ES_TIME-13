@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato e Joao Pedro Diniz
 // Função assíncrona para buscar e listar os docentes associados a um curso específico
 async function listarDocenteCurso(){
     // Pega o ID do curso do campo de input

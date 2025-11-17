@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato
 async function atualizarCurso(){
     //funcao que chama todas as verificacoes e acoes a serem feitas.
     const botao_cadastrar=document.getElementById("btn-cadastrar");

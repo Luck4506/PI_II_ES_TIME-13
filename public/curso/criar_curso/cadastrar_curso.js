@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato
 // Funcao principal para criar um novo curso e associar o docente
 async function criarCurso() {
     //funcao que chama todas as verificacoes e acoes a serem feitas.

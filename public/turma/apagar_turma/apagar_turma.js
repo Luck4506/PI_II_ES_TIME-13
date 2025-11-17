@@ -1,3 +1,4 @@
+//Codigo de autoria de Joao Pedro Diniz
 const modal = document.querySelector('#verificacao-modal');
 
 async function apagarTurma() {

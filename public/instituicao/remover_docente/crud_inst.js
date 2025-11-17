@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato e Joao Pedro Diniz
 async function remover() {
     // Seleciona o botao de cadastro (usado para acionar a acao)
     const botao_cadastrar = document.getElementById("btn-cadastrar");

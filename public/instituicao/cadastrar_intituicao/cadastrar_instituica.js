@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato
 async function adicionar() {
 
     const botao_cadastrar = document.getElementById("btn-cadastrar");

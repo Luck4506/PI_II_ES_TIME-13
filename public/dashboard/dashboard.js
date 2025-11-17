@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato
 // Função assíncrona para verificar se o usuário está associado a alguma instituição.
 async function verificarInstituicao() {
     try {

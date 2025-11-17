@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato
 // Funcao principal para iniciar o processo de remocao de um curso
 async function apagarCurso() {
     //funcao que chama todas as verificacoes e acoes a serem feitas.

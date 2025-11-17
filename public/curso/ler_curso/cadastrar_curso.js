@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato e Joao Pedro Diniz
 async function listarCurso() {
     // Pega o ID da instituição do campo de input
     const id_inst = document.getElementById("id_instituicao").value;

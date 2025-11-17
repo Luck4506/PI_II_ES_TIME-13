@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato e Joao Pedro Diniz
 // Seleção de elementos e configuração de listeners de eventos.
 
 // Seleciona o botão de recuperação de senha e adiciona um listener para iniciar o processo.

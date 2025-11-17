@@ -1,3 +1,4 @@
+//Codigo de autoria de Joao Pedro Diniz
 async function atualizarTurma() {
     const codigo_turma = document.getElementById("id_turma").value.trim();
     const nome_antigo = document.getElementById("nome_antigo").value.toLowerCase().trim();

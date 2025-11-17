@@ -1,3 +1,4 @@
+//Codigo de autoria de Pedro Vinicius Romanato e Joao Pedro Diniz
 // Funcao para listar os cursos de uma instituicao especifica
 async function listarCurso() {
     // Pega o ID da instituicao do campo de input
