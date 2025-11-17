@@ -12,7 +12,7 @@ import 'express-session';
 import { addDocente,possuiInstituicao,listarDocente,listarDocenteCurso,pegarTurmasDb } from "./db/docentes";
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
-import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
+import { addDisciplina, deleteDisciplinaById, getAllDisciplinas,getAllDisciplinasPeloId } from "./db/disciplina";
 import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById, verificarDisciplina, verificarNome, cadastrarTurma, verificarTurma, verificarNomeTurma,apagarTurma, atualizarTurma, pegarIdDisciplina, listarTurmasPorDisciplina, listarAlunosDaTurma,apagarRelacaoTurma } from "./db/turma";
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
 import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, getAllAlunosByTurma, importarAlunos } from "./db/aluno";
@@ -221,9 +221,10 @@ app.post('/disciplina', async (req: Request, res: Response) => {
 
 
 // Rota para exibir todas as disciplinas
-app.get('/ver_disciplina', async (req: Request, res: Response) => {
+app.post('/ver_disciplina', async (req: Request, res: Response) => {
+  const { curso_id } = req.body;
   try{
-    const disciplinas = await getAllDisciplinas();
+    const disciplinas = await getAllDisciplinasPeloId(curso_id);
     res.json(disciplinas);
   }catch(err){
     console.log(err);
@@ -231,6 +232,17 @@ app.get('/ver_disciplina', async (req: Request, res: Response) => {
       "error": "Erro ao buscar disciplinas"
     });
   }
+});
+//rota para verificar se curso existe
+app.post('/disciplina/existeCurso', async (req, res) => {
+    const { curso_id } = req.body;
+    try {
+        const existe = await existeCursoId(curso_id);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
 });
 
 

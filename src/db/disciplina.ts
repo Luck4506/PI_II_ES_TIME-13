@@ -66,7 +66,33 @@ export async function getAllDisciplinas(): Promise<Disciplina[]> {
     await close(conn);
   }
 }
+//funcao que pega todas as disciplinas ligadas ao curso id para listar
+export async function getAllDisciplinasPeloId(curso_id:number): Promise<Disciplina[]> {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 
+        CODIGO_DISCIPLINA AS "id",
+        CURSO_ID AS "curso_ID",
+        NOME AS "nome",
+        SIGLA AS "sigla",
+        CODIGO AS "codigo",
+        PERIODO_CURSO AS "periodo_curso"
+      FROM DISCIPLINA
+      WHERE CURSO_ID = :curso_id
+      ORDER BY NOME
+      `,
+      {curso_id},
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
 
+    const rows = (result.rows as any[]) || [];
+    return rows as Disciplina[];
+  } finally {
+    await close(conn);
+  }
+}
 export async function deleteDisciplinaById(idValue: number): Promise<number> {
   
   if (!Number.isInteger(idValue) || idValue <= 0){
