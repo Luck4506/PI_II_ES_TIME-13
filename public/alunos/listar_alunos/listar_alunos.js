@@ -31,7 +31,7 @@ async function preencherTabela(){
         let turmaId_Str = document.getElementById('aluno_cod_turma').value.trim(); // Pega o código da turma do input (string).
         const turmaId = validarId(turmaId_Str); // Valida o código da turma.
 
-        const dados = await fetch('/alunos') // <-- Falta a rota (por enquanto está listando sem filtro).
+        const dados = await fetch(`/turma/${turmaId}/alunos`)
             .then(response => {
 
             if(!response.ok){
