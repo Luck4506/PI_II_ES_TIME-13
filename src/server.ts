@@ -82,7 +82,7 @@ app.post("/cadastrar", async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Erro ao inserir Docente." });
   }
 });
-
+// Rota para envio de código de verificação por e-mail
 app.post('/enviarCodigoEmail', async (req, res) => {
     const { codigo,email } = req.body;
 
@@ -177,7 +177,7 @@ app.post('/recuperar-senha', async (req: Request, res: Response) => {
     return res.status(500).json({ error: "Erro interno no servidor." });
   }
 });
-
+// Rota para verificar se o docente logado possui alguma instituição relacionada
 app.post('/verificarTemInstituicao', async (req, res) => {
   try {
     if(!req.session.user){
@@ -265,6 +265,7 @@ app.get('/api/session', (req: Request, res: Response) => {
   }
   return res.status(401).json({ error: 'Não autenticado' });
 });
+// Rota para verificar se existe instituição com o nome e sigla fornecidos
 app.post('/instituicao/verificarNomeSigla', async (req, res) => {
     const { nome,sigla } = req.body;
 
@@ -297,6 +298,7 @@ app.post('/instituicao/verificarNome', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+// Rota para cadastrar a relação entre o docente e uma instituição
 app.post('/instituicao/cadastrarRelacao', async (req, res) => {
     const { instituicao_id } = req.body;
     if(!req.session.user){
@@ -315,6 +317,7 @@ app.post('/instituicao/cadastrarRelacao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+// Rota para listar turmas associadas ao docente logado
 app.post("/turma/listarDoDocente", async (req, res) => {
     if (!req.session.user) {
         return res.status(401).json({ erro: "Não autenticado" });
@@ -328,6 +331,7 @@ app.post("/turma/listarDoDocente", async (req, res) => {
         return res.status(500).json({ erro: "Erro no servidor" });
     }
 });
+// Rota para atualizar a senha de um docente no banco de dados
 app.post('/updateSenhaDb', async (req, res) => {
     const { email,senha } = req.body;
     try {
@@ -458,7 +462,7 @@ app.post('/curso/verifyInstituicao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar a existência de um curso por ID
 app.post('/curso/verifyCursoExiste', async (req, res) => {
     const { curso_id } = req.body;
 
@@ -489,7 +493,7 @@ app.post('/instituicao/verificar/pegarid', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar se uma instituição existe pelo ID
 app.post('/instituicao/verificarExisteId', async (req, res) => {
     const { instituicao_id } = req.body;
 
@@ -501,7 +505,7 @@ app.post('/instituicao/verificarExisteId', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para associar um docente a uma instituição
 app.post('/instituicao/entrarInstituicao', async (req, res) => {
     const { instituicao_id } = req.body;
     if(!req.session.user){
@@ -516,7 +520,7 @@ app.post('/instituicao/entrarInstituicao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar se o docente está associado a um curso/instituição
 app.post('/instituicao/verificarExisteDocente', async (req, res) => {
     const { instituicao_id } = req.body;
     if(!req.session.user){
@@ -531,7 +535,7 @@ app.post('/instituicao/verificarExisteDocente', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar a existência de uma disciplina pelo código
 app.post('/turma/verificarDisciplina', async (req, res) => {
     const { codigo_disciplina } = req.body;
     try {
@@ -542,7 +546,7 @@ app.post('/turma/verificarDisciplina', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar se existe uma turma com determinado nome para uma disciplina
 app.post('/turma/verificarNome', async (req, res) => {
     const { codigo_disciplina,nome } = req.body;
     try {
@@ -553,7 +557,7 @@ app.post('/turma/verificarNome', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar se existe uma turma com determinado nome para uma disciplina
 app.post('/turma/verificarNomeTurma', async (req, res) => {
     const { codigo_disciplina,nome } = req.body;
     try {
@@ -564,7 +568,7 @@ app.post('/turma/verificarNomeTurma', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para cadastrar uma nova turma
 app.post('/turma/cadastrarTurma', async (req, res) => {
     const { codigo_disciplina,nome } = req.body;
     if(!req.session.user){
@@ -579,7 +583,7 @@ app.post('/turma/cadastrarTurma', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para atualizar o nome de uma turma
 app.post('/turma/atualizarTurma', async (req, res) => {
     const { codigo_turma,nome_antigo,nome_novo } = req.body;
     try {
@@ -590,6 +594,7 @@ app.post('/turma/atualizarTurma', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+// Rota para apagar a relação do docente com a turma
 app.post('/turma/apagarRelacao', async (req, res) => {
     const { codigo_turma } = req.body;
     try {
@@ -600,7 +605,7 @@ app.post('/turma/apagarRelacao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para apagar uma turma
 app.post('/turma/apagarTurma', async (req, res) => {
     const { codigo_turma } = req.body;
     try {
@@ -611,6 +616,7 @@ app.post('/turma/apagarTurma', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+// Rota para verificar a existência de uma turma por código e nome
 app.post('/turma/verificarTurma', async (req, res) => {
     const { codigo_turma,nome } = req.body;
     try {
@@ -621,7 +627,7 @@ app.post('/turma/verificarTurma', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para obter o ID da disciplina associada a uma turma
 app.post('/turma/pegarIdDisciplina', async (req, res) => {
     const { turma_id } = req.body;
     try {
@@ -632,6 +638,7 @@ app.post('/turma/pegarIdDisciplina', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+// Rota para verificar se existem disciplinas associadas a um curso
 app.post('/curso/verificar/disciplina', async (req, res) => {
     const { curso_id} = req.body;
 
@@ -660,7 +667,7 @@ app.post('/curso/verificar/pegarid', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para cadastrar a relação entre o docente logado e um curso
 app.post('/curso/cadastrarRelacao', async (req, res) => {
     const {curso_id} = req.body;
     
@@ -678,7 +685,7 @@ app.post('/curso/cadastrarRelacao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar a existência de um curso pelo ID
 app.post('/curso/verifyExisteCurso', async (req, res) => {
     const {curso_id} = req.body;
     
@@ -694,7 +701,7 @@ app.post('/curso/verifyExisteCurso', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar se o docente logado está associado à instituição
 app.post('/curso/verifyEstaInstituicao', async (req, res) => {
     const {instituicao_id} = req.body;
     
@@ -714,7 +721,7 @@ app.post('/curso/verifyEstaInstituicao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar se existe uma relação entre o docente logado e um curso
 app.post('/curso/verifyExisteRelacao', async (req, res) => {
     const {curso_id} = req.body;
     
@@ -746,7 +753,7 @@ app.post('/instituicao/verificar/existeDocente', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar a existência de uma relação específica entre instituição e docente
 app.post('/instituicao/verificar/existeRelacao', async (req, res) => {
     const { instituicao_id,docente_id } = req.body;
     try {
@@ -835,7 +842,7 @@ app.post("/curso/listar", async (req, res) => {
     res.status(500).send("Erro ao buscar cursos");
   }
 });
-
+// Rota para listar docentes de uma instituição
 app.post("/docente/listar", async (req, res) => {
   try {
     const { instituicao_id } = req.body;
@@ -851,6 +858,7 @@ app.post("/docente/listar", async (req, res) => {
     res.status(500).send("Erro ao buscar cursos");
   }
 });
+// Rota para listar docentes associados a um curso
 app.post("/docente/curso/listar", async (req, res) => {
   try {
     const { curso_id } = req.body;
@@ -915,6 +923,7 @@ app.post('/curso/apagar', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+// Rota para remover a relação de um docente com uma instituição
 app.post('/instituicao/removerRelacao', async (req, res) => {
     const { instituicao_id,docente_id } = req.body;
     try {
@@ -930,6 +939,7 @@ app.post('/instituicao/removerRelacao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+// Rota para apagar a relação entre docentes e um curso
 app.post('/curso/apagarRelacao', async (req, res) => {
     const { curso_id } = req.body;
 
@@ -945,7 +955,7 @@ app.post('/curso/apagarRelacao', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
-
+// Rota para verificar se um email já está cadastrado
 app.post('/verificarEmailCadastrado', async (req, res) => {
     const { email } = req.body;
 

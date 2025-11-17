@@ -25,7 +25,7 @@ export async function getDocenteByEmail(email: string): Promise<Docente | null> 
     await close(conn);
   }
 }
-
+//verifica se ja tem alguum docente registrado com esse email
 export async function verificarExisteEmail(email: string) {
   const conn = await open();
   try {
@@ -45,7 +45,7 @@ export async function verificarExisteEmail(email: string) {
     await close(conn);
   }
 }
-
+//fuuncao que atualiza a senha do docente sando o email como identificador
 export async function fazerUpdateSenha(email: string, senha: string) {
   const conn = await open();
   try {

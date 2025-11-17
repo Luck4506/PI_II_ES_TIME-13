@@ -8,7 +8,7 @@ export interface Docente {
   telefone: string,
   senha: string
 };
-
+// Função para adicionar um novo docente ao banco de dados e retornar o ID gerado
 export async function addDocente(nome: string, email: string, telefone: string, senha: string): Promise<number> {
   const conn = await open();
   try {
@@ -34,6 +34,7 @@ export async function addDocente(nome: string, email: string, telefone: string, 
     await close(conn);
   }
 }
+// Função para listar todos os docentes vinculados a uma instituição específica
 export async function listarDocente(instituicao_id: number) {
   const conn = await open();
   try {
@@ -59,7 +60,7 @@ export async function listarDocente(instituicao_id: number) {
     await close(conn);
   }
 }
-
+// Função para listar todos os docentes vinculados a um curso específico
 export async function listarDocenteCurso(curso_id: number) {
   const conn = await open();
   try {
@@ -85,7 +86,7 @@ export async function listarDocenteCurso(curso_id: number) {
     await close(conn);
   }
 }
-
+// Função para obter as turmas de um docente, incluindo o nome da disciplina e da turma
 export async function pegarTurmasDb(docente_id: number) {
   const conn = await open();
   try {
@@ -115,6 +116,7 @@ export async function pegarTurmasDb(docente_id: number) {
     await close(conn);
   }
 }
+// Função para verificar se um docente está vinculado a alguma instituição
 export async function possuiInstituicao(docente_id:number) {
   const conn = await open();
   try {

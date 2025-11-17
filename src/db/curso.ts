@@ -4,6 +4,7 @@ export interface Curso {
   id: number,
   nome: string,
 };
+// Função para verificar se o ID de uma instituição é válido
 export async function verificarCursoInstituica(id:number) {
   const conn=await open();
   try{
@@ -21,6 +22,7 @@ export async function verificarCursoInstituica(id:number) {
     await close(conn);
   }
 }
+// Função para verificar se um curso com o ID fornecido existe
 export async function existeCursoId(curso_id:number) {
   const conn=await open();
   try{
@@ -38,7 +40,7 @@ export async function existeCursoId(curso_id:number) {
     await close(conn);
   }
 }
-
+// Função para verificar se um docente está vinculado a uma instituição
 export async function estaInstituicao(instituicao_id:number,docente_id:number) {
   const conn=await open();
   try{
@@ -57,8 +59,7 @@ export async function estaInstituicao(instituicao_id:number,docente_id:number) {
     await close(conn);
   }
 }
-
-
+// Função para verificar se a relação entre um docente e um curso existe
 export async function estaRelacaoCurso(docente_id:number,curso_id:number) {
   const conn=await open();
   try{
@@ -77,6 +78,7 @@ export async function estaRelacaoCurso(docente_id:number,curso_id:number) {
     await close(conn);
   }
 }
+// Função para verificar se um curso com um nome específico já existe em uma instituição
 export async function verificarCurso(INSTITUICAO_ID:number,NOME:string) {
   const conn=await open();
   try{
@@ -95,6 +97,7 @@ export async function verificarCurso(INSTITUICAO_ID:number,NOME:string) {
     await close(conn);
   }
 }
+// Função para cadastrar um novo curso para uma instituição
 export async function cadastrarCurso(instituicao_id: number, nome: string) {
   const conn = await open();
   try {
@@ -109,6 +112,7 @@ export async function cadastrarCurso(instituicao_id: number, nome: string) {
     await close(conn);
   }
 }
+// Função para listar todos os cursos de uma instituição específica
 export async function listarCurso(instituicao_id: number) {
   const conn = await open();
   try {
@@ -132,6 +136,7 @@ export async function listarCurso(instituicao_id: number) {
     await close(conn);
   }
 }
+// Função para atualizar o nome de um curso com base no nome antigo e ID da instituição
 export async function atualizarCurso(NOME_ANTIGO:string, NOME_NOVO:string, INSTITUICAO_ID:number) {
   const conn = await open();
   try {
@@ -145,6 +150,7 @@ export async function atualizarCurso(NOME_ANTIGO:string, NOME_NOVO:string, INSTI
     await close(conn);
   }
 }
+// Função para apagar um curso pelo nome e ID da instituição
 export async function apagarCursoComando(instituicao_id:number,nome:string) {
   const conn = await open();
   try {
@@ -158,6 +164,7 @@ export async function apagarCursoComando(instituicao_id:number,nome:string) {
     await close(conn);
   }
 }
+// Função para apagar todas as relações de docentes com um curso específico
 export async function apagarRelacaoCurso(curso_id:number) {
   const conn = await open();
   try {
@@ -171,7 +178,7 @@ export async function apagarRelacaoCurso(curso_id:number) {
     await close(conn);
   }
 }
-
+// Função para obter o ID de um curso pelo nome e ID da instituição
 export async function pegarIdCurso(instituicao_id:number,nome: string) {
   const conn = await open();
   try {
@@ -194,6 +201,7 @@ export async function pegarIdCurso(instituicao_id:number,nome: string) {
     await close(conn);
   }
 }
+// Função para verificar se existem disciplinas vinculadas a um curso
 export async function pegarDisciplinaPorId(curso_id:number) {
   const conn = await open();
   try {
@@ -215,7 +223,7 @@ export async function pegarDisciplinaPorId(curso_id:number) {
     await close(conn);
   }
 }
-
+// Função para verificar se um curso existe pelo ID (similar a existeCursoId)
 export async function verificarCursoExiste(curso_id:number) {
   const conn = await open();
   try {
@@ -237,6 +245,7 @@ export async function verificarCursoExiste(curso_id:number) {
     await close(conn);
   }
 }
+// Função para cadastrar a relação entre um docente e um curso
 export async function cadastrarRelacaoCurso(docente_id:number, curso_id:number) {
   const conn = await open();
   try {

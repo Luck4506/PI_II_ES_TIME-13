@@ -1,7 +1,7 @@
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 
-
+// Função para verificar se existe uma instituição com o nome fornecido
 export async function verifyByName(nome: string): Promise<boolean> {
   const conn = await open();
   try {
@@ -22,6 +22,7 @@ export async function verifyByName(nome: string): Promise<boolean> {
     await close(conn);
   }
 }
+// Função para verificar se existe uma instituição com o nome e sigla fornecidos
 export async function verifyByNameSigla(nome: string,sigla:string): Promise<boolean> {
   const conn = await open();
   try {
@@ -44,7 +45,7 @@ export async function verifyByNameSigla(nome: string,sigla:string): Promise<bool
   }
 }
 
-
+// Função para verificar se existe uma instituição com o ID fornecido
 export async function verifyIdInstituicao(instituicao_id: number) {
   const conn = await open();
   try {
@@ -64,7 +65,7 @@ export async function verifyIdInstituicao(instituicao_id: number) {
     await close(conn);
   }
 }
-
+// Função para verificar se existe a relação entre um docente e uma instituição
 export async function verificarDocenteCurso(instituicao_id: number,docente_id:number) {
   const conn = await open();
   try {
@@ -85,6 +86,7 @@ export async function verificarDocenteCurso(instituicao_id: number,docente_id:nu
     await close(conn);
   }
 }
+// Função para criar a relação entre um docente e uma instituição (sinônimo de cadastrarRelacao)
 export async function entrarIdInstituicao(instituicao_id: number, docente_id: number) {
   const conn = await open();
   try {
@@ -99,6 +101,7 @@ export async function entrarIdInstituicao(instituicao_id: number, docente_id: nu
     await close(conn);
   }
 }
+// Função para registrar uma nova instituição (nome e sigla)
 export async function registrarInstituicao(nome: string, sigla: string) {
   const conn = await open();
   try {
@@ -113,6 +116,7 @@ export async function registrarInstituicao(nome: string, sigla: string) {
     await close(conn);
   }
 }
+// Função para cadastrar a relação entre um docente e uma instituição
 export async function cadastrarRelacao(instituicao_id: number, docente_id: number) {
   const conn = await open();
   try {
@@ -127,8 +131,7 @@ export async function cadastrarRelacao(instituicao_id: number, docente_id: numbe
     await close(conn);
   }
 }
-
-
+// Função para listar todas as instituições registradas
 export async function listarInstituicao() {
   const conn = await open();
   try {
@@ -149,7 +152,7 @@ export async function listarInstituicao() {
     await conn.close();
   }
 }
-
+// Função para atualizar a sigla de uma instituição dado o seu nome
 export async function atualizarInstituicao(nome: string, sigla: string) {
   const conn = await open();
   try {
@@ -163,8 +166,7 @@ export async function atualizarInstituicao(nome: string, sigla: string) {
     await close(conn);
   }
 }
-
-
+// Função para apagar uma instituição pelo nome e sigla
 export async function apagarInstituicao(nome: string, sigla: string) {
   const conn = await open();
   try {
@@ -178,7 +180,7 @@ export async function apagarInstituicao(nome: string, sigla: string) {
     await close(conn);
   }
 }
-
+// Função para remover a relação entre um docente e uma instituição
 export async function removerRelacaoDocente(instituicao_id:number,docente_id:number) {
   const conn = await open();
   try {
@@ -192,6 +194,7 @@ export async function removerRelacaoDocente(instituicao_id:number,docente_id:num
     await close(conn);
   }
 }
+// Função para buscar o ID da instituição pelo nome
 export async function pegarIdPorNome(nome: string) {
   const conn = await open();
   try {
@@ -213,8 +216,7 @@ export async function pegarIdPorNome(nome: string) {
     await close(conn);
   }
 }
-
-
+// Função para verificar se existem docentes vinculados a uma instituição
 export async function existeDocente(instituicao_id: number) {
   const conn = await open();
   try {
@@ -233,6 +235,7 @@ export async function existeDocente(instituicao_id: number) {
     await close(conn);
   }
 }
+// Função para verificar se existem cursos vinculados a uma instituição
 export async function existeCurso(instituicao_id:number) {
   const conn = await open();
   try {

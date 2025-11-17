@@ -7,7 +7,7 @@ export interface Turma{
   id_docente: number,
   nome: string,
 };
-
+// Função para adicionar uma nova turma e retornar o ID gerado
 export async function addTurma(id_disciplina:number, id_docente:number, nome:string): Promise<number> {
   const conn = await open();
   try{
@@ -32,7 +32,7 @@ export async function addTurma(id_disciplina:number, id_docente:number, nome:str
     await close(conn);
   }
 }
-
+// Função para listar todas as turmas de um docente específico
 export async function getAllTurmasPerDocente(docenteId: number): Promise<Turma[]> {
   const conn = await open();
   try {
@@ -52,7 +52,7 @@ export async function getAllTurmasPerDocente(docenteId: number): Promise<Turma[]
     await close(conn);
   }
 }
-
+// Função para buscar uma turma pelo seu ID
 export async function getTurmaById(idValue: number): Promise<Turma | null> {
   const conn = await open();
   try{
@@ -72,7 +72,7 @@ export async function getTurmaById(idValue: number): Promise<Turma | null> {
     await close(conn);
   }
 }
-
+// Função para deletar uma turma pelo seu ID
 export async function deleteTurmaById(idValue: number): Promise<boolean> {
   const conn = await open();
   try {
@@ -87,6 +87,7 @@ export async function deleteTurmaById(idValue: number): Promise<boolean> {
     await close(conn);
   }
 }
+// Função para verificar a existência de uma disciplina pelo código
 export async function verificarDisciplina(codigo_disciplina: number) {
   const conn = await open();
   try {
@@ -105,7 +106,7 @@ export async function verificarDisciplina(codigo_disciplina: number) {
     await close(conn);
   }
 }
-
+// Função para verificar se o nome de uma turma já existe para uma disciplina
 export async function verificarNome(codigo_disciplina: number,nome:string) {
   const conn = await open();
   try {
@@ -125,7 +126,7 @@ export async function verificarNome(codigo_disciplina: number,nome:string) {
     await close(conn);
   }
 }
-
+// Função para verificar se o nome de uma turma já existe para uma disciplina
 export async function verificarNomeTurma(codigo_disciplina: number,nome:string) {
   const conn = await open();
   try {
@@ -145,6 +146,7 @@ export async function verificarNomeTurma(codigo_disciplina: number,nome:string) 
     await close(conn);
   }
 }
+// Função para apagar as relações de aluno a turma em NOTA_FINAL_AJUSTADA
 export async function apagarRelacaoTurma(codigo_turma:number) {
   const conn = await open();
   try {
@@ -158,7 +160,7 @@ export async function apagarRelacaoTurma(codigo_turma:number) {
     await close(conn);
   }
 }
-
+// Função para apagar o registro da turma na tabela TURMA
 export async function apagarTurma(codigo_turma:number) {
   const conn = await open();
   try {
@@ -172,6 +174,7 @@ export async function apagarTurma(codigo_turma:number) {
     await close(conn);
   }
 }
+// Função para verificar a existência de uma turma pelo código e nome
 export async function verificarTurma(codigo_turma: number,nome:string) {
   const conn = await open();
   try {
@@ -191,7 +194,7 @@ export async function verificarTurma(codigo_turma: number,nome:string) {
     await close(conn);
   }
 }
-
+// Função para obter o ID da disciplina associado a uma turma
 export async function pegarIdDisciplina(codigo_turma: number) {
   const conn = await open();
   try {
@@ -218,7 +221,7 @@ export async function pegarIdDisciplina(codigo_turma: number) {
   }
 }
 
-
+// Função para cadastrar uma nova turma
 export async function cadastrarTurma(codigo_disciplina:number,nome:string,docente_id:number) {
   const conn = await open();
   try {
@@ -232,7 +235,7 @@ export async function cadastrarTurma(codigo_disciplina:number,nome:string,docent
     await close(conn);
   }
 }
-
+// Função para atualizar o nome de uma turma
 export async function atualizarTurma(codigo_turma:number,nome_antigo:string,nome_novo:string) {
   const conn = await open();
   try {
@@ -248,7 +251,7 @@ export async function atualizarTurma(codigo_turma:number,nome_antigo:string,nome
     await close(conn);
   }
 }
-
+// Função para listar turmas por código de disciplina
 export async function listarTurmasPorDisciplina(idDisciplina: number) {
   const conn = await open();
   try {
@@ -268,7 +271,7 @@ export async function listarTurmasPorDisciplina(idDisciplina: number) {
     await close(conn);
   }
 }
-
+// Função para listar os alunos de uma turma específica
 export async function listarAlunosDaTurma(codigoTurma: number) {
   const conn = await open();
   try {
