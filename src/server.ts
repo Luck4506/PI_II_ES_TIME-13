@@ -15,7 +15,7 @@ import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
 import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById, verificarDisciplina, verificarNome, cadastrarTurma, verificarTurma, verificarNomeTurma,apagarTurma, atualizarTurma, pegarIdDisciplina, listarTurmasPorDisciplina, listarAlunosDaTurma,apagarRelacaoTurma } from "./db/turma";
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
-import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, importarAlunos } from "./db/aluno";
+import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, getAllAlunosByTurma, importarAlunos } from "./db/aluno";
 import { inserirAlunoTurma, atualizarNotasFinaisLote} from "./db/nota_final";
 import { salvarFormula, obterFormulaPorDisciplina } from "./db/formula";
 import { salvarNotasComponente, getAllLancamentosByTurmaEComponente } from "./db/lancamento_nota";
@@ -1239,6 +1239,23 @@ app.get('/alunos', async (_req: Request, res: Response) => {
     return res.json(alunos);
   } catch (error) {
     console.error('Erro ao listar alunos:', error);
+    return res.status(500).json({ error: 'Erro ao listar alunos.' });
+  }
+});
+
+// Rota para listar alunos de uma turma específica
+app.get('/aluno/:turmaId', async (req: Request, res: Response) => {
+  try {
+    const turmaId = Number(req.params.turmaId);
+
+    if (!Number.isFinite(turmaId) || turmaId <= 0) {
+      return res.status(400).json({ error: 'Código da turma inválido.' });
+    }
+
+    const alunos = await getAllAlunosByTurma(turmaId);
+    return res.json(alunos);
+  } catch (error) {
+    console.error('Erro ao listar alunos.', error);
     return res.status(500).json({ error: 'Erro ao listar alunos.' });
   }
 });

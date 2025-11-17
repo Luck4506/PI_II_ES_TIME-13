@@ -93,6 +93,32 @@ export async function listarTodosAlunos(): Promise<Aluno[]> {
 
 }
 
+export async function getAllAlunosByTurma(turmaId: number): Promise<Aluno[]> {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT
+        N.RA_ALUNO as "ra",
+        A.NOME_ALUNO as "nome"
+      FROM NOTADEZ.NOTA_FINAL_AJUSTADA N
+      INNER JOIN ALUNO A
+        ON A.RA = N.RA_ALUNO
+      WHERE N.CODIGO_TURMA = :turmaId
+      ORDER BY RA_ALUNO
+      `,
+      { turmaId },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    const rows = (result.rows as any[]) || [];
+    return rows as Aluno[];
+ }
+  finally {
+    await close(conn);
+  }
+}
+
 //Importa alunos por CSV em lote.
 //Retorna um resumo com quantos inseriu, quantos falharam e os erros (se houver).
 

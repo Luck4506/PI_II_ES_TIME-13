@@ -83,6 +83,7 @@ body {
   transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transição suave para efeitos de transformação (scale, rotate, translate) e para mudanças na sombra */
 }
 
+/* Efeito ao passar o mouse no botão de cadastro */
 #aluno_button:hover {
   transform: translateY(-2px); /* Move o botão 2px para cima ao passar o mouse */
   box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); /* Adiciona uma sombra mais intensa */
@@ -100,6 +101,7 @@ body {
   width: 5%; /* Define a largura como 5% da largura do elemento pai (container) */
 }
 
+/* Efeito ao passar o mouse no botão de sair */
 #btn-sair:hover{
   transform: translateY(-1px); /* Move o botão 1px para cima ao passar o mouse */
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04); /* Adiciona uma sombra mais intensa */

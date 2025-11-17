@@ -1,17 +1,18 @@
 /* Autor: Henrique Young de Azevedo */
 
+/* Reset básico */
 * {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-}
+  margin: 0; /* remove toda margin padrão do navegador */
+  padding: 0; /* remove todo padding padrão do navegador */
+  box-sizing: border-box; /* Com border-box, os valores width e height passam a representar o TAMANHO TOTAL do elemento. */
+}                         /* Isso significa, que padding e border já estão inclusos nesses valores (não somam por fora). */
 
 /* Fundo */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(135deg, #0cf4f8 0%, #1205cd 100%);
   min-height: 100vh;
-  display: flex;
+  display: flex; /* usa flexbox */
   align-items: center; /* centraliza na vertical*/
   justify-content: center; /* centraliza na horizontal */
   padding: 20px;
@@ -25,7 +26,7 @@ body {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
   width: 100%;
   max-width: 700px;
-  text-align: center;
+  text-align: center; /* Alinha o texto ao centro */
 }
 
 /* Campos */
@@ -44,7 +45,7 @@ body {
 
 /* Labels */
 .aluno_label {
-  display: block;
+  display: block; /* Faz o label ocupar toda a largura disponível */
   margin-bottom: 8px;
   color: #555;
   font-weight: 500;
@@ -58,8 +59,8 @@ body {
   border: 2px solid #e1e5e9;
   border-radius: 8px;
   font-size: 16px;
-  transition: border-color 0.3s ease;
-  outline: none;
+  transition: border-color 0.3s ease; /* Transição (intervalo de mudança de estado) suave para a borda */
+  outline: none; /* Remove o contorno padrão */
 }
 
 /* Destaque para os inputs */
@@ -77,30 +78,32 @@ body {
   border: none;
   border-radius: 8px;
   font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  font-weight: 600; /* [1,1000] */
+  cursor: pointer; /* Muda o cursor ao passar por cima */
+  transition: transform 0.2s ease, box-shadow 0.2s ease; /* Transição suave para efeitos de transformação (scale, rotate, translate) e para mudanças na sombra */
 }
 
+/* Efeito ao passar o mouse no botão de cadastro */
 #aluno_button:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3);
+  transform: translateY(-2px); /* Move o botão 2px para cima ao passar o mouse */
+  box-shadow: 0 8px 25px rgba(102, 126, 234, 0.3); /* Adiciona uma sombra mais intensa */
 }
 
 /* Botão de sair */
 #btn-sair{
   border: none;
-  display: block;
+  display: block; /* Faz o botão ocupar toda a largura disponível */
   font-weight: bold;
   color: gray;
   background: none;
   margin-bottom: 40px;
   border: solid 1px;
   padding: 4px 6px;
-  width: 5%;
+  width: 5%; /* Define a largura como 5% da largura do elemento pai (container) */
 }
 
+/* Efeito ao passar o mouse no botão de sair */
 #btn-sair:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px); /* Move o botão 1px para cima ao passar o mouse */
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04); /* Adiciona uma sombra mais intensa */
 }
