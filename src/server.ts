@@ -1366,6 +1366,30 @@ app.get('/formula/disciplinas', async (_req: Request, res: Response) => {
   }
 });
 
+// Rota para listar lançamentos de notas por turma e componente
+app.get("/lancamento-nota/:turmaId/:componenteId", async (req: Request, res: Response) => {
+  try {
+    const turmaId = Number(req.params.turmaId);
+    const componenteId = Number(req.params.componenteId);
+
+    if (!Number.isFinite(turmaId) || turmaId <= 0) {
+      return res.status(400).json({ error: "ID de turma inválido." });
+    }
+
+    if (!Number.isFinite(componenteId) || componenteId <= 0) {
+      return res.status(400).json({ error: "ID de componente inválido." });
+    }
+
+    const lancamentos = await getAllLancamentosByTurmaEComponente(turmaId, componenteId);
+
+    return res.json(lancamentos);
+
+  } catch (erro) {
+    console.error("Erro ao buscar lançamentos:", erro);
+    return res.status(500).json({ error: "Erro ao buscar lançamentos de notas." });
+  }
+});
+
 // Rota para cadastrar ou atualizar fórmula
 app.post('/formula/cadastrar_formula', async (req: Request, res: Response) => {
   try {

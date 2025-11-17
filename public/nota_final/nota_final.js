@@ -11,6 +11,8 @@ let ALUNOS = [];           // Alunos da turma selecionada [{ id, nome }]
 const NOTAS = {};          // Mapa de notas por aluno e sigla: { [ra]: { [sigla]: valor } }
 //--------------------------------------------------------//
 
+console.log("Inicializando nota_final.js. SIGLAS:", SIGLAS, "COMPONENTES:", COMPONENTES);
+
 function atualizarCabecalhoComponentes() {
   const ths = document.querySelectorAll('th.th-componente');
 
@@ -179,12 +181,14 @@ async function carregarComponentes(idDisciplina) {
     }
 
     const componentes = await resp.json(); // [{ id, sigla, nome }]
+    console.log('Componentes carregados para disciplina', idDisciplina, componentes);
     COMPONENTES = componentes;
     SIGLAS = componentes.map(c => c.sigla);
     atualizarCabecalhoComponentes();
 
     // Se já houver alunos carregados, monta a tabela com as novas colunas
     if (ALUNOS && ALUNOS.length > 0) {
+      console.log('Já havia alunos carregados, montando tabela com SIGLAS:', SIGLAS);
       montarTabela();
       preencherNotasNaTabela();
       calcularNotasFinaisParaTodos();
@@ -208,6 +212,7 @@ async function carregarAlunosDaTurma(idTurma) {
     }
 
     const alunos = await resp.json(); 
+    console.log('Alunos carregados para turma', idTurma, alunos);
     ALUNOS = alunos;
 
     montarTabela();
@@ -244,18 +249,21 @@ function preencherNotasNaTabela() {
 // Carrega notas de TODOS os componentes para a turma selecionada
 async function carregarNotasDeTodosComponentesDaTurma() {
   const turmaId = selTurma.value;
+  console.log('carregarNotasDeTodosComponentesDaTurma() - turmaId:', turmaId, 'COMPONENTES:', COMPONENTES);
 
   if (!turmaId) return;
   if (!COMPONENTES || COMPONENTES.length === 0) return;
 
   for (const componente of COMPONENTES) {
     try {
+      console.log('Buscando lançamentos para turma', turmaId, 'componente', componente);
       const resp = await fetch(`/lancamento-nota/${turmaId}/${componente.id}`);
       if (!resp.ok) {
         continue;
       }
 
       const lancamentos = await resp.json(); // [{ ra_aluno, valor }, ...]
+      console.log('Lançamentos recebidos para componente', componente.sigla, lancamentos);
 
       lancamentos.forEach(l => {
         const ra = l.ra_aluno ?? l.RA_ALUNO;

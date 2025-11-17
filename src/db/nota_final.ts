@@ -34,7 +34,7 @@ export async function atualizarNotasFinaisLote(registros: NotaFinalRegistro[]): 
     for (const reg of registros) {
       await conn.execute(
         `
-        UPDATE NOTA_FINAL_AJUSTADA
+        UPDATE NOTADEZ.NOTA_FINAL_AJUSTADA
         SET VALOR_NOTA_FINAL = :valor
         WHERE CODIGO_TURMA = :turma
           AND RA_ALUNO = :ra
