@@ -1256,7 +1256,7 @@ app.get('/alunos', async (_req: Request, res: Response) => {
 });
 
 // Rota para listar alunos de uma turma específica
-app.get('/aluno/:turmaId', async (req: Request, res: Response) => {
+app.get('/turma/:turmaId/alunos', async (req: Request, res: Response) => {
   try {
     const turmaId = Number(req.params.turmaId);
 
@@ -1333,7 +1333,7 @@ app.get("/turma/:id/alunos", async (req: Request, res: Response) => {
   }
 });
 
-//Rota adiconar aluno na turma
+//Rota adicionar aluno na turma
 app.post('/turma/adicionar-aluno', async (req: Request, res: Response) => {
   try {
     if (!req.session.user) {

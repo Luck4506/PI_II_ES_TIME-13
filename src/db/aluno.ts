@@ -100,12 +100,12 @@ export async function getAllAlunosByTurma(turmaId: number): Promise<Aluno[]> {
       `
       SELECT
         N.RA_ALUNO as "ra",
-        A.NOME_ALUNO as "nome"
+        A.NOME as "nome"
       FROM NOTADEZ.NOTA_FINAL_AJUSTADA N
       INNER JOIN ALUNO A
-        ON A.RA = N.RA_ALUNO
+        ON A.RA_ALUNO = N.RA_ALUNO
       WHERE N.CODIGO_TURMA = :turmaId
-      ORDER BY RA_ALUNO
+      ORDER BY N.RA_ALUNO
       `,
       { turmaId },
       { outFormat: OracleDB.OUT_FORMAT_OBJECT }
@@ -113,7 +113,7 @@ export async function getAllAlunosByTurma(turmaId: number): Promise<Aluno[]> {
 
     const rows = (result.rows as any[]) || [];
     return rows as Aluno[];
- }
+  }
   finally {
     await close(conn);
   }
