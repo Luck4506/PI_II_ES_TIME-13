@@ -87,3 +87,138 @@ export async function deleteTurmaById(idValue: number): Promise<boolean> {
     await close(conn);
   }
 }
+export async function verificarDisciplina(codigo_disciplina: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1 
+      FROM DISCIPLINA
+      WHERE CODIGO_DISCIPLINA = :codigo_disciplina
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { codigo_disciplina },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    return !!result.rows?.length;
+  } finally {
+    await close(conn);
+  }
+}
+
+export async function verificarNome(codigo_disciplina: number,nome:string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1 
+      FROM TURMA
+      WHERE CODIGO_DISCIPLINA = :codigo_disciplina
+      AND NOME = :nome
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { codigo_disciplina,nome },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    return !!result.rows?.length;
+  } finally {
+    await close(conn);
+  }
+}
+
+export async function verificarNomeTurma(codigo_disciplina: number,nome:string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1
+      FROM TURMA
+      WHERE CODIGO_DISCIPLINA = :codigo_disciplina
+      AND NOME = :nome
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { codigo_disciplina,nome },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    return !!result.rows?.length;
+  } finally {
+    await close(conn);
+  }
+}
+
+export async function verificarTurma(codigo_turma: number,nome:string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      SELECT 1 
+      FROM TURMA
+      WHERE CODIGO_TURMA = :codigo_turma
+      AND NOME = :nome
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { codigo_turma,nome },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+    return !!result.rows?.length;
+  } finally {
+    await close(conn);
+  }
+}
+
+export async function pegarIdDisciplina(codigo_turma: number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute<{
+      CODIGO_DISCIPLINA: number;
+    }>(
+      `
+      SELECT CODIGO_DISCIPLINA
+      FROM TURMA
+      WHERE CODIGO_TURMA = :codigo_turma
+      FETCH FIRST 1 ROWS ONLY
+      `,
+      { codigo_turma },
+      { outFormat: OracleDB.OUT_FORMAT_OBJECT }
+    );
+
+    if (!result.rows || result.rows.length === 0) {
+      return null;
+    }
+
+    return result.rows[0].CODIGO_DISCIPLINA;
+  } finally {
+    await close(conn);
+  }
+}
+
+
+export async function cadastrarTurma(codigo_disciplina:number,nome:string,docente_id:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `INSERT INTO TURMA (CODIGO_DISCIPLINA,DOCENTE_ID,NOME)
+       VALUES (:codigo_disciplina, :docente_id, :nome)`,
+      { codigo_disciplina,docente_id,nome },
+      { autoCommit: true }
+    );
+  } finally {
+    await close(conn);
+  }
+}
+
+export async function atualizarTurma(codigo_turma:number,nome_antigo:string,nome_novo:string) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `UPDATE TURMA
+      SET nome = :nome_novo
+      WHERE codigo_turma = :codigo_turma
+      AND nome = :nome_antigo`,
+      { nome_novo, codigo_turma, nome_antigo },
+      { autoCommit: true }
+    );
+  } finally {
+    await close(conn);
+  }
+}

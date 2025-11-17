@@ -13,7 +13,7 @@ import { addDocente,possuiInstituicao,listarDocente,listarDocenteCurso,pegarTurm
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
-import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById } from "./db/turma";
+import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById,verificarDisciplina,verificarNome,cadastrarTurma,verificarTurma,verificarNomeTurma,atualizarTurma,pegarIdDisciplina } from "./db/turma";
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
 import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, importarAlunos } from "./db/aluno";
 import { inserirAlunoTurma } from "./db/nota_final";
@@ -524,6 +524,87 @@ app.post('/instituicao/verificarExisteDocente', async (req, res) => {
     const docente_id= req.session.user.id;
     try {
         const existe = await verificarDocenteCurso(instituicao_id,docente_id);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/turma/verificarDisciplina', async (req, res) => {
+    const { codigo_disciplina } = req.body;
+    try {
+        const existe = await verificarDisciplina(codigo_disciplina);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/turma/verificarNome', async (req, res) => {
+    const { codigo_disciplina,nome } = req.body;
+    try {
+        const existe = await verificarNome(codigo_disciplina,nome);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/turma/verificarNomeTurma', async (req, res) => {
+    const { codigo_disciplina,nome } = req.body;
+    try {
+        const existe = await verificarNomeTurma(codigo_disciplina,nome);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/turma/cadastrarTurma', async (req, res) => {
+    const { codigo_disciplina,nome } = req.body;
+    if(!req.session.user){
+    return;
+    }
+    const docente_id= req.session.user.id;
+    try {
+        await cadastrarTurma(codigo_disciplina,nome,docente_id);
+        return true;
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/turma/atualizarTurma', async (req, res) => {
+    const { codigo_turma,nome_antigo,nome_novo } = req.body;
+    try {
+        await atualizarTurma(codigo_turma,nome_antigo,nome_novo);
+        return true;
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/turma/verificarTurma', async (req, res) => {
+    const { codigo_turma,nome } = req.body;
+    try {
+        const existe = await verificarTurma(codigo_turma,nome);
+        return res.json(existe);
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
+
+app.post('/turma/pegarIdDisciplina', async (req, res) => {
+    const { turma_id } = req.body;
+    try {
+        const existe = await pegarIdDisciplina(turma_id);
         return res.json(existe);
     } catch (erro) {
         console.error('Erro ao verificar no DB:', erro);
