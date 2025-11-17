@@ -1,20 +1,22 @@
 <!-- Autor: Henrique Young de Azevedo 25005651 */ -->
 
+<!-- Iniciando código HTML -->
 <!doctype html>
-<html lang="pt-br">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width" />
-    <title>Notadez - Criação de componente de nota</title>
-    <link href="comp.css" rel="stylesheet">
+<html lang="pt-br"> <!-- Idioma da página -->
+  <head> <!-- Seção que contém informações sobre o documento -->
+    <meta charset="utf-8" /> <!-- Codificação de caracteres usada -->
+    <meta name="viewport" content="width=device-width" /> <!-- Ajuste do viewport para dispositivos móveis -->
+    <title>Notadez - Criação de componente de nota</title> <!-- Título que aparece na aba do navegador -->
+    <link href="comp.css" rel="stylesheet"> <!-- Arquivo CSS externo -->
   </head>
-  <body>
-    <div class="card">
+  <body> <!-- Corpo do documento -->
+    <div class="card"> <!-- Container principal da página -->
 
-      <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button>
+      <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button> <!-- Botão de voltar para o dashboard -->
 
-      <h1 id="title">Novo Componente de Nota</h1>
+      <h1 id="title">Novo Componente de Nota</h1> <!-- Título da página -->
 
+      <!-- Campos de entrada para os dados do componente de nota -->
       <div class="field">
           <label for="componente_cod_disciplina" class="componente_label">Código da Disciplina Correspondente</label>
           <input id="componente_cod_disciplina" class="componente_input" requiered placeholder="1, 2, ..."> <!-- default type é "text" -->
@@ -32,9 +34,10 @@
           <input id="componente_descricao" class="componente_input" requiered placeholder="Avaliação multipla-escolha, Dissertação, ...">
       </div>
       <br><br>
+      <!-- Botão para criar o componente de nota -->
       <button type="button" id="componente_button" onclick="criarComponente()">Criar</button>
 
     </div>
-  <script src="criar_comp.js"></script>
+  <script src="criar_comp.js"></script> <!-- Arquivo JavaScript externo -->
   </body>
 </html>

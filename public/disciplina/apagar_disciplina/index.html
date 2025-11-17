@@ -1,27 +1,30 @@
 <!-- Autor: Henrique Young de Azevedo 25005651 -->
 
+<!-- Iniciando código HTML -->
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="disc_3.css">
-    <title>NotaDez - Excluir disciplina</title>
-    <script src="delete_disciplina.js"></script>
+<html lang="pt-br"> <!-- Idioma da página -->
+    <head> <!-- Seção que contém informações sobre o documento -->
+        <meta charset="UTF-8" /> <!-- Codificação de caracteres usada -->
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Ajuste do viewport para dispositivos móveis -->
+        <link rel="stylesheet" href="disc_3.css"> <!-- Arquivo CSS externo -->
+        <title>NotaDez - Excluir disciplina</title> <!-- Título que aparece na aba do navegador -->
+        <script src="delete_disciplina.js"></script> <!-- Arquivo JavaScript externo -->
     </head>
     <body>
-        <main class="disciplina-container">
+        <main class="disciplina-container"> <!-- Container principal da página -->
 
-            <button class="disciplina-button" id="btn-sair" onclick="window.location.href='/dashboard/'">
+            <button class="disciplina-button" id="btn-sair" onclick="window.location.href='/dashboard/'"> <!-- Botão de voltar para o dashboard -->
             <
             </button>
+  
+            <h1 id="titulo-excluir" class="disciplina-title">Excluir Disciplina</h1> <!-- Título da página -->
 
-            <h1 id="titulo-excluir" class="disciplina-title">Excluir Disciplina</h1>
-
+            <!-- Subtítulo com instruções -->
             <p class="disciplina-subtitle">
             Digite o <strong>código (ID)</strong> da disciplina que deseja remover.
             </p>
 
+            <!-- Campo de entrada para o código da disciplina -->
             <div class="disciplina-form">
                 <label for="disciplina-codigo" class="disciplina-label">Código da disciplina (ID):</label>
                 <input 
@@ -33,11 +36,13 @@
                     placeholder="Ex.: 1, 2, 55"
                     autocomplete="off"
                 />
+                <!-- Texto de apoio para o campo de código da disciplina -->
                 <small id="ajuda-codigo" class="disciplina-help">
                     Este é o identificador único da disciplina no sistema.
                 </small>
             </div>
 
+            <!-- Botão para excluir a disciplina -->
             <button type="button" class="disciplina-button" id="btn-excluir" onclick="excluirDisciplina()">
             Excluir disciplina
             </button>

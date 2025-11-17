@@ -1,24 +1,27 @@
 <!-- Autor: Henrique Young de Azevedo 25005651 -->
 
+<!-- Iniciando código HTML -->
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="comp_3.css">
-    <title>NotaDez - Excluir componente de nota</title>
+<html lang="pt-br"> <!-- Idioma da página -->
+    <head> <!-- Seção que contém informações sobre o documento -->
+    <meta charset="UTF-8" /> <!-- Codificação de caracteres usada -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Ajuste do viewport para dispositivos móveis -->
+    <link rel="stylesheet" href="comp_3.css"> <!-- Arquivo CSS externo -->
+    <title>NotaDez - Excluir componente de nota</title> <!-- Título que aparece na aba do navegador -->
     </head>
-    <body>
-        <div class="card">
+    <body> <!-- Corpo do documento -->
+        <div class="card"> <!-- Container principal da página -->
 
-            <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button>
+            <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button> <!-- Botão de voltar para o dashboard -->
 
-            <h1 id="title">Excluir Componente de Nota</h1>
+            <h1 id="title">Excluir Componente de Nota</h1> <!-- Título da página -->
 
+            <!-- Subtítulo com instruções -->
             <p class="componente_subtitle">
             Digite o <strong>identificador (ID)</strong> do componente de nota que deseja remover.
             </p>
 
+            <!-- Campo de entrada para ID do componente de nota -->
             <div class="componente_form">
                 <label for="componente_nota_id" class="componente_label">ID do Componente</label>
                 <input 
@@ -30,16 +33,18 @@
                     placeholder="Ex.: 1, 3, 67"
                     autocomplete="off"
                 />
+                <!-- Texto de apoio abaixo do campo -->
                 <small class="componente_help">
                     Este é o identificador único do componente de nota no sistema.
                 </small>
             </div>
 
+            <!-- Botão para excluir o componente de nota -->
             <button type="button" class="componente_button" id="btn_excluir" onclick="excluirComponente()">
             Excluir
             </button>
 
         </div>
-        <script src="excluir_comp.js"></script>
+        <script src="excluir_comp.js"></script> <!-- Arquivo JavaScript externo -->
     </body>
 </html>

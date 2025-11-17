@@ -24,7 +24,8 @@ function validarId(id){
     return id; // Retorna o ID validado.
 }
 
-async function preencherTabela(){ // dados é o JSON
+// Função para preencher a tabela com os dados dos alunos.
+async function preencherTabela(){
 
     try{
         let turmaId_Str = document.getElementById('aluno_cod_turma').value.trim(); // Pega o código da turma do input (string).
