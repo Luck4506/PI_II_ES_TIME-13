@@ -1,3 +1,5 @@
+//Codigo feito por LUCAS SOARES GONÇALVES
+
 const spanFormula = document.getElementById("formula");
 const tbody = document.getElementById("tbody");
 const selTurma = document.getElementById("turma");
@@ -5,19 +7,12 @@ const selDisciplina = document.getElementById("disciplina");
 const statusExportacao = document.getElementById("statusExportacao");
 const btnExportarCsv = document.getElementById("btnExportarCsv");
 
-// ---------- Dados dinâmicos vindos do back-end ----------
-let EXPRESSAO = "";        // Fórmula da disciplina selecionada (ex.: "(P1 + P2 + T1) / 3")
-let SIGLAS = [];           // Siglas dos componentes de nota da disciplina (ex.: ["P1","P2","T1"])
-let COMPONENTES = [];      // Componentes completos da disciplina [{ id, sigla, nome }]
-let ALUNOS = [];           // Alunos da turma selecionada (JSON vindo do back-end)
-const NOTAS = {};          // Mapa de notas por aluno e sigla: { [ra]: { [sigla]: valor } }
-//--------------------------------------------------------//
+let EXPRESSAO = "";        
+let SIGLAS = [];           
+let COMPONENTES = [];      
+let ALUNOS = [];           
+const NOTAS = {};          
 
-console.log("Inicializando exportar.js (base nota_final.js)");
-
-// -----------------------------------------------------------------------------
-// Utilidades de layout / reset
-// -----------------------------------------------------------------------------
 function atualizarCabecalhoComponentes() {
   const ths = document.querySelectorAll("th.th-componente");
 
@@ -55,9 +50,7 @@ function atualizarStatusNeutro() {
   btnExportarCsv.disabled = true;
 }
 
-// -----------------------------------------------------------------------------
-// Montagem da tabela (visualização, sem edição)
-// -----------------------------------------------------------------------------
+
 function montarTabela() {
   tbody.innerHTML = "";
 
@@ -82,7 +75,7 @@ function montarTabela() {
     tdNome.textContent = aluno.nome ?? aluno.NOME ?? aluno.nome_aluno ?? aluno.NOME_ALUNO;
     tr.appendChild(tdNome);
 
-    // Colunas de componentes de nota (uma por sigla)
+    // Colunas de componentes de nota 
     SIGLAS.forEach((sigla) => {
       const td = document.createElement("td");
       td.className = "td-nota";
@@ -91,7 +84,7 @@ function montarTabela() {
       tr.appendChild(td);
     });
 
-    // Coluna de Nota Final
+    // Coluna de Nota Final (calculada na hora)
     const tdFinal = document.createElement("td");
     tdFinal.className = "td-nota-final";
     tdFinal.textContent = "-";
@@ -118,9 +111,7 @@ function preencherNotasNaTabela() {
   });
 }
 
-// -----------------------------------------------------------------------------
-// Chamadas ao back-end (iguais à tela de nota final)
-// -----------------------------------------------------------------------------
+
 async function carregarDisciplinas() {
   try {
     resetDisciplina();
@@ -311,9 +302,8 @@ async function carregarNotasDeTodosComponentesDaTurma() {
   }
 }
 
-// -----------------------------------------------------------------------------
 // Cálculo da Nota Final (igual à tela de nota_final)
-// -----------------------------------------------------------------------------
+
 function calcularNotaFinalParaAluno(ra) {
   if (!EXPRESSAO || !EXPRESSAO.trim()) return undefined;
   if (!NOTAS[ra]) return undefined;
@@ -354,9 +344,7 @@ function calcularNotasFinaisParaTodos() {
   });
 }
 
-// -----------------------------------------------------------------------------
-// Verificações de exportação e status
-// -----------------------------------------------------------------------------
+
 function verificarNotasCompletas() {
   const pendencias = [];
 
@@ -405,9 +393,7 @@ function atualizarStatusExportacao() {
   }
 }
 
-// -----------------------------------------------------------------------------
 // Exportação CSV
-// -----------------------------------------------------------------------------
 function exportarCsv() {
   const { ok, pendencias } = verificarNotasCompletas();
 
@@ -455,7 +441,7 @@ function exportarCsv() {
     linhas.push(linha);
   });
 
-  // Monta CSV usando ';' como separador
+  // Monta o CSV 
   const conteudoCsv = linhas
     .map((cols) =>
       cols
@@ -501,10 +487,8 @@ function exportarCsv() {
   URL.revokeObjectURL(url);
 }
 
-// -----------------------------------------------------------------------------
-// Eventos
-// -----------------------------------------------------------------------------
-function configurarEventos() {
+
+function configurarSeletores() {
   // Quando muda a disciplina
   selDisciplina.addEventListener("change", async () => {
     const disciplinaId = selDisciplina.value;
@@ -550,6 +534,6 @@ function configurarEventos() {
 }
 
 document.addEventListener("DOMContentLoaded", () => {
-  configurarEventos();
+  configurarSeletores();
   carregarDisciplinas();
 });
