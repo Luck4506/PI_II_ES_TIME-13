@@ -145,7 +145,33 @@ export async function verificarNomeTurma(codigo_disciplina: number,nome:string) 
     await close(conn);
   }
 }
+export async function apagarRelacaoTurma(codigo_turma:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `DELETE FROM NOTA_FINAL_AJUSTADA
+      WHERE CODIGO_TURMA = :codigo_turma`,
+      { codigo_turma },
+      { autoCommit: true }
+    );
+  } finally {
+    await close(conn);
+  }
+}
 
+export async function apagarTurma(codigo_turma:number) {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `DELETE FROM TURMA
+      WHERE CODIGO_TURMA = :codigo_turma`,
+      { codigo_turma },
+      { autoCommit: true }
+    );
+  } finally {
+    await close(conn);
+  }
+}
 export async function verificarTurma(codigo_turma: number,nome:string) {
   const conn = await open();
   try {

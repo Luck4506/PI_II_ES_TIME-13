@@ -13,7 +13,7 @@ import { addDocente,possuiInstituicao,listarDocente,listarDocenteCurso,pegarTurm
 import { enviarEmail } from "./services/servico_email";
 import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas } from "./db/disciplina";
-import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById, verificarDisciplina, verificarNome, cadastrarTurma, verificarTurma, verificarNomeTurma, atualizarTurma, pegarIdDisciplina, listarTurmasPorDisciplina, listarAlunosDaTurma } from "./db/turma";
+import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById, verificarDisciplina, verificarNome, cadastrarTurma, verificarTurma, verificarNomeTurma,apagarTurma, atualizarTurma, pegarIdDisciplina, listarTurmasPorDisciplina, listarAlunosDaTurma,apagarRelacaoTurma } from "./db/turma";
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
 import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, importarAlunos } from "./db/aluno";
 import { inserirAlunoTurma, atualizarNotasFinaisLote} from "./db/nota_final";
@@ -590,7 +590,27 @@ app.post('/turma/atualizarTurma', async (req, res) => {
         return res.status(500).json({ error: 'Erro no servidor' });
     }
 });
+app.post('/turma/apagarRelacao', async (req, res) => {
+    const { codigo_turma } = req.body;
+    try {
+        await apagarRelacaoTurma(codigo_turma);
+        return true;
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 
+app.post('/turma/apagarTurma', async (req, res) => {
+    const { codigo_turma } = req.body;
+    try {
+        await apagarTurma(codigo_turma);
+        return true;
+    } catch (erro) {
+        console.error('Erro ao verificar no DB:', erro);
+        return res.status(500).json({ error: 'Erro no servidor' });
+    }
+});
 app.post('/turma/verificarTurma', async (req, res) => {
     const { codigo_turma,nome } = req.body;
     try {

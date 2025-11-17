@@ -1,14 +1,16 @@
 const modal = document.querySelector('#verificacao-modal');
-let codigo_turma = document.getElementById("codigo_turma").value.trim();
-let nome = document.getElementById("nome_turma").value.toLowerCase().trim();
+
 async function apagarTurma() {
-    await apagarRelacaoTurma(codigo_turma);
-    await apagarTurmaDb(codigo_turma);
+    const codigo_turma = document.getElementById("codigo_turma").value.trim();
+    apagarRelacaoTurma(codigo_turma);
+    apagarTurmaDb(codigo_turma);
     window.alert('Turma apagada com suucesso!');
     modal.style.display = 'none';
     limparCampos();
 }
 async function validarInput() {
+    const codigo_turma = document.getElementById("codigo_turma").value.trim();
+    const nome = document.getElementById("nome_turma").value.toLowerCase().trim();
     const botao = document.getElementById("btn-apagar");
     botao.disabled = true;
 
@@ -41,7 +43,7 @@ async function existeTurma(codigo,nome) {
         return false;
     }
 }
-async function apagarRelacaoTurma(codigo_turma) {
+async function apagarRelacaoTurma(codigo) {
     const dados = { codigo_turma:codigo };
     try {
         const resposta = await fetch('/turma/apagarRelacao', {
@@ -55,7 +57,21 @@ async function apagarRelacaoTurma(codigo_turma) {
         return false;
     }
 }
+async function apagarTurmaDb(codigo) {
+    const dados = { codigo_turma:codigo };
+    try {
+        const resposta = await fetch('/turma/apagarTurma', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+        return resposta.json();
+    } catch (erro) {
+        console.error('Erro no servidor:', erro);
+        return false;
+    }
+}
 function limparCampos(){
-    document.getElementById("turma_id").value="";
+    document.getElementById("codigo_turma").value="";
     document.getElementById("nome_turma").value="";
 }
