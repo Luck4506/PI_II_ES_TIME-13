@@ -26,7 +26,7 @@ function validarId(id){
 async function preencherTabela(){ // dados é o JSON
 
     try{
-        const disciplinaId_Str = document.getElementById('componente_disc_id').value.trim();
+        let disciplinaId_Str = document.getElementById('componente_disc_id').value.trim();
         const disciplinaId = validarId(disciplinaId_Str);
 
         const dados = await fetch(`/componentes-nota/${disciplinaId}`)

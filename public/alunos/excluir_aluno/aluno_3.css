@@ -4,17 +4,17 @@
 * {
   margin: 0; /* remove toda margin padrão do navegador */
   padding: 0; /* remove todo padding padrão do navegador */
-  box-sizing: border-box; /* faz com que a largura/altura incluam padding e border no cálculo (independentemente do valor deles)*/
-}
+  box-sizing: border-box; /* Com border-box, os valores width e height passam a representar o TAMANHO TOTAL do elemento. */
+}                         /* Isso significa, que padding e border já estão inclusos nesses valores (não somam por fora). */
 
 /* Fundo */
 body {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background: linear-gradient(130deg, #17dee1 0%, #4035bc 100%);
   min-height: 100vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  display: flex; /* usa flexbox */
+  align-items: center; /* centraliza na vertical */
+  justify-content: center; /* centraliza na horizontal */
   padding: 20px;
   color: #333;
 }
@@ -27,7 +27,7 @@ body {
   box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
   width: 100%;
   max-width: 560px;
-  text-align: left;
+  text-align: left; /* Alinha horizontalmente à esquerda (nesse caso) todo o conteúdo inline-level dentro do block element */
 }
 
 /* Título */
@@ -52,7 +52,7 @@ body {
 
 /* Label */
 .aluno_label {
-  display: block;
+  display: block; /* Faz o label ocupar toda a largura disponível */
   margin-bottom: 8px;
   color: #334155;
   font-weight: 600;
@@ -67,9 +67,10 @@ body {
   border-radius: 10px;
   font-size: 16px;
   outline: none; /* remove contorno padrão do input */
-  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease; /* Transição (intervalo de mudança de estado) suave para a borda e sombra */
 }
 
+/* Destaque para os inputs */
 .aluno_input:focus {
   border-color: #6366f1;
   box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
@@ -77,7 +78,7 @@ body {
 
 /* Help */
 .aluno_help {
-  display: block;
+  display: block; /* Faz o help (small) ocupar toda a largura disponível */
   margin-top: 6px;
   color: #64748b;
   font-size: 13px;
@@ -90,31 +91,31 @@ body {
   border: none;
   border-radius: 10px;
   font-size: 16px;
-  font-weight: 700;
-  cursor: pointer;
-  /* animação: transform (ex: translate) em 0.15s de acordo com a curva ease (referência) */
-  /* dispara (mas não somente) com pseudoclasses - ex: :hover :focus :active */
-  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  font-weight: bold;
+  cursor: pointer; /* Muda o cursor ao passar por cima */
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease; /* Transição suave para efeitos de transformação (scale, rotate, translate), para mudanças na sombra e opacidade */
   color: #fff;
   background: #9b2a2a;
   background: linear-gradient(135deg, rgba(155, 42, 42, 1) 45%, rgba(237, 142, 83, 1) 100%); /* Porcentagem é a posição da cor em relação ao gradiente */
   box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
 }
 
+/* Efeito ao passar o mouse sobre o botão */
 .aluno_button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+  transform: translateY(-1px); /* Move o botão 1px para cima ao passar o mouse */
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12); /* Adiciona uma sombra mais intensa */
 }
 
+/* Efeito ao clicar no botão */
 .aluno_button:active {
-  transform: translateY(0);
-  opacity: 0.95;
+  transform: translateY(0); /* Retorna o botão à posição original ao clicar */
+  opacity: 0.95; /* Reduz ligeiramente a opacidade ao clicar (fica mais transparente) */
 }
 
 /* Botão de sair */
 #btn-sair{
   border: none;
-  display: block;
+  display: block; /* Faz o botão ocupar toda a largura disponível */
   font-weight: bold;
   color: gray;
   background: none;
@@ -125,6 +126,6 @@ body {
 }
 
 #btn-sair:hover{
-  transform: translateY(-1px);
-  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+  transform: translateY(-1px); /* Move o botão 1px para cima ao passar o mouse */
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04); /* Adiciona uma sombra mais intensa */
 }

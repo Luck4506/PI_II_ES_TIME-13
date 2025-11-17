@@ -1,25 +1,27 @@
 <!-- Autor: Henrique Young de Azevedo 25005651 -->
 
+<!-- Iniciando código HTML -->
 <!DOCTYPE html>
-<html lang="pt-br">
-    <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <link rel="stylesheet" href="comp_3.css">
-    <title>NotaDez - Excluir aluno</title>
-    <link href="aluno_3.css" rel="stylesheet">
+<html lang="pt-br"> <!-- Idioma da página -->
+    <head> <!-- Seção que contém informações sobre o documento -->
+    <meta charset="UTF-8" /> <!-- Codificação de caracteres usada -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Ajuste do viewport para dispositivos móveis -->
+    <title>NotaDez - Excluir aluno</title> <!-- Título que aparece na aba do navegador -->
+    <link href="aluno_3.css" rel="stylesheet"> <!-- Arquivo CSS externo -->
     </head>
-    <body>
-        <div class="card">
+    <body> <!-- Corpo do documento -->
+        <div class="card"> <!-- Container principal da página -->
 
-            <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button>
+            <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button> <!-- Botão de voltar para o dashboard -->
 
-            <h1 id="title">Excluir Aluno</h1>
+            <h1 id="title">Excluir Aluno</h1> <!-- Título da página -->
 
+            <!-- Subtítulo com instruções -->
             <p class="aluno_subtitle">
             Digite o <strong>identificador (RA)</strong> de aluno que deseja remover.
             </p>
 
+            <!-- Campo de entrada para RA do aluno -->
             <div class="aluno_form">
                 <label for="aluno_ra" class="aluno_label">RA do Aluno</label>
                 <input 
@@ -31,16 +33,19 @@
                     placeholder="Ex.: 25005651, 25008403, ..."
                     autocomplete="off"
                 />
+
+                <!-- Texto de ajuda abaixo do campo -->
                 <small class="aluno_help">
                     Este é o identificador único do aluno no sistema.
                 </small>
             </div>
 
+            <!-- Botão para excluir o aluno -->
             <button type="button" class="aluno_button" id="btn_excluir" onclick="excluirAluno()">
             Excluir
             </button>
 
         </div>
-        <script src="excluir_aluno.js"></script>
+        <script src="excluir_aluno.js"></script> <!-- Arquivo JavaScript externo -->
     </body>
 </html>

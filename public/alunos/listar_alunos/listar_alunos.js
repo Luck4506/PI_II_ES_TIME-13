@@ -1,33 +1,34 @@
 /* Autor: Henrique Young de Azevedo 25005651 */
 
+// Função para validar o ID da turma.
 function validarId(id){
 
-    if(id === undefined || id === null || id === ''){
+    if(id === undefined || id === null || id === ''){ // Verifica se o campo é undefined, null ou '' (vazio).
         throw new Error('Campo vazio.');
     }
 
-    id = Number(id);
+    id = Number(id); // Converte a string para número.
 
-    if(Number.isNaN(id)){
+    if(Number.isNaN(id)){ // Verifica se a conversão resultou em NaN (Not a Number).
         throw new Error('Esse ID não é um número.')
     }
 
-    if(!Number.isInteger(id)){
+    if(!Number.isInteger(id)){ // Verifica se o número é um inteiro.
         throw new Error('Esse ID não é um inteiro.');
     }
 
-    if(id <= 0){
+    if(id <= 0){ // Verifica se o número é positivo e diferente de zero.
         throw new Error('Valor inválido para ID. Digite um número inteiro positivo diferente de zero.');
     }
 
-    return id;
+    return id; // Retorna o ID validado.
 }
 
 async function preencherTabela(){ // dados é o JSON
 
     try{
-        const turmaId_Str = document.getElementById('aluno_cod_turma').value.trim();
-        const turmaId = validarId(turmaId_Str);
+        let turmaId_Str = document.getElementById('aluno_cod_turma').value.trim(); // Pega o código da turma do input (string).
+        const turmaId = validarId(turmaId_Str); // Valida o código da turma.
 
         const dados = await fetch('/alunos') // <-- Falta a rota (por enquanto está listando sem filtro).
             .then(response => {
