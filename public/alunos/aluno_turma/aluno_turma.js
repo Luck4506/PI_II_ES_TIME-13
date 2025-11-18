@@ -92,14 +92,4 @@ function cadastrarAluno(){
 }
 
 // Mensagem de indicação de que o script foi carregado com sucesso.
-console.log("Script de aluno_turma.js carregado com sucesso!")
-
-document.addEventListener('DOMContentLoaded', () => {
-    const botoes = document.querySelectorAll('#aluno_button');
-    botoes.forEach((btn) => {
-        btn.addEventListener('click', (event) => {
-            event.preventDefault();
-            cadastrarAluno();
-        });
-    });
-});
+console.log("Script de aluno_turma.js carregado com sucesso!");
