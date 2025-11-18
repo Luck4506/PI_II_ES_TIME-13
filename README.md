@@ -18,7 +18,7 @@ O NotaDez é uma aplicação web cujo objetivo é permitir que docentes gerencie
 
 - **TIME 13 — Projeto Integrador II**  
 - Integrantes: *(adicionar nomes aqui)*  
-- Orientador(a): *(adicionar aqui conforme seu professor responsável)*
+- Orientadores: *Renata Arantes*
 
 # 3. Tecnologias Utilizadas
 
