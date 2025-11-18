@@ -15,7 +15,7 @@ import { criarTokenRecuperacao } from "./db/recuperar_senha";
 import { addDisciplina, deleteDisciplinaById, getAllDisciplinas,getAllDisciplinasPeloId } from "./db/disciplina";
 import { addTurma, getAllTurmasPerDocente, getTurmaById, deleteTurmaById, verificarDisciplina, verificarNome, cadastrarTurma, verificarTurma, verificarNomeTurma,apagarTurma, atualizarTurma, pegarIdDisciplina, listarTurmasPorDisciplina, listarAlunosDaTurma,apagarRelacaoTurma } from "./db/turma";
 import { addComponenteNota, getAllComponentesByDisciplina, getComponenteNotaById, deleteComponenteNotaById  } from "./db/componente_nota";
-import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, getAllAlunosByTurma, importarAlunos } from "./db/aluno";
+import { addAluno, buscarAlunoPorRA, excluirAlunoPorRA, listarTodosAlunos, getAllAlunosByTurma, removerAlunoDaTurma, importarAlunos } from "./db/aluno";
 import { inserirAlunoTurma, atualizarNotasFinaisLote} from "./db/nota_final";
 import { salvarFormula, obterFormulaPorDisciplina } from "./db/formula";
 import { salvarNotasComponente, getAllLancamentosByTurmaEComponente } from "./db/lancamento_nota";
@@ -1269,6 +1269,33 @@ app.get('/turma/:turmaId/alunos', async (req: Request, res: Response) => {
   } catch (error) {
     console.error('Erro ao listar alunos.', error);
     return res.status(500).json({ error: 'Erro ao listar alunos.' });
+  }
+});
+
+// Rota para remover um aluno de uma turma específica
+app.delete('/turma/:turmaId/aluno/:ra', async (req: Request, res: Response) => {
+  try {
+    const turmaId = Number(req.params.turmaId);
+    const ra = Number(req.params.ra);
+
+    if (!Number.isFinite(turmaId) || turmaId <= 0) {
+      return res.status(400).json({ error: 'Código da turma inválido.' });
+    }
+
+    if (!Number.isFinite(ra) || ra <= 0) {
+      return res.status(400).json({ error: 'RA do aluno inválido.' });
+    }
+
+    const removido = await removerAlunoDaTurma(turmaId, ra);
+    if (!removido) {
+      return res.status(404).json({ error: 'Aluno ou turma não encontrado.' });
+    }
+
+    return res.status(200).json({ message: 'Aluno removido da turma com sucesso', turmaId, ra });
+    
+  } catch (error) {
+    console.error('Erro ao remover aluno da turma:', error);
+    return res.status(500).json({ error: 'Erro ao remover aluno da turma.' });
   }
 });
 
