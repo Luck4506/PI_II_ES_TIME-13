@@ -1,0 +1,38 @@
+
+<!-- Codigo de autoria de Joao Pedro Diniz -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="apagar_turma.css">
+  <title>NotaDez - Apagar Turma</title>
+  
+</head>
+<body>
+  <div class="instituicao-container">
+    <h1 class="instituicao-title">Apague sua turma aqui!</h1>
+
+    <div class="instituicao-form">
+      <label for="instituicao-nome" class="instituicao-label">Id:</label>
+      <input type="text" id="codigo_turma" class="instituicao-input" name="nome" required placeholder="Id da turma">
+    </div>
+
+    <div class="instituicao-form">
+      <label for="instituicao-sigla" class="instituicao-label">Nome:</label>
+      <input type="text" id="nome_turma" class="instituicao-input" name="sigla" required placeholder="Nome da turma">
+    </div>
+
+    <button type="button" class="instituicao-button" id="btn-apagar" onclick="validarInput()">Apagar</button>
+    <button class="instituicao-button" id="logout" style="margin-top:15px; background: linear-gradient(135deg, #d61bff 0%, #5a0ad8 100%);" onclick="window.location.href='/dashboard/'">Sair</button>
+  </div>
+  <div id="verificacao-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Deseja mesmo excluir a Turma ?</h2>
+        <button id="delete-btn" onclick="apagarTurma()">Sim</button>
+        <button id="sair-btn">Sair</button>
+      </div>
+    </div>
+    <script src="apagar_turma.js"></script>
+</body>
+</html>

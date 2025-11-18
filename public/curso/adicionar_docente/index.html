@@ -1,0 +1,43 @@
+<!--//Codigo de autoria de Pedro Vinicius Romanato e Joao Pedro Diniz-->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="Add_docente.css">
+  <title>NotaDez - Cadastro Instituição</title>
+  <script src="./Add_docente.js"></script>
+</head>
+<body>
+  <div class="instituicao-container">
+    <h1 class="instituicao-title">Instituições!</h1>
+    <div class="instituicao-container-1">
+      
+      <table border="1">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Nome</th>
+            </tr>
+          </thead>
+        <tbody id="tabela_curso"></tbody>
+      </table>
+      <div class="instituicao-container-2">
+        <div class="instituicao-form">
+          <label for="instituicao-id" class="instituicao-label">Institicao id:</label>
+          <input type="text" id="id_instituicao" class="instituicao-input" name="id" required placeholder="Id da instituicao">
+          <button type="button" class="instituicao-button" id="btn-cadastrar" onclick="listarCurso()">Pesquisar</button>
+        </div>
+        <div class="instituicao-form">
+          <label for="instituicao-id" class="instituicao-label">Institicao id:</label>
+          <input type="text" id="id_instituicao_curso" class="instituicao-input" name="id" required placeholder="Id da instituicao">
+          <label for="instituicao-id" class="instituicao-label">Curso id:</label>
+          <input type="text" id="curso_id" class="instituicao-input" name="id" required placeholder="Id do curso">
+          <button type="button" class="instituicao-button" id="btn-cadastrar" onclick="entrarCurso()">Entrar</button>
+        </div>
+      </div>
+    </div>
+    <button class="instituicao-button" id="logout" style="margin-top:15px; background: linear-gradient(135deg, #d61bff 0%, #5a0ad8 100%);" onclick="window.location.href='/dashboard/'">Sair</button>
+  </div>
+</body>
+</html>

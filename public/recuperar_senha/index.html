@@ -1,0 +1,55 @@
+<!--Codigo de autoria de Pedro Vinicius Romanato e Joao Pedro Diniz-->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/recuperar_senha/recuperar_senha.css">
+    <script src="/recuperar_senha/recuperar_senha.js" defer></script>
+    <title>NotaDez - Recuperação de senha</title>
+
+</head>
+
+<body>
+    <div class="recuperacao-container">
+    <h1 class="recuperacao-title">Recuperar senha</h1>
+
+    <span id="texto-recuperacao"><p>Para recuperar sua senha, informe o email cadastrado a sua conta NotaDez</p></span>
+
+    <form>
+    <div class="formulario">
+    <label for="email">Email:</label>
+    <input type="email" id="email" class="email-recuperacao" name="email" required placeholder="email@dominio.com">
+    </div>
+
+    <button type="submit" class="recuperar-button" id="btn-recuperar-senha">Recuperar senha</button>
+    </form>
+    <div id="verificacao-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Verifique sua conta</h2>
+        <p>Enviamos um código de 5 dígitos para seu email. </p>
+        
+        <div id="code-inputs">
+          <input type="text" id="input-modal" class="code-input" maxlength="5" required>
+        </div>
+        
+        <button id="verify-btn">Verificar</button>
+        <button id="sair-btn">Sair</button>
+      </div>
+    </div>
+    <div id="recuperarSenha-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Nova senha</h2>
+        <p>Digite a nova senha. </p>
+        
+        <div id="code-inputs">
+          <input type="text" id="input-senha-modal" class="code-input" required>
+          <input type="text" id="input-senha-segundo-modal" class="code-input" required>
+        </div>
+        
+        <button id="atualizar-btn">Atualizar</button>
+        <button id="sairAtualizar-btn">Sair</button>
+      </div>
+    </div>
+</body>
+</html>

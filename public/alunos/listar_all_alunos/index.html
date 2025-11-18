@@ -1,0 +1,39 @@
+<!-- Autor: Henrique Young de Azevedo 25005651 -->
+
+<!-- Iniciando código HTML -->
+<!doctype html>
+<html lang="pt-br"> <!-- Idioma da página -->
+  <head> <!-- Seção que contém informações sobre o documento -->
+    <meta charset="utf-8" /> <!-- Codificação de caracteres usada -->
+    <meta name="viewport" content="width=device-width" /> <!-- Ajuste do viewport para dispositivos móveis -->
+    <title>Notadez - Listar todos os alunos</title> <!-- Título que aparece na aba do navegador -->
+
+    <!-- Arquivo CSS externo do Bootstrap / Arquivo CSS personalizado -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+    <link href="listar_all.css" rel="stylesheet">
+  </head>
+  <body> <!-- Corpo do documento -->
+    <div class="card"> <!-- Container principal da página -->
+
+      <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button> <!-- Botão de voltar para o dashboard -->
+
+      <h1 id="title">Alunos</h1> <!-- Título da página -->
+      
+      <!-- Tabela para exibir os alunos -->
+      <table class="table"> <!-- Classe do Bootstrap para estilizar a tabela -->
+          <thead> <!-- Cabeçalho da tabela -->
+              <tr> <!-- Linha da tabela -->
+                  <th>RA</th> <!-- Cabeçalho da coluna -->
+                  <th>NOME</th>
+              </tr>
+          </thead>
+          <tbody> <!-- Corpo da tabela -->
+              <!-- table rows, table headers, table datas através de código JS -->
+          </tbody>
+      </table>
+    </div>
+    <!-- Arquivos JavaScript externos do Bootstrap / Arquivo JavaScript personalizado -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+    <script src="listar_all.js"></script>
+  </body>
+</html>

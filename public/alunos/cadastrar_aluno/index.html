@@ -1,0 +1,35 @@
+<!-- Autor: Henrique Young de Azevedo 25005651 -->
+
+<!-- Iniciando código HTML -->
+<!doctype html>
+<html lang="pt-br"> <!-- Idioma da página -->
+    <head> <!-- Seção que contém informações sobre o documento -->
+        <meta charset="utf-8" /> <!-- Codificação de caracteres usada -->
+        <meta name="viewport" content="width=device-width" /> <!-- Ajuste do viewport para dispositivos móveis -->
+        <title>NotaDez - Cadastro de aluno</title> <!-- Título que aparece na aba do navegador -->
+        <link href="aluno.css" rel="stylesheet"> <!-- Arquivo CSS externo -->
+    </head>
+    <body> <!-- Corpo do documento -->
+        <div class="card"> <!-- Container principal da página -->
+
+            <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button> <!-- Botão de voltar para o dashboard -->
+
+            <h1 id="title">Novo Aluno</h1> <!-- Título da página -->
+
+            <!-- Campos de entrada para RA e Nome do aluno -->
+            <div class="field">
+                <label for="aluno_ra" class="aluno_label">RA</label>
+                <input id="aluno_ra" class="aluno_input" requiered placeholder="25005651, 25006859, ...">
+            </div>
+            <div class="field">
+                <label for="aluno_nome" class="aluno_label">Nome</label>
+                <input id="aluno_nome" class="aluno_input" requiered placeholder="Henrique, Júlia, ...">
+            </div>
+            <br><br>
+            <!-- Botão para cadastrar o aluno -->
+            <button type="button" id="aluno_button" onclick="cadastrarAluno()">Criar</button>
+
+        </div>
+    <script src="cadastrar_aluno.js"></script> <!-- Arquivo JavaScript externo -->
+    </body>
+</html>

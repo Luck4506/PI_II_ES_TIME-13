@@ -1,0 +1,29 @@
+<!--Codigo de autoria de Pedro Vinicius Romanato -->
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="delet_inst.css">
+  <title>NotaDez - Cadastro Instituição</title>
+  <script src="./delet_inst.js"></script>
+</head>
+<body>
+  <div class="instituicao-container">
+    <h1 class="instituicao-title">Apague sua instituicao aqui!</h1>
+
+    <div class="instituicao-form">
+      <label for="instituicao-nome" class="instituicao-label">Nome:</label>
+      <input type="text" id="instituicao-nome" class="instituicao-input" name="nome" required placeholder="Nome da instituição">
+    </div>
+
+    <div class="instituicao-form">
+      <label for="instituicao-sigla" class="instituicao-label">Sigla:</label>
+      <input type="text" id="instituicao-sigla" class="instituicao-input" name="sigla" required placeholder="Sigla da instituição">
+    </div>
+
+    <button type="button" class="instituicao-button" id="btn-cadastrar" onclick="apagar()">Apagar</button>
+    <button class="instituicao-button" id="logout" style="margin-top:15px; background: linear-gradient(135deg, #d61bff 0%, #5a0ad8 100%);" onclick="window.location.href='/dashboard/'">Sair</button>
+  </div>
+</body>
+</html>

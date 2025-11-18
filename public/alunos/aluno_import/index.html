@@ -1,0 +1,44 @@
+<!--codigo de autoria de Pedro Romanato, Lucas Soares, Joao Pedro e Isabela Aparecida-->
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/alunos/aluno_import/aluno.css" />
+    <script src="/alunos/aluno_import/cadastrar_aluno.js" defer></script>
+    <title>NotaDez - Importar Alunos</title>
+</head>
+
+<body>
+    <div class="importar-container">
+        <h1 class="importar-title">Importar Alunos</h1>
+        <p id="texto-importar">
+            Selecione um arquivo <strong>JSON</strong> ou <strong>CSV</strong> com os dados dos alunos.<br />
+            O sistema mostrará até <strong>100 alunos</strong> e indicará o total cadastrado.
+        </p>
+
+        <form id="form-importar">
+            <div class="formulario">
+                <label for="arquivo">Arquivo:</label>
+                <input type="file" id="arquivo" class="entrada-arquivo" accept=".json, .csv" required />
+            </div>
+
+            <button type="button" id="btnImportar" class="importar-button">
+                Importar e Cadastrar
+            </button>
+        </form>
+
+        <div id="resultado">
+            <h3>Resultado da Importação:</h3>
+            <p id="resumo">Aguardando arquivo...</p>
+            <ul id="lista-alunos"></ul>
+        </div>
+
+        <div class="links-container">
+            <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button>
+        </div>
+    </div>
+</body>
+
+</html>

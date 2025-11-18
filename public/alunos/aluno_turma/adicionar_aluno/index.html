@@ -1,0 +1,35 @@
+<!-- Autor: Henrique Young de Azevedo 25005651 -->
+
+<!-- Iniciando código HTML -->
+<!doctype html>
+<html lang="pt-br"> <!-- Idioma da página -->
+  <head> <!-- Seção que contém informações sobre o documento -->
+    <meta charset="utf-8" /> <!-- Codificação de caracteres usada -->
+    <meta name="viewport" content="width=device-width" /> <!-- Ajuste do viewport para dispositivos móveis -->
+    <title>Notadez - Cadastro de aluno em turma</title> <!-- Título que aparece na aba do navegador -->
+    <link href="aluno_t.css" rel="stylesheet"> <!-- Arquivo CSS externo -->
+  </head>
+  <body> <!-- Corpo do documento -->
+    <div class="card"> <!-- Container principal da página -->
+
+        <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button> <!-- Botão de voltar para o dashboard -->
+
+        <h1 id="title">Cadastro de Aluno em uma Turma</h1> <!-- Título da página -->
+
+        <!-- Campos de entrada para RA do aluno e Código da turma -->
+        <div class="field">
+            <label for="aluno_ra" class="aluno_label">RA do aluno</label>
+            <input id="aluno_ra" class="aluno_input" requiered placeholder="25005651, 25006859, ...">
+        </div>
+        <div class="field">
+            <label for="cod_turma" class="aluno_label">Código da turma</label>
+            <input id="cod_turma" class="aluno_input" requiered placeholder="1, 3, ...">
+        </div>
+        <br/><br/>
+        <!-- Botão para cadastrar o aluno na turma -->
+        <button type="button" id="aluno_button" onclick="cadastrarAluno()">Cadastrar</button>
+
+    </div>
+  <script src="aluno_turma.js"></script> <!-- Arquivo JavaScript externo -->
+  </body>
+</html>

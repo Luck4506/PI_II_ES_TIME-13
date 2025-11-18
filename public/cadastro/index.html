@@ -1,0 +1,77 @@
+<!-- //Codigo feito por LUCAS SOARES GONÇALVES -->
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/cadastro/cadastro.css">
+    <script src="/cadastro/cadastro.js" defer></script>
+    <title>NotaDez - Cadastro</title>
+
+</head>
+
+<body>
+    <div class="cadastro-container">
+        <h1 class="cadastro-title">Criar conta</h1>
+
+        <form>
+
+        <div class="formulario">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" class="dados-cadastrais" name="nome" required placeholder="Seu nome">
+        </div>
+
+        <div class="formulario">
+        <label for="email">Email:</label>
+        <input type="email" id="email" class="dados-cadastrais" name="email" required placeholder="email@dominio.com">
+        </div>
+
+
+        <div class="formulario">
+        <label for="telefone">Telefone:</label>
+        <input type="tel" id="telefone" class="dados-cadastrais" name="telefone" required placeholder="(DD) 91234-5678">
+        </div>
+
+        <div class="formulario">
+        <label for="senha">Senha:</label>
+        <input type="password" id="senha" class="dados-cadastrais" name="senha" required placeholder="Digite sua senha">
+        </div>
+
+        <div class="formulario">
+        <label for="confirmar-senha">Confirmar senha:</label>
+        <input type="password" id="confirmar-senha" class="dados-cadastrais" name="confirma-senha" required placeholder="Confirme sua senha">
+        </div>
+
+        <button type="button" class="cadastro-button" id="btn-cadastrar">Criar cadastro</button>
+        </form>
+
+        <div id="entrar">
+        <p><span id="texto-entrar">Já possui cadastro? </span>
+        <a href="../login/index.html" class="link">Entrar</a></p>
+    </div>
+    <div id="recuperarSenha-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Ja possui uma conta ?</h2>
+        <p>Gostaria de recuperar sua senha. </p>
+        
+        <button id="recuperar-btn">Recuperar</button>
+        <button id="sairSenha-btn">Sair</button>
+      </div>
+    </div>
+    <div id="verificacao-modal" class="modal-overlay">
+      <div class="modal-content">
+        <h2>Verifique sua conta</h2>
+        <p>Enviamos um código de 5 dígitos para seu email. </p>
+        
+        <div id="code-inputs">
+          <input type="text" id="input-modal" class="code-input" maxlength="5" required>
+        </div>
+        
+        <button id="verify-btn">Verificar</button>
+        <button id="sair-btn">Sair</button>
+      </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,84 @@
+<!-- //Codigo feito por LUCAS SOARES GONÇALVES -->
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <title>Exportar Notas - NotaDez</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Reaproveita o mesmo CSS de lançamentos para manter o visual consistente -->
+  <link rel="stylesheet" href="../lancamento_nota/lancar-notas.css" />
+</head>
+<body>
+  <main class="card">
+    <h1>Exportar Notas</h1>
+    <p class="muted">
+      Selecione a <strong>disciplina</strong> e a <strong>turma</strong> para gerar um arquivo
+      <strong>CSV</strong> com todas as notas de componentes e a Nota Final dos estudantes.
+      A exportação só será permitida quando todas as notas tiverem sido lançadas.
+    </p>
+
+    <!-- Filtros de seleção -->
+    <section class="grid-2">
+      <!-- Seleção de DISCIPLINA -->
+      <div>
+        <label for="disciplina">Disciplina</label>
+        <select id="disciplina" class="entrada">
+          <option value="">Selecione a disciplina</option>
+        </select>
+      </div>
+
+      <!-- Seleção de TURMA (filtrada pela disciplina escolhida) -->
+      <div>
+        <label for="turma">Turma</label>
+        <select id="turma" class="entrada" disabled>
+          <option value="">Selecione a turma</option>
+        </select>
+      </div>
+    </section>
+
+    <!-- Informações da fórmula e status da exportação -->
+    <section class="toolbar">
+      <div>
+        Fórmula vigente: <code id="formula">(nenhuma fórmula carregada)</code>
+      </div>
+      <div id="statusExportacao" class="muted">
+        Selecione uma disciplina e uma turma para verificar se a exportação está disponível.
+      </div>
+    </section>
+
+    <!-- Pré-visualização das notas (somente leitura) -->
+    <section class="tabela">
+      <h2 class="subtitulo">Pré-visualização das notas</h2>
+      <table id="tabela" class="table">
+        <thead>
+          <tr>
+            <th style="width:120px">Matrícula</th>
+            <th>Aluno</th>
+            <!-- Cabeçalhos de componentes de nota serão preenchidos via JS -->
+            <th class="th-componente" data-index="0">Componente 1</th>
+            <th class="th-componente" data-index="1">Componente 2</th>
+            <th class="th-componente" data-index="2">Componente 3</th>
+            <th>Nota Final</th>
+          </tr>
+        </thead>
+        <tbody id="tbody">
+          <!-- Linhas serão montadas via JS apenas para visualização -->
+        </tbody>
+      </table>
+    </section>
+
+    <!-- Ações -->
+    <section class="toolbar end">
+      <button id="btnExportarCsv" class="media-button primario" disabled>
+        Exportar CSV
+      </button>
+      <button id="btnSair" class="media-button"  onclick="window.location.href='/dashboard'">
+        Sair
+      </button>
+    </section>
+  </main>
+
+  <script src="./exportar.js"></script>
+</body>
+</html>

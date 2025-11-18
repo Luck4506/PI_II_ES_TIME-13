@@ -1,0 +1,83 @@
+<!-- //Codigo de autoria de Lucas Gonçalves -->
+
+
+<!doctype html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8" />
+    <title>Lançar Notas - NotaDez</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="./lancar-notas.css" />
+</head>
+<body>
+    <main class="card">
+        <h1>Lançar Notas</h1>
+        <p class="muted">
+        Digite as notas dos componentes. A <strong>Nota Final</strong> é calculada automaticamente
+        pela <em>fórmula da disciplina</em>.
+        </p>
+
+        <section class="grid-3">
+          <!-- 1) Seleção de DISCIPLINA -->
+          <div>
+            <label for="disciplina">Disciplina</label>
+            <select id="disciplina" class="entrada">
+              <!-- BD: listar todas as disciplinas do docente -->
+              <option value="">Selecione a disciplina</option>
+            </select>
+          </div>
+
+          <!-- 2) Seleção de TURMA, filtrada pela disciplina escolhida -->
+          <div>
+            <label for="turma">Turma</label>
+            <select id="turma" class="entrada" disabled>
+              <!-- BD: após escolher a disciplina, carregar as turmas dessa disciplina -->
+              <option value="">Selecione a turma</option>
+            </select>
+          </div>
+
+          <!-- 3) Seleção de COMPONENTE DE NOTA (P1, P2, T1, etc.) -->
+          <div>
+            <label for="componente">Componente de Nota</label>
+            <select id="componente" class="entrada" disabled>
+              <!-- BD: após escolher turma, carregar componentes de nota (tabela COMPONENTE_NOTA) -->
+              <option value="">Selecione o componente</option>
+            </select>
+          </div>
+        </section>
+        <section class="toolbar">
+        <!-- BD: após selecionar disciplina (e opcionalmente turma), buscar a fórmula da DISCIPLINA -->
+        <div>Fórmula vigente: <code id="formula"></code></div>
+        </section>
+
+        <!-- Tabela -->
+        <section class="tabela">
+        <table id="tabela" class="table">
+            <thead>
+            <tr>
+                <th style="width:120px">Matrícula</th>
+                <th>Aluno</th>
+
+                <th class="th-componente" data-index="0">Componente 1</th>
+                <th class="th-componente" data-index="1">Componente 2</th>
+                <th class="th-componente" data-index="2">Componente 3</th>
+                <th>Nota Final</th>
+            </tr>
+            </thead>
+            <tbody id="tbody">
+            <!-- BD montar as linhas usando a lista de alunos da turma (RA + nome) -->
+            </tbody>
+        </table>
+        </section>
+
+        <!-- ADC NO BD -->
+        <section class="toolbar end">
+        <button id="btnSalvar" class="media-button primario">Salvar</button>
+        <button id="btnRecarregar" class="media-button">Recarregar</button>
+        <button id="btnSair" class="media-button"  onclick="window.location.href='/dashboard'"></button>
+        </section>
+    </main>
+
+    <script src="./lancar-notas.js"></script>
+</body>
+</html>

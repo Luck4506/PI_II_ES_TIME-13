@@ -1,0 +1,129 @@
+/* Autor: Henrique Young de Azevedo 25005651 */
+
+/* Reset básico */
+* {
+  margin: 0; /* remove toda margin padrão do navegador */
+  padding: 0; /* remove todo padding padrão do navegador */
+  box-sizing: border-box; /* faz com que a largura/altura incluam padding e border no cálculo (independentemente do valor deles)*/
+}
+
+/* Fundo */
+body {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: linear-gradient(130deg, #17dee1 0%, #4035bc 100%);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #333;
+}
+
+/* Card */
+.card {
+  background: white;
+  padding: 36px;
+  border-radius: 14px;
+  box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+  width: 100%;
+  max-width: 560px;
+  text-align: left;
+}
+
+/* Título */
+#title {
+  margin-bottom: 8px;
+  font-size: 28px;
+  font-weight: 600;
+  color: #1e293b;
+}
+
+/* Subtítulo */
+.componente_subtitle {
+  margin-bottom: 24px;
+  font-size: 15px;
+  color: #475569;
+}
+
+/* Form (container) */
+.componente_form {
+  margin-bottom: 18px;
+}
+
+/* Label */
+.componente_label {
+  display: block;
+  margin-bottom: 8px;
+  color: #334155;
+  font-weight: 600;
+  font-size: 15px;
+}
+
+/* Input */
+.componente_input {
+  width: 100%;
+  padding: 12px 14px;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  font-size: 16px;
+  outline: none; /* remove contorno padrão do input */
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.componente_input:focus {
+  border-color: #6366f1;
+  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.12);
+}
+
+/* Help */
+.componente_help {
+  display: block;
+  margin-top: 6px;
+  color: #64748b;
+  font-size: 13px;
+}
+
+/* Botão */
+.componente_button {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  /* animação: transform (ex: translate) em 0.15s de acordo com a curva ease (referência) */
+  /* dispara (mas não somente) com pseudoclasses - ex: :hover :focus :active */
+  transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+  color: #fff;
+  background: linear-gradient(135deg, #ef4444eb 0%, #ad0f0f 100%);
+  box-shadow: 0 8px 18px rgba(239, 68, 68, 0.25);
+}
+
+.componente_button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.componente_button:active {
+  transform: translateY(0);
+  opacity: 0.95;
+}
+
+/* Botão de sair */
+#btn-sair{
+  border: none;
+  display: block;
+  font-weight: bold;
+  color: gray;
+  background: none;
+  margin-bottom: 30px;
+  border: solid 1px;
+  padding: 4px 6px;
+  width: 5%;
+}
+
+#btn-sair:hover{
+  transform: translateY(-1px);
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.04);
+}

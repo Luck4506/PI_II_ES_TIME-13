@@ -1,0 +1,50 @@
+<!-- Autor: Henrique Young de Azevedo 25005651 -->
+
+<!-- Iniciando código HTML -->
+<!DOCTYPE html>
+<html lang="pt-br"> <!-- Definindo o idioma da página como português do Brasil -->
+  <head> <!-- Seção que contém informações sobre o documento -->
+    <meta charset="UTF-8"> <!-- -Codificação de caracteres usada -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!-- Ajuste do viewport para dispositivos móveis -->
+    <link rel="stylesheet" href="disc.css"> <!-- Arquivo CSS externo -->
+    <title>NotaDez - Cadastro diciplina</title> <!-- Título que aparece na aba do navegador -->
+    <script src="add_disciplina.js"></script> <!-- Arquivo JavaScript externo -->
+  </head>
+  <body> <!-- Corpo do documento -->
+    <div class="disciplina-container"> <!-- Container principal da página -->
+
+      <button class="disciplina-button" id="btn-sair" onclick="window.location.href='/dashboard/'"><</button> <!-- Botão de voltar para o dashboard -->
+
+      <h1 class="disciplina-title">Cadastrar Disciplinas!</h1> <!-- Título da página -->
+
+      <!-- Campos de entrada para os dados da disciplina -->
+      <div class="disciplina-form">
+        <label for="disciplina-nome" class="disciplina-label">Nome:</label>
+        <input type="text" id="disciplina-nome" class="disciplina-input" name="nome" required placeholder="Nome da disciplina">
+      </div>
+
+      <div class="disciplina-row">
+        <div class="disciplina-form">
+          <label for="disciplina-curso" class="disciplina-label">ID do Curso:</label>
+          <input type="text" id="disciplina-curso" class="disciplina-input" name="curso_ID" required placeholder="ID do curso associado">
+        </div>
+        <div class="disciplina-form">
+          <label for="disciplina-sigla" class="disciplina-label">Sigla:</label>
+          <input type="text" id="disciplina-sigla" class="disciplina-input" name="sigla" required placeholder="Sigla da disciplina">
+        </div>
+        <div class="disciplina-form">
+          <label for="disciplina-codigo" class="disciplina-label">Código:</label>
+          <input type="text" id="disciplina-codigo" class="disciplina-input" name="codigo" required placeholder="Código da disciplina">
+        </div>
+      </div>
+      
+      <div class="disciplina-form">
+        <label for="disciplina-periodo" class="disciplina-label">Período:</label>
+        <input type="text" id="disciplina-periodo" class="disciplina-input" name="periodo_curso" required placeholder="Período da disciplina (meses)">
+      </div>
+      <!-- Botão para cadastrar a disciplina -->
+      <button type="button" class="disciplina-button" id="btn-cadastrar" onclick="cadastrarDisciplina()">Cadastrar diciplina</button>
+
+    </div>
+  </body>
+</html>
