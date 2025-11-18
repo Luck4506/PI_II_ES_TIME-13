@@ -1,13 +1,14 @@
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 
+// Define a interface Aluno para representar os dados do aluno
 export interface Aluno {
   ra: number;
   nome: string;
   criado_em: Date;
 }
 
-
+// Função para adicionar um novo aluno na Tabela ALUNO
 export async function addAluno(ra: number, nome: string): Promise<number> {
   const conn = await open();
   try {
@@ -24,7 +25,7 @@ export async function addAluno(ra: number, nome: string): Promise<number> {
   }
 }
 
-
+// Função para buscar um aluno pelo RA da Tabela ALUNO
 export async function buscarAlunoPorRA(ra: number): Promise<Aluno | null> {
   const conn = await open();
   try {
@@ -50,7 +51,7 @@ export async function buscarAlunoPorRA(ra: number): Promise<Aluno | null> {
   }
 }
 
-
+// Função para excluir um aluno pelo RA da Tabela ALUNO
 export async function excluirAlunoPorRA(ra: number): Promise<boolean> {
   const conn = await open();
   try {
@@ -67,7 +68,7 @@ export async function excluirAlunoPorRA(ra: number): Promise<boolean> {
   }
 }
 
-
+// Função para listar todos os alunos da Tabela ALUNO
 export async function listarTodosAlunos(): Promise<Aluno[]> {
   const conn = await open();
   try {
@@ -93,6 +94,7 @@ export async function listarTodosAlunos(): Promise<Aluno[]> {
 
 }
 
+// Função para obter todos os alunos de uma turma específica
 export async function getAllAlunosByTurma(turmaId: number): Promise<Aluno[]> {
   const conn = await open();
   try {
@@ -115,6 +117,24 @@ export async function getAllAlunosByTurma(turmaId: number): Promise<Aluno[]> {
     return rows as Aluno[];
   }
   finally {
+    await close(conn);
+  }
+}
+
+// Função para remover um aluno de uma turma específica
+export async function removerAlunoDaTurma(ra: number, turmaId: number): Promise<boolean> {
+  const conn = await open();
+  try {
+    const result = await conn.execute(
+      `
+      DELETE FROM NOTADEZ.NOTA_FINAL_AJUSTADA
+      WHERE RA_ALUNO = :ra AND CODIGO_TURMA = :turmaId
+      `,
+      { ra, turmaId },
+      { autoCommit: true }
+    );
+   return (result.rowsAffected ?? 0) > 0;
+  } finally {
     await close(conn);
   }
 }

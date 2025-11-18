@@ -1,0 +1,55 @@
+<!-- Autor: Henrique Young de Azevedo 25005651 -->
+
+<!-- Iniciando código HTML -->
+<!DOCTYPE html>
+<html lang="pt-br"> <!-- Idioma da página -->
+    <head> <!-- Seção que contém informações sobre o documento -->
+    <meta charset="UTF-8" /> <!-- Codificação de caracteres usada -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/> <!-- Ajuste do viewport para dispositivos móveis -->
+    <title>NotaDez - Excluir aluno de uma turma</title> <!-- Título que aparece na aba do navegador -->
+    <link href="aluno_t2.css" rel="stylesheet"> <!-- Arquivo CSS externo -->
+    </head>
+    <body> <!-- Corpo do documento -->
+        <div class="card"> <!-- Container principal da página -->
+
+            <button id="btn-sair" onclick="window.location.href='/dashboard/'"><</button> <!-- Botão de voltar para o dashboard -->
+
+            <h1 id="title">Excluir Aluno de uma Turma</h1> <!-- Título da página -->
+
+            <!-- Campo de entrada para RA do aluno -->
+            <div class="aluno_form">
+                <label for="aluno_ra" class="aluno_label">RA do Aluno</label>
+                <input 
+                    type="text"
+                    id="aluno_ra" 
+                    class="aluno_input" 
+                    name="ra"
+                    required
+                    placeholder="Ex.: 25005651, 25008403, ..."
+                    autocomplete="off"
+                />
+            </div>
+
+            <!-- Campo de entrada para ID da turma -->
+            <div class="aluno_form">
+                <label for="turma_id" class="aluno_label">ID da Turma</label>
+                <input 
+                    type="text"
+                    id="turma_id" 
+                    class="aluno_input" 
+                    name="turma_id"
+                    required
+                    placeholder="Ex.: 101, 202, ..."
+                    autocomplete="off"
+                />
+            </div>
+
+            <!-- Botão para excluir o aluno -->
+            <button type="button" class="aluno_button" id="btn_excluir" onclick="excluirAluno()">
+            Excluir
+            </button>
+
+        </div>
+        <script src="excluir_aluno.js"></script> <!-- Arquivo JavaScript externo -->
+    </body>
+</html>
