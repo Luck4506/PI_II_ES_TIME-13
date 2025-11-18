@@ -17,8 +17,8 @@ O NotaDez é uma aplicação web cujo objetivo é permitir que docentes gerencie
 # 2. Equipe
 
 - **TIME 13 — Projeto Integrador II**  
-- Integrantes: *(adicionar nomes aqui)*  
-- Orientadores: *Renata Arantes*
+- Integrantes: *Henrique Young De Azevedo, Isabela Aparecida Paslauski Pinto, João Pedro Bergamin Diniz, Lucas Soares Gonçalves, Pedro Vinicius Romanato*  
+- Orientadores: *Prof. Me. Mateus Dias, Profa. Dra. Renata Arantes e Prof. Dr. Luã Muriana*
 
 # 3. Tecnologias Utilizadas
 
