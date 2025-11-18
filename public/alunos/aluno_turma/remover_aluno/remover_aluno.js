@@ -36,7 +36,7 @@ function excluirAluno(){
 
     const { ra, turma_id } = dados; // Desestrutura os dados validados.
 
-    fetch(`http://localhost:3000//turma/${turma_id}/aluno/${ra}`, { // Requisição para o servidor.
+    fetch(`http://localhost:3000/turma/${turma_id}/aluno/${ra}`, { // Requisição para o servidor.
         method: 'DELETE' // Método da requisição.
     })
 

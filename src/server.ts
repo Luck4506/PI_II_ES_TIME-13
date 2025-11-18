@@ -1286,7 +1286,7 @@ app.delete('/turma/:turmaId/aluno/:ra', async (req: Request, res: Response) => {
       return res.status(400).json({ error: 'RA do aluno inválido.' });
     }
 
-    const removido = await removerAlunoDaTurma(turmaId, ra);
+    const removido = await removerAlunoDaTurma(ra,turmaId);
     if (!removido) {
       return res.status(404).json({ error: 'Aluno ou turma não encontrado.' });
     }
