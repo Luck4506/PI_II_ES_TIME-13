@@ -1,4 +1,6 @@
-// --- 1. FUNÇÃO DE CADASTRO OTIMIZADA PARA IMPORTAÇÃO ---
+//codigo de autoria de Pedro Romanato, Lucas Soares, Joao Pedro e Isabela Aparecida
+
+// FUNÇÃO DE CADASTRO OTIMIZADA PARA IMPORTAÇÃO
 
 async function cadastrarAlunoImportado(ra, nome) {
   const dados = {
