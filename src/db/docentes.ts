@@ -1,3 +1,5 @@
+//codigo de autoria Pedro Romanato, Luucas Soares e Joao Pedro
+
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 

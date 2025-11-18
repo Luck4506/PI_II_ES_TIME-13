@@ -1,3 +1,4 @@
+//codigo de autoria Pedro Romanato e Joao Pedro Diniz
 import OracleDB from "oracledb";
 import { open, close } from "../config/db";
 export interface Curso {

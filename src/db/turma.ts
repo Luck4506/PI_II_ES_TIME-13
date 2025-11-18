@@ -1,3 +1,4 @@
+//codigo de atoria Joao Pedro Diniz
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 

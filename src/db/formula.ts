@@ -1,6 +1,7 @@
+//codigo de auutoria Lucas Soares e Isabela Aparecida
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
-
+// Definição da interface TypeScript para a estrutura de dados de uma Fórmula de Nota Final
 export interface Formula {
   ID: number;
   ID_Disciplina: number;
@@ -8,7 +9,7 @@ export interface Formula {
   Data_Criacao: Date;
   Atualizado_Em: Date | null;
 }
-
+// Rota para salvar ou atualizar a fórmula de nota final de uma disciplina (INSERT ou UPDATE condicional)
 export async function salvarFormula(idDisciplina: number,expressao: string
 ): Promise<Formula> {
   const conn = await open();
@@ -103,11 +104,12 @@ export async function salvarFormula(idDisciplina: number,expressao: string
     await close(conn);
   }
 }
-
+   // Busca a versão final da fórmula salva para retornar os dados completos (incluindo Data_Criacao e Atualizado_Em)
 export async function obterFormulaPorDisciplina(idDisciplina: number): Promise<Formula | null> {
   const conn = await open();
 
   try {
+    // Rota para obter a fórmula de nota final de uma disciplina pelo seu ID
     const result = await conn.execute(
       `
       SELECT

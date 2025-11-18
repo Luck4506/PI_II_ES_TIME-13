@@ -1,53 +1,55 @@
-import { open, close } from "../config/db";
-import OracleDB from "oracledb";
+  //codigo de autoria Lcas Soares
 
-export async function inserirAlunoTurma(codigo_turma: number, ra_aluno: number): Promise<void> {
-  const conn = await open();
+  import { open, close } from "../config/db";
+  import OracleDB from "oracledb";
+// Rota para inicializar o registro de um aluno em uma turma na tabela NOTA_FINAL_AJUSTADA
+  export async function inserirAlunoTurma(codigo_turma: number, ra_aluno: number): Promise<void> {
+    const conn = await open();
 
-  try {
-    await conn.execute(
-      `
-      INSERT INTO NOTADEZ.NOTA_FINAL_AJUSTADA (CODIGO_TURMA, RA_ALUNO)
-      VALUES (:codigo_turma, :ra_aluno)
-      `,
-      { codigo_turma, ra_aluno },
-      { autoCommit: true }
-    );
-  } finally {
-    await close(conn);
-  }
-}
-
-
-
-export interface NotaFinalRegistro {
-  codigo_turma: number;
-  ra_aluno: number;
-  valor_final: number;
-}
-
-export async function atualizarNotasFinaisLote(registros: NotaFinalRegistro[]): Promise<void> {
-  if (!registros || registros.length === 0) return;
-
-  const conn = await open();
-  try {
-    for (const reg of registros) {
+    try {
       await conn.execute(
         `
-        UPDATE NOTADEZ.NOTA_FINAL_AJUSTADA
-        SET VALOR_NOTA_FINAL = :valor
-        WHERE CODIGO_TURMA = :turma
-          AND RA_ALUNO = :ra
+        INSERT INTO NOTADEZ.NOTA_FINAL_AJUSTADA (CODIGO_TURMA, RA_ALUNO)
+        VALUES (:codigo_turma, :ra_aluno)
         `,
-        {
-          turma: reg.codigo_turma,
-          ra: reg.ra_aluno,
-          valor: reg.valor_final
-        }
+        { codigo_turma, ra_aluno },
+        { autoCommit: true }
       );
+    } finally {
+      await close(conn);
     }
-    await conn.commit();
-  } finally {
-    await close(conn);
   }
-}
+
+
+
+  export interface NotaFinalRegistro {
+    codigo_turma: number;
+    ra_aluno: number;
+    valor_final: number;
+  }
+// Rota para atualizar em lote o valor da Nota Final Ajustada para vários alunos em suas turmas
+  export async function atualizarNotasFinaisLote(registros: NotaFinalRegistro[]): Promise<void> {
+    if (!registros || registros.length === 0) return;
+
+    const conn = await open();
+    try {
+      for (const reg of registros) {
+        await conn.execute(
+          `
+          UPDATE NOTADEZ.NOTA_FINAL_AJUSTADA
+          SET VALOR_NOTA_FINAL = :valor
+          WHERE CODIGO_TURMA = :turma
+            AND RA_ALUNO = :ra
+          `,
+          {
+            turma: reg.codigo_turma,
+            ra: reg.ra_aluno,
+            valor: reg.valor_final
+          }
+        );
+      }
+      await conn.commit();
+    } finally {
+      await close(conn);
+    }
+  }
