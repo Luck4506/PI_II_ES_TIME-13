@@ -1,6 +1,6 @@
 # PI_II_ES_TIME-13
 
-#Projeto NotaDez — PI_II_ES_TIME-13
+# Projeto NotaDez — PI_II_ES_TIME-13
 
 Sistema Web para gerenciamento de notas acadêmicas desenvolvido como parte do Projeto Integrador II do curso de Engenharia de Software da PUC-Campinas.
 
@@ -82,7 +82,7 @@ Dentro da pasta extraída do Release, execute:
 ```bash
 npm install
 
-# 6. Instalação das Dependências
+# Instalação das Dependências
 
 ```bash
 npm install
