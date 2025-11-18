@@ -72,6 +72,19 @@ O ambiente deve estar configurado corretamente para que o sistema funcione:
   - `DYLD_LIBRARY_PATH` (macOS)
   - `LD_LIBRARY_PATH` (Linux)
 
+# Criar e configurar o arquivo `.env`
+
+Dentro da pasta do projeto, crie o arquivo:
+
+No arquivo .env, escreva o caminho para o wallet e o instant client:
+```env
+# Caminho para a pasta onde o Wallet foi extraído
+ORACLE_WALLET_PATH=/caminho/para/seu/wallet
+
+# Caminho para a pasta do Oracle Instant Client
+ORACLE_INSTANT_CLIENT_PATH=/caminho/para/seu/instantclient
+```
+
 # Rede / Firewall
 - A **porta 1522** deve estar liberada para comunicação com o banco Oracle.
 
