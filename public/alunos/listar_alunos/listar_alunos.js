@@ -58,7 +58,6 @@ async function preencherTabela(){
             `
                 <th>${item.ra}</th>
                 <td>${item.nome}</td>
-                <td>${item.criado_em}</td>
             `;
 
             tbody.append(tr); // Insere a(s) nova(s) linha(s) no tbody ( corpo da tabela --> <tbody>[...]</tbody> );
