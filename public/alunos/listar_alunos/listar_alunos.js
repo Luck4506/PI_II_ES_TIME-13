@@ -31,14 +31,16 @@ async function preencherTabela(){
         let turmaId_Str = document.getElementById('aluno_cod_turma').value.trim(); // Pega o código da turma do input (string).
         const turmaId = validarId(turmaId_Str); // Valida o código da turma.
 
-        const dados = await fetch(`/turma/${turmaId}/alunos`)
-            .then(response => {
+        const dados = await fetch(`/turma/${turmaId}/alunos`) // Requisita para o servidor.
+            .then(response => { // Lança a resposta da requisição como argumento para a função anônima.
 
+            // Verifica se a resposta foi bem-sucedida.
             if(!response.ok){
                 throw new Error("Não foi possível buscar o recurso.");
             }            
 
-            return response.json();
+            return response.json(); // Lê o corpo da resposta HTTP (JSON), faz o parsing
+                                    // e retorna uma Promise que resolve em um objeto JS.
         })
 
         const tbody = document.querySelector(".table tbody"); // Constante representando o <tbody>
@@ -46,6 +48,7 @@ async function preencherTabela(){
 
         // text-muted, classe do Bootstrap, deixa o texto cinza.
 
+        // Verifica se o array está vazio ou não é um array.
         if(!Array.isArray(dados) || dados.length === 0){
             tbody.innerHTML = `<tr><td colspan="5" class = "text-muted">Nenhum registro encontrado.</td></tr>`; // Mescla as colunas horizontalmente (colspan). Restando uma única célula (intersecção).
             return;
@@ -63,7 +66,7 @@ async function preencherTabela(){
             tbody.append(tr); // Insere a(s) nova(s) linha(s) no tbody ( corpo da tabela --> <tbody>[...]</tbody> );
         })
     }
-    catch(error){
+    catch(error){ // Captura erros lançados no bloco try.
         console.error(error);
     }
 }

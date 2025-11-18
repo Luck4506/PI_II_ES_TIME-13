@@ -1,4 +1,6 @@
 /* Autor: Henrique Young de Azevedo 25005651 */
+
+// Função para listar disciplinas com base no curso_id fornecido
 async function  listarDisciplina(){
     const curso_id = document.getElementById("curso_id").value;
     const botao = document.getElementById("btn-listar");
@@ -12,6 +14,8 @@ async function  listarDisciplina(){
         document.getElementById("curso_id").value="";
     }
 }
+
+// Função para verificar se os inputs são válidos
 async function verificar_inputs(curso_id) {
     if(curso_id===""||isNaN(curso_id)){
         window.alert('Dados Invalidos');
@@ -23,6 +27,8 @@ async function verificar_inputs(curso_id) {
     }
     return true;
 }
+
+// Função para verificar se a disciplina existe no servidor
 async function existeDisciplina(curso_id){
     const dadosDisciplina={ curso_id:curso_id }
     try{
@@ -37,6 +43,8 @@ async function existeDisciplina(curso_id){
         return false;
     }
 }
+
+// Função para preencher a tabela com os dados das disciplinas
 async function preencherTabela(curso_id) {
     try {
         const resp = await fetch('/ver_disciplina', {
