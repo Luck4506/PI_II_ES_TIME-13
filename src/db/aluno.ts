@@ -1,4 +1,4 @@
-//codigo de autoria Henriqe Young
+// Código de autoria Henrique Young 25005651
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 
