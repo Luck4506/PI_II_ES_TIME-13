@@ -17,7 +17,7 @@ function validarEntradas(){
         return null;
     }
 
-    else if (ra < 0) // Verifica se o RA é um número positivo ou igual a zero.
+    else if (Number(ra) < 0) // Verifica se o RA é um número positivo ou igual a zero.
     {
         window.alert('RA não pode ser um número negativo!');
         return null;
