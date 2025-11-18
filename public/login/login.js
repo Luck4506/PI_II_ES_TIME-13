@@ -1,3 +1,5 @@
+//Codigo de autoria de Lucas Gonçalves
+
 // Captura evento de clique do botão de login
 document.querySelector('#btn-login').addEventListener('click', (evt) => {
   evt.preventDefault(); // Evita recarregar a página

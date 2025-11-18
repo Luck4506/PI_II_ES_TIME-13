@@ -13,6 +13,7 @@ let COMPONENTES = [];
 let ALUNOS = [];           
 const NOTAS = {};          
 
+// Atualiza o cabeçalho com as siglas dos componentes
 function atualizarCabecalhoComponentes() {
   const ths = document.querySelectorAll("th.th-componente");
 
@@ -30,20 +31,24 @@ function atualizarCabecalhoComponentes() {
   });
 }
 
+// Limpa todas as notas e a tabela
 function limparNotasETabela() {
   Object.keys(NOTAS).forEach((k) => delete NOTAS[k]);
   tbody.innerHTML = "";
 }
 
+// Reseta o select de disciplina
 function resetDisciplina() {
   selDisciplina.innerHTML = '<option value="">Selecione a disciplina</option>';
 }
 
+// Reseta o select de turma
 function resetTurma() {
   selTurma.innerHTML = '<option value="">Selecione a turma</option>';
   selTurma.disabled = true;
 }
 
+// Atualiza status inicial da exportação
 function atualizarStatusNeutro() {
   statusExportacao.textContent =
     "Selecione uma disciplina e uma turma para verificar se a exportação está disponível.";
@@ -51,6 +56,7 @@ function atualizarStatusNeutro() {
 }
 
 
+// Monta a tabela com alunos e componentes
 function montarTabela() {
   tbody.innerHTML = "";
 
@@ -94,7 +100,7 @@ function montarTabela() {
   });
 }
 
-// Preenche as células da tabela com as notas carregadas do back-end
+// Preenche as notas dos componentes na tabela
 function preencherNotasNaTabela() {
   const linhas = tbody.querySelectorAll("tr");
 
@@ -112,6 +118,7 @@ function preencherNotasNaTabela() {
 }
 
 
+// Carrega disciplinas disponíveis
 async function carregarDisciplinas() {
   try {
     resetDisciplina();
@@ -140,6 +147,7 @@ async function carregarDisciplinas() {
   }
 }
 
+// Carrega turmas da disciplina selecionada
 async function carregarTurmasPorDisciplina(idDisciplina) {
   try {
     resetTurma();
@@ -170,6 +178,7 @@ async function carregarTurmasPorDisciplina(idDisciplina) {
   }
 }
 
+// Carrega a fórmula da disciplina
 async function carregarFormulaPorDisciplina(idDisciplina) {
   try {
     EXPRESSAO = "";
@@ -201,6 +210,7 @@ async function carregarFormulaPorDisciplina(idDisciplina) {
   }
 }
 
+// Carrega os componentes de nota da disciplina
 async function carregarComponentes(idDisciplina) {
   try {
     SIGLAS = [];
@@ -235,6 +245,7 @@ async function carregarComponentes(idDisciplina) {
   }
 }
 
+// Carrega alunos da turma escolhida
 async function carregarAlunosDaTurma(idTurma) {
   try {
     limparNotasETabela();
@@ -264,6 +275,7 @@ async function carregarAlunosDaTurma(idTurma) {
   }
 }
 
+// Carrega notas de todos os componentes para a turma
 async function carregarNotasDeTodosComponentesDaTurma() {
   const turmaId = selTurma.value;
   console.log("carregarNotasDeTodosComponentesDaTurma() - turmaId:", turmaId, "COMPONENTES:", COMPONENTES);
@@ -302,8 +314,7 @@ async function carregarNotasDeTodosComponentesDaTurma() {
   }
 }
 
-// Cálculo da Nota Final (igual à tela de nota_final)
-
+// Calcula a nota final de um aluno
 function calcularNotaFinalParaAluno(ra) {
   if (!EXPRESSAO || !EXPRESSAO.trim()) return undefined;
   if (!NOTAS[ra]) return undefined;
@@ -329,6 +340,7 @@ function calcularNotaFinalParaAluno(ra) {
   }
 }
 
+// Calcula a nota final de todos os alunos
 function calcularNotasFinaisParaTodos() {
   const linhas = tbody.querySelectorAll("tr");
 
@@ -345,6 +357,7 @@ function calcularNotasFinaisParaTodos() {
 }
 
 
+// Verifica se todos os alunos têm notas completas
 function verificarNotasCompletas() {
   const pendencias = [];
 
@@ -367,6 +380,7 @@ function verificarNotasCompletas() {
   };
 }
 
+// Atualiza status para liberar ou bloquear a exportação
 function atualizarStatusExportacao() {
   if (!ALUNOS.length || !SIGLAS.length) {
     atualizarStatusNeutro();
@@ -393,7 +407,7 @@ function atualizarStatusExportacao() {
   }
 }
 
-// Exportação CSV
+// Exporta os dados em arquivo CSV
 function exportarCsv() {
   const { ok, pendencias } = verificarNotasCompletas();
 
@@ -488,6 +502,7 @@ function exportarCsv() {
 }
 
 
+// Configura eventos dos selects e botões
 function configurarSeletores() {
   // Quando muda a disciplina
   selDisciplina.addEventListener("change", async () => {
@@ -533,6 +548,7 @@ function configurarSeletores() {
   });
 }
 
+// Inicialização da página ao carregar
 document.addEventListener("DOMContentLoaded", () => {
   configurarSeletores();
   carregarDisciplinas();

@@ -1,23 +1,28 @@
+//Codigo de autoria de Lucas Gonçalves
+
 import OracleDB from "oracledb";
 import dotenv from "dotenv";
 dotenv.config();
 
-// caminho da wallet de conexao com o oracle.
+// Caminho do wallet do Oracle
 const walletPath = process.env.ORACLE_WALLET_PATH;
+// Caminho do Oracle Instant Client
 const instantClient = process.env.ORACLE_INSTANT_CLIENT_PATH;
 
-// inicializar o cliente oracle, usando a wallet.
+// Inicialização do cliente Oracle
 OracleDB.initOracleClient({configDir: walletPath, libDir: instantClient});
 
-// formato de saída dos dados, vai ser objetos JSON.
+// Define saída como JSON
 OracleDB.outFormat = OracleDB.OUT_FORMAT_OBJECT;
 
+// Configurações do banco de dados
 const dbConfig = {
   user: "NOTADEZ",
   password: "EngSoftDBUser#2025",
   connectString: "notadezdb_high"
 }
 
+// Função para abrir conexão
 export async function open(){
   try{
     const connection = await OracleDB.getConnection(dbConfig);
@@ -29,6 +34,7 @@ export async function open(){
   }
 }
 
+// Função para fechar conexão
 export async function close(connection: OracleDB.Connection){
   try{
     await connection.close();

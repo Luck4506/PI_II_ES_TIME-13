@@ -1,5 +1,8 @@
+//Codigo de autoria de Lucas Gonçalves
+
 import * as nodemailer from "nodemailer";
 
+// Configuração do serviço de envio de email
 const transporter = nodemailer.createTransport({
   service: "gmail",
   auth: {
@@ -8,6 +11,7 @@ const transporter = nodemailer.createTransport({
   }
 });
 
+// Função para enviar email
 export async function enviarEmail(destinatario: string, assunto: string, mensagem: string) {
   try {
     const info = await transporter.sendMail({

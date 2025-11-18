@@ -1,3 +1,5 @@
+//Codigo de autoria de Lucas Gonçalves
+
 const formulaEl = document.getElementById('formula');
 const tbody = document.getElementById('tbody');
 const btnSalvar = document.getElementById('btnSalvar');
@@ -6,6 +8,7 @@ const selTurma = document.getElementById('turma');
 const selDisciplina = document.getElementById('disciplina');
 const selComponente = document.getElementById('componente');
 
+//
 function atualizarCabecalhoComponentes() {
   const ths = document.querySelectorAll('th.th-componente');
 
@@ -30,25 +33,30 @@ let ALUNOS = [];           // Alunos da turma selecionada [{ id, nome }]
 const NOTAS = {};          // Mapa de notas por aluno e sigla: { [ra]: { [sigla]: valor } }
 //--------------------------------------------------------//
 
+// Limpa notas e tabela
 function limparNotasETabela() {
   Object.keys(NOTAS).forEach(k => delete NOTAS[k]);
   tbody.innerHTML = '';
 }
 
+// Reseta o select de disciplina
 function resetDisciplina() {
   selDisciplina.innerHTML = '<option value="">Selecione a disciplina</option>';
 }
 
+// Reseta o select de turma
 function resetTurma() {
   selTurma.innerHTML = '<option value="">Selecione a turma</option>';
   selTurma.disabled = true;
 }
 
+// Reseta o select de componente
 function resetComponente() {
   selComponente.innerHTML = '<option value="">Selecione o componente</option>';
   selComponente.disabled = true;
 }
 
+// Monta a tabela com alunos e inputs de notas
 function montarTabela() {
   tbody.innerHTML = '';
 
@@ -97,6 +105,8 @@ function montarTabela() {
   });
 }
 
+
+// Atualiza quais inputs ficam habilitados conforme componente selecionado
 function atualizarInputsPorComponenteSelecionado() {
   const siglaSelecionada = selComponente.value;
   const inputs = tbody.querySelectorAll('input.input-nota');
@@ -260,7 +270,6 @@ async function carregarAlunosDaTurma(idTurma) {
 
     if (!idTurma) return;
 
-    // TODO: ajustar a rota de acordo com o back-end real
     const resp = await fetch(`/turma/${idTurma}/alunos`);
     if (!resp.ok) {
       throw new Error('Falha ao buscar alunos da turma');
@@ -278,6 +287,7 @@ async function carregarAlunosDaTurma(idTurma) {
   }
 }
 
+// Carrega notas já cadastradas para o componente selecionado
 async function carregarNotasExistentesParaComponente() {
   const siglaSelecionada = selComponente.value;
   const turmaId = selTurma.value;
@@ -315,6 +325,7 @@ async function carregarNotasExistentesParaComponente() {
   }
 }
 
+// Preenche notas existentes na tabela
 function preencherNotasNaTabela() {
   const linhas = tbody.querySelectorAll('tr');
 
@@ -335,6 +346,7 @@ function preencherNotasNaTabela() {
   });
 }
 
+// Carrega notas de todos os componentes para todos alunos da turma
 async function carregarNotasDeTodosComponentesDaTurma() {
   const turmaId = selTurma.value;
 
@@ -468,7 +480,7 @@ selTurma.addEventListener('change', () => {
 });
 
 
-// Inicialização da página: carrega disciplinas disponíveis
+// Inicializa carregamento da página
 function init() {
   carregarDisciplinas();
 }
