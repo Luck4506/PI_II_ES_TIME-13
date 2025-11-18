@@ -1,4 +1,4 @@
-
+//codigo de autoria Henrique Young
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 
@@ -9,7 +9,7 @@ export interface ComponenteNota {
   sigla: string | null;
   descricao?: string | null;
 }
-
+// Função assíncrona para adicionar um novo Componente de Nota ao banco de dados
 export async function addComponenteNota(codigo_disciplina: number, nome: string, sigla?: string | null, descricao?: string | null
 ): Promise<number> {
   const conn = await open();
@@ -46,7 +46,7 @@ export async function addComponenteNota(codigo_disciplina: number, nome: string,
     await close(conn);
   }
 }
-
+// Função assíncrona para buscar todos os Componentes de Nota associados a uma Disciplina específica
 export async function getAllComponentesByDisciplina(disciplinaId: number): Promise<ComponenteNota[]> {
   const conn = await open();
   try {
@@ -73,7 +73,7 @@ export async function getAllComponentesByDisciplina(disciplinaId: number): Promi
     await close(conn);
   }
 }
-
+// Função assíncrona para buscar um Componente de Nota específico pelo seu ID
 export async function getComponenteNotaById(idValue: number): Promise<ComponenteNota | null> {
   const conn = await open();
   try {
@@ -100,7 +100,7 @@ export async function getComponenteNotaById(idValue: number): Promise<Componente
     await close(conn);
   }
 }
-
+// Função assíncrona para deletar um Componente de Nota pelo seu ID
 export async function deleteComponenteNotaById(idValue: number): Promise<boolean> {
   const conn = await open();
   try {

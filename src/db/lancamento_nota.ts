@@ -1,6 +1,8 @@
+//codigo de autoria de Lucas Soares
+
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
-
+// Definição da interface para a estrutura de dados de Lançamento de Nota
 export interface LancamentoNota {
   codigo_turma: number;
   ra_aluno: number; // RA do aluno
@@ -8,7 +10,7 @@ export interface LancamentoNota {
   docente_id: number;
   valor: number; // regra: normalizar para 2 casas; intervalo 0..10
 }
-
+// Função utilitária para garantir que o valor da nota esteja entre 0 e 10 e tenha no máximo 2 casas decimais
 function normalizarValorNota(valorNota: number): number {
   if (!Number.isFinite(valorNota)) {
     throw new Error("Valor de nota inválido.");
@@ -19,7 +21,7 @@ function normalizarValorNota(valorNota: number): number {
   }
   return arredondado;
 }
-
+// Rota para inserir um novo Lançamento de Nota
 export async function LancarNota(
   codigoTurma: number,
   alunoRa: number,
@@ -71,7 +73,7 @@ export async function LancarNota(
   }
 }
 
-
+// Rota para buscar um Lançamento de Nota pela chave primária composta (Turma, RA, Componente)
 export async function getLancamentoNotaByPK(
   codigoTurma: number,
   alunoRa: number,
@@ -104,7 +106,7 @@ export async function getLancamentoNotaByPK(
     await close(conn);
   }
 }
-
+// Rota para buscar todos os lançamentos de nota para uma Turma e um Componente de Nota específicos
 export async function getAllLancamentosByTurmaEComponente(
   codigoTurma: number,
   componenteNotaId: number
@@ -133,6 +135,7 @@ export async function getAllLancamentosByTurmaEComponente(
   }
 }
 
+// Rota para atualizar o valor de uma nota de um lançamento existente
 export async function updateLancamentoNotaValor(
   codigoTurma: number,
   alunoRa: number,
@@ -168,9 +171,9 @@ export async function updateLancamentoNotaValor(
     await close(conn);
   }
 }
-
+// Tipo auxiliar para simplificar a lista de notas a serem salvas
 export type NotaComponenteSalvar = Pick<LancamentoNota, "ra_aluno" | "valor">;
-
+// Rota para salvar um conjunto de notas para o mesmo componente e turma (usando MERGE para INSERT/UPDATE em massa)
 export async function salvarNotasComponente(codigoTurma: number, componenteNotaId: number, docenteId: number, notas: NotaComponenteSalvar[]
 ): Promise<void> {
   if (!notas.length) {

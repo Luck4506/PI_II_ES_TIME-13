@@ -1,3 +1,5 @@
+//codigo de atoria Pedro Romanato e Lucas Soares
+
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 

@@ -1,3 +1,4 @@
+//codigo de atoria de Pedro Romanato e Joao Pedro Diniz
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 
@@ -14,7 +15,7 @@ export interface DisciplinaOpcao {
   id: number;
   nome: string;
 }
-
+// Função assíncrona para adicionar uma nova Disciplina ao banco de dados, retornando o ID gerado
 export async function addDisciplina(curso_ID: number, nome: string, sigla: string, codigo: string, periodo_curso: number): Promise<number> {
   const conn = await open();
   try{
@@ -40,7 +41,7 @@ export async function addDisciplina(curso_ID: number, nome: string, sigla: strin
     await close(conn);
   }
 }
-
+// Função assíncrona para buscar todas as Disciplinas cadastradas
 export async function getAllDisciplinas(): Promise<Disciplina[]> {
   const conn = await open();
   try {
@@ -93,6 +94,7 @@ export async function getAllDisciplinasPeloId(curso_id:number): Promise<Discipli
     await close(conn);
   }
 }
+// Função assíncrona para deletar uma Disciplina pelo seu ID
 export async function deleteDisciplinaById(idValue: number): Promise<number> {
   
   if (!Number.isInteger(idValue) || idValue <= 0){
