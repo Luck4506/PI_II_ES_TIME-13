@@ -1,7 +1,11 @@
+//Codigo de autoria de Pedro Vinicius Romanato e Joao Pedro Diniz
+// Listener para verificar o estado da sessão do usuário ao carregar a página
 document.addEventListener("DOMContentLoaded", async () => {
   try {
+    // Busca os dados da sessão do usuário no back-end
     const resposta = await fetch("/api/session", { credentials: "same-origin" });
     if (resposta.ok) {
+      // Se a sessão estiver ativa, extrai o nome e exibe a saudação
       const data = await resposta.json();
       const nome = data?.user?.nome;
       const saudacaoElemento = document.getElementById("saudacao");
@@ -10,6 +14,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         saudacaoElemento.textContent = `Olá, ${nome}!`;
       }
     } else if (resposta.status === 401) {
+      // Se não estiver autenticado (401), redireciona para a página de login
       window.location.href = "/login";
     }
   } catch (err) {
@@ -17,22 +22,25 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 });
 
-
+// Seleção do botão para mudar a senha
 const btn = document.querySelector('button#btn-mudar-senha');
+// Adiciona listener para a função 'mudarSenha' ao clicar no botão
 btn?.addEventListener('click', (e) => { e.preventDefault(); mudarSenha(); });
+// Previne o comportamento padrão de submissão do formulário
 document.querySelector('form')?.addEventListener('submit', (e) => e.preventDefault());
-
+// Variáveis globais para armazenar as novas senhas
 let novaSenha = '';
 let novaSenhaConfirmacao = '';
 
-
+// Função para validar se os campos de senha foram preenchidos e se as senhas são iguais
 function validarEntradas() {
   capturarEntradas();
-
+ // Verifica se algum campo está vazio
   if (novaSenha === '' || novaSenhaConfirmacao === '') {
     alert('Por favor, digite todos os campos!');
     return false;
   }
+    // Verifica se os campos de senha são idênticos
   else if (novaSenha != novaSenhaConfirmacao){
     window.alert('As senhas precisam ser iguais!')
     return false
@@ -40,6 +48,7 @@ function validarEntradas() {
   return true;
 }
 
+// Função para capturar os valores dos campos de nova senha e confirmação
 function capturarEntradas() {
   novaSenha = document.querySelector('#senha').value;
   novaSenhaConfirmacao = document.querySelector('#confirmar-senha').value;

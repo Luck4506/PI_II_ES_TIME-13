@@ -1,10 +1,11 @@
-
+//codigo de autoria de Isabela Aparecida Paslauski Pinto
+// Seleção de elementos principais do DOM
 const disciplina = document.getElementById('disciplina');
 const expr = document.getElementById('expr');
 const erros = document.getElementById('erros');
-
+// Listener para carregar as disciplinas ao iniciar a página
 document.addEventListener('DOMContentLoaded', carregarDisciplinas);
-
+// Função que busca a lista de disciplinas na API e preenche o dropdown
 async function carregarDisciplinas() {
     try {
         const resp = await fetch('/formula/disciplinas');
@@ -29,7 +30,7 @@ async function carregarDisciplinas() {
     }
 }
 
-
+// Seleção dos botões de ação e atalho
 const btnSalvar = document.getElementById('btnSalvar');
 const btnMediaAritmetica = document.getElementById('btnMediaAritmetica');
 const btnPonderadaEx = document.getElementById('btnPonderadaEx');
@@ -73,6 +74,7 @@ btnSalvar.addEventListener('click', async () => {
     }
 
     try {
+        // Requisição POST para o endpoint de cadastro de fórmula
         const resp = await fetch('/formula/cadastrar_formula', {
             method: 'POST',
             headers: {
@@ -104,7 +106,7 @@ btnSalvar.addEventListener('click', async () => {
         alert('Erro inesperado ao salvar a fórmula.');
     }
 });
-
+// Exibe os erros de validação da expressão no elemento 'erros'
 function validarEMostrarErros() {
     const texto = expr.value.trim();
     const v = validarExpressaoBasica(texto);
@@ -136,15 +138,17 @@ function validarExpressaoBasica(exprStr) {
 
     return { ok: msgs.length === 0, erros: msgs };
 }
-
+// Verifica o balanceamento dos parênteses
 function parentesesOk(str) {
     let c =0;
     for (const ch of str){
         if(ch === '(') c++;
         else if(ch === ')'){
         c--;
+        // Garante que nunca fecha um parêntese sem ter aberto um antes
         if (c < 0)return false;
         }
     }
+    // Retorna verdadeiro se o número final de aberturas e fechamentos for zero
     return c===0;
 }

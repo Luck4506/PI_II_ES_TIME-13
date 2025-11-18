@@ -1,3 +1,4 @@
+// Codigo de autoria de Pedro Vinicius Romanato
 document.addEventListener("DOMContentLoaded", async () => {
   try {
     const resposta = await fetch("/api/session", { credentials: "same-origin" });
