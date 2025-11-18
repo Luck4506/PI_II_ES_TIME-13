@@ -89,3 +89,6 @@ npm install
 npm run dev
 npm run build
 npm run start
+
+```
+abra o localhost:3000/ na sua máquina
