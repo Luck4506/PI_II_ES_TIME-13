@@ -1,4 +1,4 @@
-//codigo de autoria Luucas Soares
+//codigo de autoria Lucas Soares
 import { open, close } from "../config/db";
 import OracleDB from "oracledb";
 

@@ -1,3 +1,5 @@
+//Codigo de autoria de Lucas Gonçalves
+
 const formulaEl = document.getElementById('formula');
 const tbody = document.getElementById('tbody');
 const selTurma = document.getElementById('turma');
@@ -13,6 +15,7 @@ const NOTAS = {};          // Mapa de notas por aluno e sigla: { [ra]: { [sigla]
 
 console.log("Inicializando nota_final.js. SIGLAS:", SIGLAS, "COMPONENTES:", COMPONENTES);
 
+// Atualiza cabeçalho dos componentes
 function atualizarCabecalhoComponentes() {
   const ths = document.querySelectorAll('th.th-componente');
 
@@ -29,20 +32,24 @@ function atualizarCabecalhoComponentes() {
   });
 }
 
+// Limpa notas e tabela
 function limparNotasETabela() {
   Object.keys(NOTAS).forEach(k => delete NOTAS[k]);
   tbody.innerHTML = '';
 }
 
+// Reseta select de disciplina
 function resetDisciplina() {
   selDisciplina.innerHTML = '<option value="">Selecione a disciplina</option>';
 }
 
+// Reseta select de turma
 function resetTurma() {
   selTurma.innerHTML = '<option value="">Selecione a turma</option>';
   selTurma.disabled = true;
 }
 
+// Monta a tabela de alunos e notas
 function montarTabela() {
   tbody.innerHTML = '';
 
@@ -82,7 +89,7 @@ function montarTabela() {
   });
 }
 
-// Carrega disciplinas para o select de Disciplina
+// Carrega disciplinas no select
 async function carregarDisciplinas() {
   try {
     resetDisciplina();
@@ -138,7 +145,7 @@ async function carregarTurmasPorDisciplina(idDisciplina) {
   }
 }
 
-// Carrega a fórmula vigente da disciplina (apenas para visualização)
+// Carrega fórmula da disciplina
 async function carregarFormulaPorDisciplina(idDisciplina) {
   try {
     EXPRESSAO = '';
@@ -167,7 +174,7 @@ async function carregarFormulaPorDisciplina(idDisciplina) {
   }
 }
 
-// Carrega componentes de nota (P1, P2, T1, ...) da disciplina
+// Carrega componentes de nota
 async function carregarComponentes(idDisciplina) {
   try {
     SIGLAS = [];
@@ -199,7 +206,7 @@ async function carregarComponentes(idDisciplina) {
   }
 }
 
-// Carrega alunos da turma selecionada
+// Carrega alunos da turma
 async function carregarAlunosDaTurma(idTurma) {
   try {
     limparNotasETabela();
@@ -226,7 +233,7 @@ async function carregarAlunosDaTurma(idTurma) {
   }
 }
 
-// Preenche as células da tabela com as notas carregadas do back-end
+// Preenche notas na tabela
 function preencherNotasNaTabela() {
   const linhas = tbody.querySelectorAll('tr');
 
@@ -246,7 +253,7 @@ function preencherNotasNaTabela() {
   });
 }
 
-// Carrega notas de TODOS os componentes para a turma selecionada
+// Carrega notas de todos os componentes
 async function carregarNotasDeTodosComponentesDaTurma() {
   const turmaId = selTurma.value;
   console.log('carregarNotasDeTodosComponentesDaTurma() - turmaId:', turmaId, 'COMPONENTES:', COMPONENTES);
@@ -284,7 +291,7 @@ async function carregarNotasDeTodosComponentesDaTurma() {
   }
 }
 
-// Calcula a Nota Final de um aluno usando a fórmula EXPRESSAO
+// Calcula nota final de um aluno
 function calcularNotaFinalParaAluno(ra) {
   if (!EXPRESSAO || !EXPRESSAO.trim()) return undefined;
   if (!NOTAS[ra]) return undefined;
@@ -312,7 +319,7 @@ function calcularNotaFinalParaAluno(ra) {
   }
 }
 
-// Percorre a tabela e preenche a coluna Nota Final para todos os alunos
+// Calcula nota final de todos os alunos
 function calcularNotasFinaisParaTodos() {
   const linhas = tbody.querySelectorAll('tr');
 
@@ -329,7 +336,7 @@ function calcularNotasFinaisParaTodos() {
   });
 }
 
-// Envia as notas finais calculadas para o back-end (salvar em lote)
+// Salva notas finais no banco
 async function salvarNotasFinaisNoBanco() {
   const turmaId = selTurma.value;
   if (!turmaId) {
@@ -411,7 +418,7 @@ if (btnSalvar) {
   });
 }
 
-// Inicialização da página: carrega disciplinas disponíveis
+// Inicializa a página
 function init() {
   carregarDisciplinas();
 }
