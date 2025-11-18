@@ -47,14 +47,14 @@ O NotaDez é uma aplicação web cujo objetivo é permitir que docentes gerencie
 A equipe disponibiliza uma Release no GitHub.
 Siga as orientações abaixo para baixar, configurar e executar o NotaDez localmente.
 
-# 5.1. Baixar o Release
+# 4.1. Baixar o Release
 
 1. Acesse a página do repositório no GitHub.  
 2. Clique em **Releases**.  
 3. Baixe o arquivo `.zip` ou `.tar.gz` referente à versão **1.0.0-final**.  
 4. Extraia o conteúdo em uma pasta de sua preferência.
 
-# 5.2. Pré-requisitos obrigatórios antes da execução
+# 4.2. Pré-requisitos obrigatórios antes da execução
 
 O ambiente deve estar configurado corretamente para que o sistema funcione:
 
@@ -75,7 +75,7 @@ O ambiente deve estar configurado corretamente para que o sistema funcione:
 # Rede / Firewall
 - A **porta 1522** deve estar liberada para comunicação com o banco Oracle.
 
-# 5.3. Instalar dependências do projeto
+# 4.3. Instalar dependências do projeto
 
 Dentro da pasta extraída do Release, execute:
 
