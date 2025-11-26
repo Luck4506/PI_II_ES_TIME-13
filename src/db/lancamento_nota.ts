@@ -173,23 +173,44 @@ export async function updateLancamentoNotaValor(
 }
 // Tipo auxiliar para simplificar a lista de notas a serem salvas
 export type NotaComponenteSalvar = Pick<LancamentoNota, "ra_aluno" | "valor">;
-// Rota para salvar um conjunto de notas para o mesmo componente e turma (usando MERGE para INSERT/UPDATE em massa)
+// Função responsável por salvar, em lote, as notas de um mesmo componente de nota para uma turma.
+// Ela utiliza um comando MERGE no Oracle para, em uma única operação, fazer INSERT ou UPDATE,
+// dependendo se já existe ou não um lançamento para a combinação (CODIGO_TURMA, RA_ALUNO, COMPONENTE_NOTA_ID).
 export async function salvarNotasComponente(codigoTurma: number, componenteNotaId: number, docenteId: number, notas: NotaComponenteSalvar[]
 ): Promise<void> {
+  // Se o array "notas" estiver vazio, significa que não há nada para processar.
   if (!notas.length) {
     return;
   }
 
+
   const conn = await open();
+  // Bloco try/finally garante que, mesmo ocorrendo erro durante a execução do MERGE,
+  // a conexão com o banco será fechada no bloco "finally".
   try {
-    const binds = notas.map((nota) => ({
+    // Monta o array de "binds" a partir da lista de notas recebida.
+    // Para cada nota, é criado um objeto com:
+    // - codigo_turma, ra_aluno componente_nota_id, docente_id e valor (normalizado).
+
+    const binds = notas.map((nota) => ({ // mapeia cada nota, isso é feito para criar um array de objetos
+      // Normaliza o valor da nota 
+      valor: normalizarValorNota(nota.valor),
       codigo_turma: codigoTurma,
       ra_aluno: nota.ra_aluno,
       componente_nota_id: componenteNotaId,
       docente_id: docenteId,
-      valor: normalizarValorNota(nota.valor),
     }));
 
+    // Chama "executeMany" para executar a mesma instrução SQL (o MERGE) para cada conjunto
+    // de parâmetros presente no array "binds". Dessa forma, várias notas são atualizadas de uma vez
+    //sem precisar fazer um loop ou while
+
+    // SQL MERGE: se já existir lançamento para (turma, RA, componente), faz UPDATE da nota;
+    // se não existir, faz INSERT de um novo lançamento com esses dados.
+    //WHEN MATCHED: faz UPDATE da nota existente.
+    //WHEN NOT MATCHED: faz INSERT de um novo lançamento.
+    //achei mais eficiente usar o MERGE do que fazer um SELECT para verificar se existe ou não o lançamento
+  
     await conn.executeMany(
       `
       MERGE INTO NOTADEZ.LANCAMENTO_NOTA ln
@@ -205,7 +226,7 @@ export async function salvarNotasComponente(codigoTurma: number, componenteNotaI
         AND ln.COMPONENTE_NOTA_ID = src.COMPONENTE_NOTA_ID
       )
       WHEN MATCHED THEN
-        UPDATE SET
+        UPDATE SET 
           ln.VALOR = :valor,
           ln.DOCENTE_ID = :docente_id
       WHEN NOT MATCHED THEN
@@ -214,7 +235,9 @@ export async function salvarNotasComponente(codigoTurma: number, componenteNotaI
       binds,
       { autoCommit: true }
     );
+
   } finally {
+
     await close(conn);
   }
 }

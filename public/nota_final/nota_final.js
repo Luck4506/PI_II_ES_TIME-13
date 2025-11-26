@@ -9,7 +9,7 @@ const selDisciplina = document.getElementById('disciplina');
 let EXPRESSAO = '';        // Fórmula da disciplina selecionada (ex.: "(P1 + P2 + T1) / 3")
 let SIGLAS = [];           // Siglas dos componentes de nota da disciplina (ex.: ["P1","P2","T1"])
 let COMPONENTES = [];      // Componentes completos da disciplina [{ id, sigla, nome }]
-let ALUNOS = [];           // Alunos da turma selecionada [{ id, nome }]
+let ALUNOS = [];           // Alunos da turma selecionada [{ ra, nome }]
 const NOTAS = {};          // Mapa de notas por aluno e sigla: { [ra]: { [sigla]: valor } }
 //--------------------------------------------------------//
 
@@ -60,9 +60,9 @@ function montarTabela() {
   ALUNOS.forEach(aluno => {
     const tr = document.createElement('tr');
 
-    // Matrícula
+    // Matrícula (RA)
     const tdMat = document.createElement('td');
-    tdMat.textContent = aluno.id;
+    tdMat.textContent = aluno.ra;
     tr.appendChild(tdMat);
 
     // Nome
@@ -89,7 +89,16 @@ function montarTabela() {
   });
 }
 
+// -----------------------------------------------------------------------------
+// Fluxo principal da tela de nota final
+// 1) Carrega as disciplinas disponíveis (carregarDisciplinas).
+// 2) Ao escolher uma disciplina, carrega fórmula, turmas e componentes.
+// 3) Ao escolher uma turma, carrega alunos e notas já lançadas.
+// 4) Com base na fórmula e nas notas, calcula a nota final e permite salvar no banco.
+// -----------------------------------------------------------------------------
+
 // Carrega disciplinas no select
+// Faz requisição ao back-end para obter as disciplinas que possuem fórmula configurada.
 async function carregarDisciplinas() {
   try {
     resetDisciplina();
@@ -104,7 +113,10 @@ async function carregarDisciplinas() {
       throw new Error('Falha ao buscar disciplinas');
     }
 
+    // Converte a lista de disciplinas retornada pelo back-end em um array de objetos.
     const disciplinas = await resp.json(); // [{ id, nome, ... }]
+
+    // Para cada disciplina encontrada, cria uma opção no select para o usuário escolher.
     disciplinas.forEach(d => {
       const opt = document.createElement('option');
       opt.value = d.id;
@@ -112,7 +124,9 @@ async function carregarDisciplinas() {
       selDisciplina.appendChild(opt);
     });
   } catch (erro) {
+    // Registra detalhes do erro no console para facilitar depuração pelos desenvolvedores.
     console.error('Erro ao carregar disciplinas para notas finais:', erro);
+    // Informa ao usuário de forma amigável que houve um problema ao buscar as disciplinas.
     alert('Erro ao carregar disciplinas.');
   }
 }
@@ -127,10 +141,14 @@ async function carregarTurmasPorDisciplina(idDisciplina) {
 
     const resp = await fetch(`/turma/por_disciplina/${idDisciplina}`);
     if (!resp.ok) {
+      // Caso a resposta HTTP não seja bem-sucedida, lança um erro para ser tratado no catch.
       throw new Error('Falha ao buscar turmas da disciplina');
     }
 
+    // Converte o JSON de resposta em uma lista de turmas vinculadas à disciplina.
     const turmas = await resp.json(); // [{ id, nome }]
+
+    // Cria dinamicamente cada opção de turma no select, com id e nome vindos do banco.
     turmas.forEach(t => {
       const opt = document.createElement('option');
       opt.value = t.id;
@@ -140,7 +158,9 @@ async function carregarTurmasPorDisciplina(idDisciplina) {
 
     selTurma.disabled = turmas.length === 0;
   } catch (erro) {
+    // Mostra detalhes técnicos do erro no console para auxiliar na correção.
     console.error('Erro ao carregar turmas:', erro);
+    // Exibe uma mensagem genérica de erro para o usuário, sem expor detalhes internos.
     alert('Erro ao carregar turmas da disciplina.');
   }
 }
@@ -155,6 +175,7 @@ async function carregarFormulaPorDisciplina(idDisciplina) {
 
     const resp = await fetch(`/formula/por_disciplina/${idDisciplina}`);
     if (!resp.ok) {
+      // Se a API não retornar 200, assume que não há fórmula cadastrada para essa disciplina.
       formulaEl.textContent = '(sem fórmula cadastrada)';
       return;
     }
@@ -169,7 +190,9 @@ async function carregarFormulaPorDisciplina(idDisciplina) {
 
     console.log('Fórmula carregada para disciplina', idDisciplina, '=>', EXPRESSAO, dados);
   } catch (erro) {
+    // Registra o erro da tentativa de carregar a fórmula da disciplina.
     console.error('Erro ao carregar fórmula da disciplina:', erro);
+    // Informa visualmente na tela que ocorreu um problema ao buscar a fórmula.
     formulaEl.textContent = '(erro ao carregar fórmula)';
   }
 }
@@ -184,6 +207,7 @@ async function carregarComponentes(idDisciplina) {
 
     const resp = await fetch(`/componentes-nota/${idDisciplina}`);
     if (!resp.ok) {
+      // Lança um erro caso a resposta ao buscar componentes não seja bem-sucedida.
       throw new Error('Falha ao buscar componentes de nota');
     }
 
@@ -201,7 +225,9 @@ async function carregarComponentes(idDisciplina) {
       calcularNotasFinaisParaTodos();
     }
   } catch (erro) {
+    // Registra no console os detalhes do erro relacionado aos componentes de nota.
     console.error('Erro ao carregar componentes de nota:', erro);
+    // Mostra uma mensagem amigável para o usuário sobre a falha ao buscar os componentes.
     alert('Erro ao carregar componentes de nota.');
   }
 }
@@ -215,12 +241,17 @@ async function carregarAlunosDaTurma(idTurma) {
 
     const resp = await fetch(`/turma/${idTurma}/alunos`);
     if (!resp.ok) {
+      // Se a resposta não for 2xx, considera que houve falha ao buscar os alunos.
       throw new Error('Falha ao buscar alunos da turma');
     }
 
     const alunos = await resp.json(); 
     console.log('Alunos carregados para turma', idTurma, alunos);
-    ALUNOS = alunos;
+    // Normaliza os dados dos alunos para garantir que sempre tenhamos RA e nome
+    ALUNOS = alunos.map(a => ({
+      ra: a.ra_aluno ?? a.RA_ALUNO ?? a.ra ?? a.RA ?? a.id,
+      nome: a.nome ?? a.NOME
+    }));
 
     montarTabela();
     await carregarNotasDeTodosComponentesDaTurma();
@@ -228,7 +259,9 @@ async function carregarAlunosDaTurma(idTurma) {
     calcularNotasFinaisParaTodos();
 
   } catch (erro) {
+    // Registra no console o erro ocorrido durante o carregamento dos alunos.
     console.error('Erro ao carregar alunos da turma:', erro);
+    // Exibe uma mensagem resumida de erro para o usuário final.
     alert('Erro ao carregar alunos da turma.');
   }
 }
@@ -266,6 +299,7 @@ async function carregarNotasDeTodosComponentesDaTurma() {
       console.log('Buscando lançamentos para turma', turmaId, 'componente', componente);
       const resp = await fetch(`/lancamento-nota/${turmaId}/${componente.id}`);
       if (!resp.ok) {
+        // Se houver erro ao buscar este componente específico, ignora e segue para o próximo.
         continue;
       }
 
@@ -283,6 +317,7 @@ async function carregarNotasDeTodosComponentesDaTurma() {
         NOTAS[ra][componente.sigla] = valorNum;
       });
     } catch (erro) {
+      // Registra qual componente falhou ao carregar as notas, junto com o erro detalhado.
       console.error(
         `Erro ao carregar notas existentes do componente ${componente.sigla}:`,
         erro
@@ -314,6 +349,7 @@ function calcularNotaFinalParaAluno(ra) {
     if (!Number.isFinite(resultado)) return undefined;
     return resultado.toFixed(2);
   } catch (e) {
+    // Caso a expressão montada seja inválida, registra o erro para investigação futura.
     console.error('Erro ao avaliar expressão da nota final:', e);
     return undefined;
   }
@@ -384,12 +420,15 @@ async function salvarNotasFinaisNoBanco() {
     });
 
     if (!resp.ok) {
+      // Se o servidor responder com status de erro, interrompe o fluxo e delega ao catch.
       throw new Error('Falha na resposta do servidor ao salvar notas finais.');
     }
 
     alert('Notas finais salvas com sucesso.');
   } catch (erro) {
+    // Registra detalhes técnicos do erro na tentativa de salvar as notas finais.
     console.error('Erro ao salvar notas finais:', erro);
+    // Notifica o usuário de que o salvamento não foi concluído com sucesso.
     alert('Erro ao salvar notas finais.');
   }
 }
