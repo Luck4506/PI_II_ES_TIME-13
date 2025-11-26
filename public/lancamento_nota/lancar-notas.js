@@ -67,9 +67,9 @@ function montarTabela() {
   ALUNOS.forEach(aluno => {
     const tr = document.createElement('tr');
 
-    // Matrícula
+    // Matrícula (RA)
     const tdMat = document.createElement('td');
-    tdMat.textContent = aluno.id;
+    tdMat.textContent = aluno.ra;
     tr.appendChild(tdMat);
 
     // Nome
@@ -93,8 +93,8 @@ function montarTabela() {
 
       inp.addEventListener('input', () => {
         const v = parseFloat(inp.value);
-        if (!NOTAS[aluno.id]) NOTAS[aluno.id] = {};
-        NOTAS[aluno.id][sigla] = Number.isFinite(v) ? v : undefined;
+        if (!NOTAS[aluno.ra]) NOTAS[aluno.ra] = {};
+        NOTAS[aluno.ra][sigla] = Number.isFinite(v) ? v : undefined;
       });
 
       td.appendChild(inp);
@@ -276,7 +276,12 @@ async function carregarAlunosDaTurma(idTurma) {
     }
 
     const alunos = await resp.json(); 
-    ALUNOS = alunos;
+    // Normaliza os dados dos alunos para garantir que sempre tenhamos RA e nome
+    ALUNOS = alunos.map(a => ({
+      ra: a.ra_aluno ?? a.RA_ALUNO ?? a.ra ?? a.RA ?? a.id,
+      nome: a.nome ?? a.NOME
+    }));
+
     montarTabela();
     await carregarNotasDeTodosComponentesDaTurma();
     atualizarInputsPorComponenteSelecionado();
@@ -411,7 +416,7 @@ btnSalvar.addEventListener('click', async () => {
     const notasArray = [];
 
     ALUNOS.forEach(aluno => {
-      const ra = aluno.id;
+      const ra = aluno.ra;
       const valor = NOTAS[ra]?.[siglaSelecionada];
       if (Number.isFinite(valor)) {
         notasArray.push({
